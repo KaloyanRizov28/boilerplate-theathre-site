@@ -1,7 +1,7 @@
 // src/components/layout/footer.js
 export function Footer() {
   return (
-    <footer className="bg-gray-900 py-12">
+    <footer className="bg-theater-dark py-12">
       <div className="max-w-6xl mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>

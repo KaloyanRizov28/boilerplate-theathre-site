@@ -19,20 +19,20 @@ export function Header() {
     <>
       {/* Header */}
       <header className="bg-theater-dark border-b border-gray-700 relative z-50">
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="w-full px-4 sm:px-6 md:px-8">
           <div className="flex justify-between items-center py-4">
             {/* Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex flex-col space-y-1 p-2 z-50 relative"
+              className="flex flex-col space-y-1 p-2 z-50 relative -ml-1"
             >
-              <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${
+              <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
                 isMenuOpen ? 'rotate-45 translate-y-2' : ''
               }`}></div>
-              <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${
+              <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
                 isMenuOpen ? 'opacity-0' : ''
               }`}></div>
-              <div className={`w-6 h-0.5 bg-white transition-all duration-300 ${
+              <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
                 isMenuOpen ? '-rotate-45 -translate-y-2' : ''
               }`}></div>
             </button>
@@ -46,7 +46,7 @@ export function Header() {
             </Link>
 
             {/* Logo Space */}
-            <div className="w-12 h-12 flex items-center justify-center">
+            <div className="w-12 h-12 flex items-center justify-center -mr-1">
               <Image
                 src="/logo.svg"
                 alt="Theater Logo"

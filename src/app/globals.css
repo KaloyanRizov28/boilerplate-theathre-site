@@ -13,6 +13,7 @@
 
 
   --color-theater-dark: #1F1F1F;
+  --color-theater-grey: #AFAFAF;
 }
 
 @media (prefers-color-scheme: dark) {

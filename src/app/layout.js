@@ -1,9 +1,14 @@
-import { Inter } from 'next/font/google'
+import { Sofia_Sans } from 'next/font/google'
 import './globals.css'
-import { Header } from './components/seat-map/layout/header'
-import { Footer } from './components/seat-map/layout/footer'
+import { Header } from './components/layout/header'
+import { Footer } from './components/layout/footer'
 
-const inter = Inter({ subsets: ['latin', 'cyrillic'] })
+const sofiaSans = Sofia_Sans({
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+  display: 'swap',
+  variable: '--font-sofia-sans',
+  weight: ['300', '400', '500', '600', '700', '800'],
+})
 
 export const metadata = {
   title: {
@@ -23,8 +28,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bg" className="scroll-smooth">
-      <body className={`${inter.className} bg-black text-white antialiased`}>
+    <html lang="bg" className={`scroll-smooth ${sofiaSans.variable}`}>
+      <body className={`${sofiaSans.className} bg-black text-white antialiased`}>
         <div className="min-h-screen flex flex-col">
           <Header />
           <main className="flex-1">

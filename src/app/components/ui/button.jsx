@@ -1,8 +1,4 @@
 // src/components/ui/button.js
-
-import { forwardRef } from 'react'
-
-
 export const Button = ({ className = '', variant = 'default', size = 'md', children, ...props }) => {
   const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50'
   
