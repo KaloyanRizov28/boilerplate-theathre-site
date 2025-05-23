@@ -118,8 +118,8 @@ export function generateFullVenueData() {
   // Get resized seat dimensions based on screen size
   const getSeatDimensions = (isMobile = false) => {
     return {
-      seatWidth: isMobile ? 21 : 21,    // Much bigger on mobile (140px)
-      seatHeight: isMobile ? 21 : 21,   // Much bigger on mobile (140px)
+      seatWidth: isMobile ? 21 : 25,    // Much bigger on mobile (140px)
+      seatHeight: isMobile ? 21 : 25,   // Much bigger on mobile (140px)
       seatSpacing: isMobile ? 3 : 3,   // More spacing on mobile
       rowSpacing: isMobile ? 2 : 3     // More row spacing on mobile
     };
