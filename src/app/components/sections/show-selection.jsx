@@ -74,15 +74,15 @@ const ShowsSection = () => {
   const displayedShows = filteredShows.slice(0, 6);
 
   return (
-    <section className="bg-theater-dark pt-1 py-16 px-4 sm:px-6 md:px-8">
-     
+    <section className="bg-theater-dark py-16 px-4 sm:px-6 md:px-8">
+      <div className="max-w-7xl mx-auto">
         {/* Header with Tickets link */}
         <div className="flex justify-between items-center mb-8">
           <Link 
             href="/tickets" 
-            className="text-white text-2xl sm:text-3xl font-light hover:opacity-80 transition-opacity"
+            className="text-white text-2xl sm:text-3xl font-light group"
           >
-            Билети →
+            Билети <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
           </Link>
         </div>
 
@@ -125,7 +125,7 @@ const ShowsSection = () => {
           {displayedShows.map((show) => (
             <div key={show.id} className="group cursor-pointer">
               {/* Card */}
-              <div className="bg-theater-dark rounded-lg overflow-hidden transition-all duration-300 hover:transform hover:scale-[1.02]">
+              <div className="bg-theater-dark rounded-lg overflow-hidden transition-all duration-300">
                 {/* Image container */}
                 <div className="relative h-[400px] bg-theater-dark overflow-hidden p-4 pb-0">
                   <div className="relative h-full">
@@ -133,7 +133,7 @@ const ShowsSection = () => {
                       src={show.image}
                       alt={show.title}
                       fill
-                      className="object-contain transition-transform duration-500 group-hover:scale-105"
+                      className="object-contain"
                       sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     />
                   </div>
@@ -155,10 +155,10 @@ const ShowsSection = () => {
                   {/* Info link */}
                   <Link 
                     href={`/shows/${show.slug}`}
-                    className="inline-flex items-center text-white text-base font-light hover:opacity-80 transition-opacity"
+                    className="inline-flex items-center text-white text-base font-light transition-colors duration-300"
                   >
-                    Информация
-                    <span className="ml-2">→</span>
+                    <span className="border-b border-transparent group-hover:border-white transition-all duration-300">Информация</span>
+                    <span className="ml-2 inline-block transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110">→</span>
                   </Link>
                 </div>
               </div>
@@ -171,13 +171,13 @@ const ShowsSection = () => {
           <div className="text-center mt-12">
             <Link 
               href="/shows" 
-              className="inline-block text-white text-lg font-light border border-white/30 px-8 py-3 rounded-lg hover:bg-white hover:text-black transition-all duration-300"
+              className="inline-block text-white text-lg font-light border border-white/30 px-8 py-3 rounded-lg transition-all duration-300 group hover:bg-white hover:text-black"
             >
               Виж всички представления
             </Link>
           </div>
         )}
-      
+      </div>
     </section>
   );
 };
