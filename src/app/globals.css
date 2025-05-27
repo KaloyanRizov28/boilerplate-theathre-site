@@ -28,3 +28,44 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* globals.css */
+
+/* Ensure Swiper container has room and doesn't clip shadows */
+.swiper {
+  overflow: visible !important; /* Allow shadows/hovers to peek */
+  padding-left: 1px; /* Prevent clipping */
+  padding-right: 1px;
+}
+
+/* Ensure slides have full height */
+.swiper-slide {
+  height: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Style for the custom buttons (you can adjust as needed) */
+.swiper-button-prev-custom,
+.swiper-button-next-custom {
+    /* Tailwind classes handle most styling, but you can add more here */
+}
+
+/* Hide Swiper's default arrows if they somehow appear */
+.swiper-button-next,
+.swiper-button-prev {
+  display: none !important;
+}
+
+/* Better scrollbar hiding if needed */
+.swiper-scrollbar {
+  display: none !important; /* Force hide if hide:true isn't enough */
+}
+
+/* Ensure no ugly blue outlines on click */
+.swiper-button-prev-custom:focus,
+.swiper-button-next-custom:focus,
+.swiper-slide:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}

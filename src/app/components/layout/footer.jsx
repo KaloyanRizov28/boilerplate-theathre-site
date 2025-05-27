@@ -2,7 +2,7 @@
 export function Footer() {
   return (
     <footer className="bg-theater-dark py-12">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="px-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h3 className="text-xl font-semibold mb-4">Информация</h3>

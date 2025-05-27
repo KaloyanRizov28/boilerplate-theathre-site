@@ -18,13 +18,14 @@ export function Header() {
   return (
     <>
       {/* Header */}
-      <header className="bg-theater-dark border-b border-gray-700 relative z-50">
+     {/* Header */}
+      <header className="sticky top-0 left-0 w-full bg-theater-dark border-b border-gray-700 z-50">
         <div className="w-full px-4 sm:px-6 md:px-8">
           <div className="flex justify-between items-center py-4">
             {/* Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex flex-col space-y-1 p-2 z-50 relative -ml-1"
+              className="flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
             >
               <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
                 isMenuOpen ? 'rotate-45 translate-y-2' : ''
