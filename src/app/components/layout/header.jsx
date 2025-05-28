@@ -82,8 +82,8 @@ export function Header() {
           {navigation.map((item, index) => {
             const startPosition = -250 + (index * 40); // Staircase start positions
             const finalPosition = 0; // Final aligned position
-            const initialDelay = index * 120 + 400; // Staggered entry
-            const overshootDelay = initialDelay + 300; // Overshoot happens 300ms after entry starts
+            const initialDelay = index * 20; // Staggered entry
+            const overshootDelay = index ; // Overshoot happens 300ms after entry starts
             
             return (
               <div

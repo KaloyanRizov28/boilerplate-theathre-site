@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import Arrow from "@/app/components/ui/icons/Arrow.svg"
 // Mock data structure
 const mockShows = [
   {
@@ -58,6 +58,15 @@ const mockShows = [
     date: '28.12',
     category: 'music',
     author: 'Волфганг Амадеус Моцарт'
+  },
+  {
+    id: 7,
+    title: 'Дон Жуан',
+    slug: 'don-zhuan',
+    image: '/shows/6.png',
+    date: '28.12',
+    category: 'music',
+    author: 'Волфганг Амадеус Моцарт'
   }
 ];
 
@@ -84,7 +93,7 @@ const ShowsSection = () => {
               href="/tickets"
               className="text-white text-2xl sm:text-3xl font-[700] group"
             >
-              Билети <span className="inline-block transition-transform duration-300 group-hover:translate-x-2">→</span>
+              Билети <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-1 "></Arrow>
             </Link>
           </div>
 
@@ -93,8 +102,8 @@ const ShowsSection = () => {
             <button
               onClick={() => setActiveFilter('all')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'all'
-                  ? 'text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                ? 'text-white'
+                : 'text-gray-500 hover:text-gray-300'
                 }`}
             >
               ВСИЧКИ
@@ -102,8 +111,8 @@ const ShowsSection = () => {
             <button
               onClick={() => setActiveFilter('theater')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'theater'
-                  ? 'text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                ? 'text-white'
+                : 'text-gray-500 hover:text-gray-300'
                 }`}
             >
               ТЕАТЪР
@@ -111,8 +120,8 @@ const ShowsSection = () => {
             <button
               onClick={() => setActiveFilter('music')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'music'
-                  ? 'text-white'
-                  : 'text-gray-500 hover:text-gray-300'
+                ? 'text-white'
+                : 'text-gray-500 hover:text-gray-300'
                 }`}
             >
               МУЗИКА
@@ -169,7 +178,7 @@ const ShowsSection = () => {
                     className="inline-flex items-center text-white text-base font-light transition-colors duration-300"
                   >
                     <span className="border-b border-transparent transition-all duration-300">Информация</span>
-                    <span className="ml-2 inline-block transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110 text-2xl">→</span>
+                    <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
                   </Link>
                 </div>
               </div>
@@ -179,12 +188,17 @@ const ShowsSection = () => {
 
         {/* View all link if more than 6 shows */}
         {filteredShows.length > 6 && (
-          <div className="text-center mt-12">
+          <div className="text-right mt-12">
             <Link
               href="/shows"
-              className="inline-block text-white text-lg font-light border border-white/30 px-8 py-3 rounded-lg transition-all duration-300 group hover:bg-white hover:text-black"
+              className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group" // Added 'group' for hover effects
             >
-              Виж всички представления
+              {/* Span for the text with an underline effect on hover */}
+              <span className="border-b border-transparent group-hover:border-white transition-all duration-300 text-lg">
+                Виж всички представления {/* Kept your original text */}
+              </span>
+              {/* Arrow icon, matching the target style */}
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2"></Arrow>
             </Link>
           </div>
         )}

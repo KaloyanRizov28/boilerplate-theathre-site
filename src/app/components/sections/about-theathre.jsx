@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import Arrow from "@/app/components/ui/icons/Arrow.svg"
 const AboutTheaterSection = () => {
   return (
     <section className="bg-theater-dark py-16 px-4 sm:px-6 md:px-8">
@@ -23,12 +23,10 @@ const AboutTheaterSection = () => {
               href="/about" 
               className="inline-flex items-center text-white text-xl font-light group"
             >
-              <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
+              <span className="border-b border-transparent transition-all duration-300">
                 Виж още
               </span>
-              <span className="ml-2 inline-block transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110">
-                →
-              </span>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
             </Link>
           </div>
           

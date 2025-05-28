@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-
+import Arrow from "@/app/components/ui/icons/Arrow.svg"
 // 1. Import Swiper components and styles
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
@@ -49,9 +49,7 @@ const CastCard = ({ member }) => (
                     <span className="border-b border-transparent transition-all duration-300">
                         Виж още
                     </span>
-                    <span className="ml-1 inline-block transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110 text-xs">
-                        →
-                    </span>
+                     <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
                 </Link>
             </div>
         </div>
@@ -126,9 +124,7 @@ const SwiperCastSection = () => {
                     Виж целия състав
                 </span>
                 {/* MODIFIED: Added arrow */}
-                <span className="ml-2 inline-block transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110">
-                    →
-                </span>
+                 <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
             </Link>
         </div>
       </div>
