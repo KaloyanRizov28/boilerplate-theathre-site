@@ -1,17 +1,43 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Turbopack configuration (for 'next dev --turbo')
   turbopack: {
     rules: {
-      // This rule tells Turbopack to process SVG files
-      // ending in .svg with the @svgr/webpack loader.
-      // 'as: *.js' tells Turbopack to treat the output as a JavaScript module.
       '*.svg': {
         loaders: ['@svgr/webpack'],
         as: '*.js',
       },
     },
   },
-  // You can add other Next.js config options here if needed.
+
+  // Webpack configuration (ESSENTIAL for 'next build' and 'next dev' without --turbo)
+  webpack(config) {
+    // Find the existing rule that handles SVG files.
+    const fileLoaderRule = config.module.rules.find((rule) =>
+      rule.test?.test?.('.svg'),
+    );
+
+    config.module.rules.push(
+      // Rule to handle SVGs ending with `?url`.
+      {
+        ...fileLoaderRule,
+        test: /\.svg$/i,
+        resourceQuery: /url/, // *.svg?url
+      },
+      // Rule to handle all other SVG imports.
+      {
+        test: /\.svg$/i,
+        issuer: /\.[jt]sx?$/,
+        resourceQuery: { not: /url/ }, // Exclude *.svg?url imports
+        use: ['@svgr/webpack'],
+      },
+    );
+
+    // Modify the original SVG rule to exclude SVGs handled by @svgr/webpack.
+    fileLoaderRule.exclude = /\.svg$/i;
+
+    return config;
+  },
 };
 
 export default nextConfig;
