@@ -49,7 +49,7 @@ const CastCard = ({ member }) => (
                     <span className="border-b border-transparent transition-all duration-300">
                         Виж още
                     </span>
-                     <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
+                    <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
                 </Link>
             </div>
         </div>
@@ -58,78 +58,78 @@ const CastCard = ({ member }) => (
 
 // --- 3. The Swiper Cast Section ---
 const SwiperCastSection = () => {
-  return (
-    // Kept original padding as per your last code example
-    <section className="bg-theater-dark py-4 px-4 sm:px-6 md:px-8">
-      {/* Kept original container structure */}
-      <div className="relative overflow-hidden">
-        <h2 className="text-white text-4xl sm:text-5xl font-light mb-12 sm:mb-16 text-center sm:text-left">
-          Състав
-        </h2>
+    return (
+        // Kept original padding as per your last code example
+        <section className="bg-theater-dark py-4 px-4 sm:px-6 md:px-8">
+            {/* Kept original container structure */}
+            <div className="relative overflow-hidden">
+                <h2 className="text-white text-4xl sm:text-5xl font-light mb-12 sm:mb-16 text-center sm:text-left">
+                    Състав
+                </h2>
 
-        <div className="relative card-content">
-            <Swiper
-                modules={[Navigation, Pagination, A11y]}
-                loop={true}
-                spaceBetween={32}
-                grabCursor={true}
-                pagination={{
-                    el: ".swiper-pagination",
-                    clickable: true,
-                    dynamicBullets: true,
-                }}
-                navigation={{
-                    nextEl: ".swiper-button-next",
-                    prevEl: ".swiper-button-prev",
-                }}
-                breakpoints={{
-                    0: {
-                        slidesPerView: 1.2,
-                        spaceBetween: 20,
-                    },
-                    600: {
-                        slidesPerView: 2,
-                        spaceBetween: 32,
-                    },
-                    968: {
-                        slidesPerView: 3,
-                        spaceBetween: 32,
-                    },
-                    1280: {
-                        slidesPerView: 4,
-                        spaceBetween: 32,
-                    }
-                }}
-                className=""
-            >
-                {mockCast.map((member) => (
-                    <SwiperSlide key={member.id} className="h-auto outline-none focus:outline-none">
-                        <CastCard member={member} />
-                    </SwiperSlide>
-                ))}
+                <div className="relative card-content">
+                    <Swiper
+                        modules={[Navigation, Pagination, A11y]}
+                        loop={true}
+                        spaceBetween={32}
+                        grabCursor={true}
+                        pagination={{
+                            el: ".swiper-pagination",
+                            clickable: true,
+                            dynamicBullets: true,
+                        }}
+                        navigation={{
+                            nextEl: ".swiper-button-next",
+                            prevEl: ".swiper-button-prev",
+                        }}
+                        breakpoints={{
+                            0: {
+                                slidesPerView: 1.2,
+                                spaceBetween: 20,
+                            },
+                            600: {
+                                slidesPerView: 2,
+                                spaceBetween: 32,
+                            },
+                            968: {
+                                slidesPerView: 3,
+                                spaceBetween: 32,
+                            },
+                            1280: {
+                                slidesPerView: 4,
+                                spaceBetween: 32,
+                            }
+                        }}
+                        className=""
+                    >
+                        {mockCast.map((member) => (
+                            <SwiperSlide key={member.id} className="h-auto outline-none focus:outline-none">
+                                <CastCard member={member} />
+                            </SwiperSlide>
+                        ))}
 
-                <div className="swiper-button-next text-white hover:text-gray-300 transition-colors"></div>
-                <div className="swiper-button-prev text-white hover:text-gray-300 transition-colors"></div>
-            </Swiper>
-        </div>
+                        <div className="swiper-button-next text-white hover:text-gray-300 transition-colors"></div>
+                        <div className="swiper-button-prev text-white hover:text-gray-300 transition-colors"></div>
+                    </Swiper>
+                </div>
 
-        {/* View all cast members link - MODIFIED as requested */}
-        <div className="text-right pr-2"> {/* MODIFIED: text-right */}
-            <Link
-                href="/cast"
-                // MODIFIED: New class, using text-lg as it was before, group added
-                className="inline-flex items-center text-white text-lg font-light group transition-colors duration-300"
-            >
-                <span className="border-b border-transparent  transition-all duration-300">
-                    Виж целия състав
-                </span>
-                {/* MODIFIED: Added arrow */}
-                 <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
-            </Link>
-        </div>
-      </div>
-    </section>
-  );
+                {/* View all cast members link - MODIFIED as requested */}
+                <div className="text-right pr-2"> {/* MODIFIED: text-right */}
+                    <Link
+                        href="/cast"
+                        // MODIFIED: New class, using text-lg as it was before, group added
+                        className="inline-flex items-center text-white text-lg font-light group transition-colors duration-300"
+                    >
+                        <span className="border-b border-transparent  transition-all duration-300">
+                            Виж целия състав
+                        </span>
+                        {/* MODIFIED: Added arrow */}
+                        <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2"></Arrow>
+                    </Link>
+                </div>
+            </div>
+        </section>
+    );
 };
 
 export default SwiperCastSection;
