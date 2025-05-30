@@ -9,7 +9,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navigation = [
-    { name: 'Програма', href: '/program' },
+    { name: 'Програма', href: '/calendar' },
     { name: 'За нас', href: '/about' },
     { name: 'Билети', href: '/tickets' },
     { name: 'Контакти', href: '/contact' },
