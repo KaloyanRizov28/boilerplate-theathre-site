@@ -23,7 +23,7 @@ const HeroSection = () => {
 
         {/* Content - Responsive text at bottom left */}
         {/* 2. Applied consistent responsive padding */}
-        <div className="absolute bottom-2 right-1 z-10 px-4 sm:px-6 lg:px-8 w-full">
+        <div className="absolute bottom-2 left-4 z-10 px-4.5 sm:px-6 lg:px-8 w-full">
           <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl 2xl:text-9xl font-bold text-white tracking-wider leading-none -mb-2 sm:-mb-3 md:-mb-4 lg:-mb-6">
             НИРВАНА
           </h1>
@@ -33,7 +33,7 @@ const HeroSection = () => {
       {/* Date/Time Section - Fixed height */}
       {/* 2. Applied consistent responsive padding */}
       <div className="bg-theater-dark text-white px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex space-x-8 text-lg">
+        <div className="flex space-x-8 text-lg pl-6.5">
           <span>20.06.25</span>
           <span>19:00</span>
           <span>СЦЕНА</span>

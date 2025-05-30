@@ -86,7 +86,7 @@ const ShowsSection = () => {
     <section className="bg-theater-dark px-4 sm:px-6 md:px-8"> {/* Added some vertical padding for overall look */}
       <div className="mx-auto">
         {/* Container for Header and Filters, using flex-col */}
-        <div className="flex flex-col mb-12">
+        <div className="flex flex-col mb-12 px-6">
           {/* Header with Tickets link */}
           <div className="flex justify-start items-center mb-8">
             <Link
@@ -98,7 +98,7 @@ const ShowsSection = () => {
           </div>
 
           {/* Filter buttons */}
-          <div className="flex gap-8">
+          <div className="flex gap-8 ">
             <button
               onClick={() => setActiveFilter('all')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'all'
@@ -139,7 +139,7 @@ const ShowsSection = () => {
                 {/* --- NEW WRAPPER FOR PADDING --- */}
                 {/* We add px-4 (padding-left: 1rem; padding-right: 1rem) */}
                 {/* You can change px-4 to px-6, px-8 etc., for more padding */}
-                <div className="px-12"> {/* Added pt-4 for top padding too */}
+                <div className=""> {/* Added pt-4 for top padding too */}
 
                   {/* --- IMAGE CONTAINER (now inside padded wrapper) --- */}
                   <div className="relative w-full" style={{ aspectRatio: '3/4' }}>
@@ -149,7 +149,7 @@ const ShowsSection = () => {
                       fill
                       sizes="(max-width: 768px) 80vw, (max-width: 1024px) 50vw, 33vw"
                       style={{
-                        objectFit: 'cover' // Ensures image covers the area
+                        objectFit: 'contain' // Ensures image covers the area
                       }}
                     />
                   </div>
@@ -160,7 +160,7 @@ const ShowsSection = () => {
 
 
                 {/* Content */}
-                <div className="p-4 px-12 bg-theater-dark">
+                <div className="bg-theater-dark px-6 pt-3">
                   {/* Date */}
                   <p className="text-white text-xl font-light mb-1">{show.date}</p>
 
@@ -188,9 +188,9 @@ const ShowsSection = () => {
 
         {/* View all link if more than 6 shows */}
         {filteredShows.length > 6 && (
-          <div className="text-right mt-12">
+          <div className="text-right mt-12 pr-6">
             <Link
-              href="/shows"
+              href="/calendar"
               className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group" // Added 'group' for hover effects
             >
               {/* Span for the text with an underline effect on hover */}

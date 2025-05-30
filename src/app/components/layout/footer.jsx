@@ -10,7 +10,7 @@ export function Footer() {
 
   return (
     <footer className="bg-theater-dark py-12 text-white"> {/* Adjusted padding for a better look */}
-      <div className="px-6"> {/* Kept px-6, added max-width/center */}
+      <div className="px-12"> {/* Kept px-6, added max-width/center */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           
           {/* Information Section (with arrows & new Link syntax) */}
