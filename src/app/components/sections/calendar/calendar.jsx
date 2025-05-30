@@ -159,7 +159,7 @@ const ProgramCalendar = ({
             >
               {firstMonthInWindow.name} {/* This will now be currentViewMonth's name */}
             </button>
-            <span className={`${monthNameSizeClasses} text-gray-500 mx-1 sm:mx-1.5 md:mx-2`}>|</span>
+            <span className={`${monthNameSizeClasses} text-gray-500 mx-1 sm:mx-1.5 md:mx-2`}></span>
             <button
               onClick={navigateToSecondMonth}
               disabled={isDisplayingNavSecondMonth}

@@ -155,7 +155,7 @@ const MonthlyProgramGuide = () => {
 
   return (
     <section className="bg-theater-dark text-white px-4 sm:px-6 lg:px-8 min-h-screen">
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[145rem] mx-auto">
         
 
         <div className='flex justify-center my-8'>
@@ -196,12 +196,12 @@ const MonthlyProgramGuide = () => {
           {Object.entries(programToDisplay).map(([dateKey, showsForDay]) => {
             const dayNumber = parseInt(dateKey.split('-')[2]);
             return (
-              <div key={dateKey} className="flex flex-col sm:flex-row items-start gap-x-4 sm:gap-x-6 gap-y-4">
+              <div key={dateKey} className="flex flex-col sm:flex-row items-start gap-x-4 sm:gap-x- gap-y-4">
                 <div className="flex-shrink-0 w-full sm:w-20 md:w-24 text-left sm:text-right mb-4 sm:mb-0 pt-1">
                   <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-none tabular-nums">{String(dayNumber).padStart(2, '0')}</div>
                   <div className="text-xs sm:text-sm text-gray-300 uppercase tracking-wide mt-1">{getDayOfWeekBG(dateKey)}</div>
                 </div>
-                <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10 ">
+               <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10 ">
                   {showsForDay.map(show => (
                     <div key={show.id} className="group mx-auto max-w-sm w-full sm:max-w-none sm:mx-0">
                       <Link href={`/shows/${show.slug}`} legacyBehavior>
