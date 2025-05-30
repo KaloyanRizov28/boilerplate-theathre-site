@@ -156,11 +156,7 @@ const MonthlyProgramGuide = () => {
   return (
     <section className="bg-theater-dark text-white px-4 sm:px-6 lg:px-8 min-h-screen">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-3 sm:gap-x-8 my-8">
-            <button onClick={() => { setActiveFilter('all'); setSelectedDate(null);}} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'all' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>ВСИЧКИ</button>
-            <button onClick={() => { setActiveFilter('theater'); setSelectedDate(null);}} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'theater' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>ТЕАТЪР</button>
-            <button onClick={() => { setActiveFilter('music'); setSelectedDate(null);}} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'music' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>МУЗИКА</button>
-        </div>
+        
 
         <div className='flex justify-center my-8'>
           <StaircaseCalendar
@@ -178,7 +174,11 @@ const MonthlyProgramGuide = () => {
             selectedDayNumber={selectedDate && selectedDate.getUTCMonth() === activeDisplayMonth && selectedDate.getUTCFullYear() === activeDisplayYear ? selectedDate.getUTCDate() : undefined}
           />
         </div>
-
+        <div className="flex flex-wrap justify-right gap-x-6 gap-y-3 sm:gap-x-8 my-8">
+            <button onClick={() => { setActiveFilter('all'); setSelectedDate(null);}} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'all' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>ВСИЧКИ</button>
+            <button onClick={() => { setActiveFilter('theater'); setSelectedDate(null);}} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'theater' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>ТЕАТЪР</button>
+            <button onClick={() => { setActiveFilter('music'); setSelectedDate(null);}} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'music' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}>МУЗИКА</button>
+        </div>
         {selectedDate && (
             <div className="text-center mb-6">
                 <button onClick={() => setSelectedDate(null)} className="text-yellow-400 hover:text-yellow-300 underline text-sm sm:text-base">

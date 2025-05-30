@@ -172,7 +172,7 @@ const ProgramCalendar = ({
 
         {/* Styles here are from your original version; no overflow wrapper or min-width added by me */}
         <div
-          className={`flex-grow w-full grid grid-cols-14 gap-y-1.5 sm:gap-y-2 md:gap-y-2.5 lg:gap-y-3 gap-x-px sm:gap-x-0.5 md:gap-x-1 font-mono ${dateTextSizeClasses} leading-none transition-opacity duration-300 ease-in-out`}
+          className={`flex-grow w-full grid grid-cols-14 gap-y-1.5 sm:gap-y-2 md:gap-y-2.5 lg:gap-y-3 gap-x-px sm:gap-x-0.5 md:gap-x-1 font-mono ${dateTextSizeClasses} leading-none transition-opacity duration-300 ease-in-out  [@media(min-width:320px)]:pr-2  [@media(min-width:375px)]:pr-8       [@media(min-width:425px)]:pr-14`  }
           style={{ opacity: gridOpacity }}
         >
           {weeks.map((week, weekIndex) => {
