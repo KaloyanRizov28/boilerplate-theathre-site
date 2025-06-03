@@ -1,5 +1,5 @@
 'use client';
-import SeatMap from '../components/seat-map/SeatMap';
+import SeatMap from '../../components/seat-map/SeatMap';
 import { fullVenueData } from '@/data/sampleVenueData';
 
 export default function SeatPickerPage() {

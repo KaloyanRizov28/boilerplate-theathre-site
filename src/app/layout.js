@@ -1,7 +1,8 @@
 import { Sofia_Sans } from 'next/font/google'
 import './globals.css'
-import { Footer } from './components/layout/footer'
-import { ConditionalDefaultHeader } from './components/layout/contidionalHeader'
+import { Footer } from '../components/layout/footer'
+import { ConditionalDefaultHeader } from '../components/layout/contidionalHeader'
+
 const sofiaSans = Sofia_Sans({
   subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
   display: 'swap',

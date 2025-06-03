@@ -3,9 +3,9 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Arrow from "@/app/components/ui/icons/Arrow.svg";
+import Arrow from "@/components/ui/icons/Arrow.svg";
 // Assuming StaircaseCalendar is your ProgramCalendar.jsx component
-import StaircaseCalendar from '../components/sections/calendar/calendar';
+import StaircaseCalendar from '../../components/sections/calendar/calendar';
 
 // Data from your ShowsSection
 const showsSectionMockData = [

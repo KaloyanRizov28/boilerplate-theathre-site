@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import Arrow from "@/app/components/ui/icons/Arrow.svg"
+import Arrow from "@/components/ui/icons/Arrow.svg"
 // 1. Import Swiper components and styles
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Pagination, A11y } from 'swiper/modules';
@@ -60,7 +60,7 @@ const CastCard = ({ member }) => (
 const SwiperCastSection = () => {
     return (
         // Kept original padding as per your last code example
-        <section className="bg-theater-dark py-4 px-4 sm:px-6 md:px-12">
+        <section className="bg-theater-dark py-4 px-4 ">
             {/* Kept original container structure */}
             <div className="relative overflow-hidden">
                 <h2 className="text-white text-4xl sm:text-5xl font-light mb-12 sm:mb-16 text-center sm:text-left">

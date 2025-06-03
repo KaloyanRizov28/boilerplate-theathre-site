@@ -10,7 +10,7 @@ export function ConditionalDefaultHeader() {
   // because another layout will provide a custom header.
   const pathsWithoutDefaultHeader = [
     '/calendar', // Example path for a page using TransparentHeader
-    
+    '/repertoar/',
   ];
 
   // If the current path is one of these, don't render the default header

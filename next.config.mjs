@@ -15,7 +15,7 @@ const nextConfig = {
     // Grab the existing rule that handles SVG imports
     const fileLoaderRule = config.module.rules.find((rule) =>
       rule.test?.test?.('.svg'),
-    )
+    );
 
     config.module.rules.push(
       // Reapply the existing rule, but only for svg imports ending in ?url
@@ -31,12 +31,30 @@ const nextConfig = {
         resourceQuery: { not: [...fileLoaderRule.resourceQuery.not, /url/] }, // exclude if *.svg?url
         use: ['@svgr/webpack'],
       },
-    )
+    );
 
     // Modify the file loader rule to ignore *.svg, since we have it handled now.
-    fileLoaderRule.exclude = /\.svg$/i
+    fileLoaderRule.exclude = /\.svg$/i;
 
-    return config
+    return config;
+  },
+
+  // Added: Configuration for next/image to optimize images from Firebase Storage
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'firebasestorage.googleapis.com',
+        // You can optionally add port and pathname if you need more specificity,
+        // but for general Firebase Storage, hostname is usually sufficient.
+        // port: '',
+        // pathname: '/v0/b/your-project-id.appspot.com/o/**', // More specific example
+      },
+      {
+        protocol: 'https',
+        hostname: 'iennkegfooqahiwwovwb.supabase.co',
+      }
+    ],
   },
 };
 
