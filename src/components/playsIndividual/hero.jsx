@@ -28,7 +28,7 @@ const PlayHero = ({
       <div className="absolute inset-0  bg-opacity-40 z-10"></div>
 
       {/* Text Container */}
-      <div className="relative z-20 w-full max-w-[85%] p-0 top-4 pl-4">
+      <div className="relative z-20 w-full max-w-[85%] p-0 top-4 pl-14">
         <h1 className="font-bold uppercase leading-tight text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl">
           {playName}
         </h1>

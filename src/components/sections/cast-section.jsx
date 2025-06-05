@@ -60,7 +60,7 @@ const CastCard = ({ member }) => (
 const SwiperCastSection = () => {
     return (
         // Kept original padding as per your last code example
-        <section className="bg-theater-dark py-4 px-4 ">
+        <section className="bg-theater-dark py-4 px-16 ">
             {/* Kept original container structure */}
             <div className="relative overflow-hidden">
                 <h2 className="text-white text-4xl sm:text-5xl font-light mb-12 sm:mb-16 text-center sm:text-left">

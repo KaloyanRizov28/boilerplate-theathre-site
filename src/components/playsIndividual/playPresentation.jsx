@@ -17,7 +17,7 @@ const PlayPresentation = ({
         backgroundImage={backgroundImage}
         heroHeight={heroHeight}
       />
-      <div className="bg-[#1c1c1c] text-[#e0e0e0] py-10 px-4">
+      <div className="bg-theatre-dark text-[#e0e0e0] py-10 px-16">
         <p className="text-base md:text-lg leading-relaxed mb-8 max-w-3xl lg:max-w-4xl">
           {synopsis}
         </p>

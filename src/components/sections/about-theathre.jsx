@@ -4,7 +4,7 @@ import Link from 'next/link';
 import Arrow from "@/components/ui/icons/Arrow.svg"
 const AboutTheaterSection = () => {
   return (
-    <section className="bg-theater-dark py-16 px-4 ">
+    <section className="bg-theater-dark py-16 px-16 ">
       <div className="mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}

@@ -23,7 +23,7 @@ const HeroSection = () => {
 
         {/* Content - Responsive text at bottom left */}
         {/* 2. Applied consistent responsive padding */}
-        <div className="absolute bottom-1 left-4 z-10 w-full">
+        <div className="absolute bottom-1 left-16 z-10 w-full">
           <h1 className="text-6xl sm:text-8xl font-bold text-white ml-[-0.03em]">
             НИРВАНА
           </h1>
@@ -33,7 +33,7 @@ const HeroSection = () => {
       {/* Date/Time Section - Fixed height */}
       {/* 2. Applied consistent responsive padding */}
       <div className="bg-theater-dark text-whitepy-4">
-        <div className="flex space-x-8 text-lg pl-4">
+        <div className="flex space-x-8 text-lg pl-16">
           <span>20.06.25</span>
           <span>19:00</span>
           <span>СЦЕНА</span>

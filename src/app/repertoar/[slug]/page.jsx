@@ -1,7 +1,7 @@
 import PlayPresentation from "@/components/playsIndividual/playPresentation";
 import { createClient } from "../../../../lib/supabase/server";
 import ActorFilterWithData from "@/components/playsIndividual/employeesIndividual";
-
+import FullScreenWidthImage from "@/components/playsIndividual/imageFull";
 async function fetchShow(slug) {
   
   const supabase = await createClient();
@@ -34,6 +34,9 @@ export default async function SinglePlayPage({ params }) {
       />
       <ActorFilterWithData
       employees={employees}
+      />
+      <FullScreenWidthImage
+      src={show[0].picture_personalURL}
       />
     </main>
   );

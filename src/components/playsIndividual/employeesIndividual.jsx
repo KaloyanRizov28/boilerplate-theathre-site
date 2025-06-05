@@ -23,17 +23,10 @@ const EkipSection = (props) => {
     });
 
     return (
-        <section className="bg-theater-dark px-4 py-12">
-            <div className="mx-auto max-w-7xl">
+        <section className="bg-theater-dark px-16 py-12">
+            <div className="">
                 <div className="flex flex-col mb-10">
-                    <div className="flex justify-start items-center mb-6">
-                        <Link
-                            href="/team"
-                            className="text-white text-2xl sm:text-3xl font-[700] group"
-                        >
-                            Екип <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-1"></Arrow>
-                        </Link>
-                    </div>
+                    
 
                     {/* Filter buttons */}
                     <div className="flex gap-6 md:gap-8">
@@ -56,10 +49,10 @@ const EkipSection = (props) => {
                 </div>
 
                 {/* Ekip Grid */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="flex flex-wrap gap-6 items-center justify-center sm:justify-start">
                     {filteredEkip.map((member) => (
                         <div key={member.id} className="flex flex-col items-center">
-                            <div className="bg-gray-700 w-24 h-24 rounded-md mb-2" />
+                            <div className="bg-theater-grey w-48 h-48 rounded-md mb-2" />
                             <p className="text-white text-sm text-center">{member.name}</p>
                             {/* Only show role if it's not 'актьор' when Ekip filter is active, or always if you want to show it. */}
                             {/* For simplicity, we'll show the role for all displayed members. */}

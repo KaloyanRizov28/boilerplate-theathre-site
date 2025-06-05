@@ -22,7 +22,7 @@ const ShowsSection = (props) => {
   const displayedShows = filteredShows.slice(0, 6);
 
   return (
-    <section className="bg-theater-dark px-4 "> {/* Added some vertical padding for overall look */}
+    <section className="bg-theater-dark px-16 "> {/* Added some vertical padding for overall look */}
       <div className="mx-auto">
         {/* Container for Header and Filters, using flex-col */}
         <div className="flex flex-col mb-12 ">
