@@ -9,13 +9,15 @@ async function getShowsWithPerformances() {
     .select(`
       id,
       title,
-      slug,
-      image:image_URL,
-      category,
+
       author,
+      slug,
+      image_URL,
+      poster_URL,
+      category,
       performances!inner (
         time,
-        venue
+        venues(name)
       )
     `);
 

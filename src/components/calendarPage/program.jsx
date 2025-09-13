@@ -6,22 +6,17 @@ import Link from 'next/link';
 import Arrow from "@/components/ui/icons/Arrow.svg";
 import ProgramCalendar from './calendar'; // Assuming this is your calendar component
 
-const parseShowDateToUTC = (dateStr, year) => {
+const parseShowDateToUTC = (dateStr) => {
   if (!dateStr) {
     console.warn("Invalid date string provided: ", dateStr);
     return null;
   }
-  const [day, month] = dateStr.split('.').map(Number);
-  if (isNaN(day) || isNaN(month) || month < 1 || month > 12 || day < 1 || day > 31) {
+  const date = new Date(dateStr);
+  if (isNaN(date.getTime())) {
     console.warn("Invalid date string for parseShowDateToUTC:", dateStr);
     return null;
   }
-  const daysInSpecificMonth = new Date(Date.UTC(year, month, 0)).getUTCDate();
-  if (day > daysInSpecificMonth) {
-    console.warn(`Invalid day ${day} for month ${month} in year ${year}. Date string: ${dateStr}`);
-    return null;
-  }
-  return new Date(Date.UTC(year, month - 1, day));
+  return date;
 };
 
 const MonthlyProgramGuide = ({ shows = [] }) => {
@@ -36,17 +31,18 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
   const [activeFilter, setActiveFilter] = useState('all');
   console.log(shows);
   const processedShows = useMemo(() => {
-    const processingYear = new Date().getUTCFullYear();
     return shows.map(show => {
-      const fullDate = parseShowDateToUTC(show.date, processingYear);
+      const performance = show.performances ? show.performances[0] : null;
+      const fullDate = parseShowDateToUTC(performance ? performance.time : null);
       return {
         ...show,
         fullDate,
-        // NOTE: The time and venue logic below was from the original mock data.
-        // In a real application, this data should ideally come directly from the `show` object itself.
-        // We add fallback logic here to maintain functionality.
-        time: show.time || (show.id % 3 === 0 ? "20:00" : "19:00"),
-        venue: show.venue || (show.category === 'theater' ? (show.id % 2 === 0 ? "Голяма Сцена" : "Камерна Сцена") : "Концертна Зала"),
+        time: performance && performance.time
+          ? new Date(performance.time).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
+          : '',
+        venue: performance && (performance.venues?.name || performance.venue)
+          ? (performance.venues?.name || performance.venue)
+          : '',
       };
     }).filter(show => show.fullDate !== null && !isNaN(show.fullDate.getTime()));
   }, [shows]);
@@ -190,7 +186,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
                       <Link href={`/shows/${show.slug}`} legacyBehavior>
                         <a className="block space-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">
                           <div className="relative w-full shadow-lg" style={{ aspectRatio: '10/14' }}>
-                            <Image src={show.image} alt={show.title} fill sizes="(max-width: 426px) 90vw, (max-width: 639px) 384px, (max-width: 1279px) 45vw, 30vw" style={{ objectFit: 'cover' }} className="rounded" />
+                            <Image src={show.poster_URL || show.image_URL} alt={show.title} fill sizes="(max-width: 426px) 90vw, (max-width: 639px) 384px, (max-width: 1279px) 45vw, 30vw" style={{ objectFit: 'cover' }} className="rounded" />
                           </div>
                           <div>
                             <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-yellow-400 transition-colors leading-tight">{show.title}</h3>
