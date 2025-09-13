@@ -31,7 +31,7 @@ export default function AdminPage() {
 
   return (
     <div className="flex h-screen bg-theater-light text-white">
-      <aside className="w-64 bg-theater-dark text-white p-4">
+      <aside className="w-64 bg-theater-dark text-white p-4 flex flex-col">
         <h1 className="text-2xl font-bold mb-6">Admin</h1>
         <nav className="flex flex-col gap-2">
           {tabs.map((tab) => (
@@ -48,6 +48,15 @@ export default function AdminPage() {
             </button>
           ))}
         </nav>
+        <button
+          onClick={async () => {
+            await supabase.auth.signOut()
+            window.location.href = '/login'
+          }}
+          className="mt-auto bg-theater-accent text-theater-dark px-3 py-2 rounded"
+        >
+          Log out
+        </button>
       </aside>
       <main className="flex-1 overflow-y-auto p-6 space-y-8">
         {activeTab === 'shows' && <ShowsSection supabase={supabase} />}
