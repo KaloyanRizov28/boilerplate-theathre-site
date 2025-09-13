@@ -139,6 +139,7 @@ function ShowsSection({ supabase }) {
 
   async function handleDelete(id) {
     setStatus(null)
+    if (!window.confirm('Are you sure you want to delete this show?')) return
     const { error } = await supabase.from('shows').delete().eq('id', id)
     if (error) {
       setStatus({ type: 'error', message: error.message })
@@ -413,6 +414,7 @@ function EmployeesSection({ supabase }) {
 
   async function handleDelete(id) {
     setStatus(null)
+    if (!window.confirm('Are you sure you want to delete this employee?')) return
     const { error } = await supabase.from('employees').delete().eq('id', id)
     if (error) {
       setStatus({ type: 'error', message: error.message })
@@ -640,6 +642,7 @@ function PerformancesSection({ supabase }) {
 
   async function handleDelete(id) {
     setStatus(null)
+    if (!window.confirm('Are you sure you want to delete this performance?')) return
     const { error } = await supabase
       .from('performances')
       .delete()
@@ -803,6 +806,7 @@ function CastSection({ supabase }) {
 
   async function handleDelete(id) {
     setStatus(null)
+    if (!window.confirm('Are you sure you want to delete this cast member?')) return
     const { error } = await supabase.from('cast_members').delete().eq('id', id)
     if (error) {
       setStatus({ type: 'error', message: error.message })
