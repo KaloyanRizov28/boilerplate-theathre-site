@@ -248,8 +248,6 @@ function ShowsSection({ supabase }) {
       </form>
       <table className="w-full text-sm border border-gray-200">
         <thead className="bg-gray-100">
-      <table className="w-full text-sm border border-gray-200">
-        <thead className="bg-gray-100">
           <tr>
             <th className="p-2 text-left border-b">ID</th>
             <th className="p-2 text-left border-b">Title</th>
@@ -459,8 +457,6 @@ function EmployeesSection({ supabase }) {
       </form>
       <table className="w-full text-sm border border-gray-200">
         <thead className="bg-gray-100">
-      <table className="w-full text-sm border border-gray-200">
-        <thead className="bg-gray-100">
           <tr>
             <th className="p-2 text-left border-b">ID</th>
             <th className="p-2 text-left border-b">Name</th>
@@ -583,8 +579,6 @@ function PerformancesSection({ supabase }) {
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
-      <table className="w-full text-sm border border-gray-200">
-        <thead className="bg-gray-100">
       <table className="w-full text-sm border border-gray-200">
         <thead className="bg-gray-100">
           <tr>
