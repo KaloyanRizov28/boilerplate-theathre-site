@@ -25,7 +25,7 @@ export async function middleware(req) {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session || !session.user?.app_metadata?.is_admin) {
+  if (!session) {
     const url = new URL('/login', req.url);
     return NextResponse.redirect(url);
   }
