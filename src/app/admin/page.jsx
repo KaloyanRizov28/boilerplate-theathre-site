@@ -14,6 +14,8 @@ const inputClass =
   'border border-theater-light rounded p-2 bg-theater-light text-white'
 const buttonClass =
   'bg-theater-accent text-theater-dark px-4 py-2 rounded self-end'
+const selectClass =
+  `${inputClass} cursor-pointer focus:ring-2 focus:ring-theater-accent`
 
 function generateSlug(text) {
   return text
@@ -75,6 +77,7 @@ function ShowsSection({ supabase }) {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
   const [count, setCount] = useState(0)
+  const [status, setStatus] = useState(null)
 
   useEffect(() => {
     fetchData()
@@ -95,23 +98,42 @@ function ShowsSection({ supabase }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    setStatus(null)
     if (!form.title.trim() || !form.slug.trim() || !form.category.trim()) {
-      alert('Title, category and slug are required.')
+      setStatus({
+        type: 'error',
+        message: 'Title, category and slug are required.',
+      })
       return
     }
+    let result
     if (editingId) {
-      await supabase.from('shows').update(form).eq('id', editingId)
+      result = await supabase.from('shows').update(form).eq('id', editingId)
     } else {
-      await supabase.from('shows').insert([form])
+      result = await supabase.from('shows').insert([form])
     }
+    if (result.error) {
+      setStatus({ type: 'error', message: result.error.message })
+      return
+    }
+    setStatus({
+      type: 'success',
+      message: editingId ? 'Show updated.' : 'Show added.',
+    })
     setForm(emptyForm)
     setEditingId(null)
     fetchData()
   }
 
   async function handleDelete(id) {
-    await supabase.from('shows').delete().eq('id', id)
-    fetchData()
+    setStatus(null)
+    const { error } = await supabase.from('shows').delete().eq('id', id)
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+    } else {
+      setStatus({ type: 'success', message: 'Show deleted.' })
+      fetchData()
+    }
   }
 
   function handleEdit(item) {
@@ -146,7 +168,7 @@ function ShowsSection({ supabase }) {
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
       <h2 className="text-xl font-semibold mb-4">Shows</h2>
-      <div className="flex justify-between mb-4">
+      <div className="mb-4">
         <input
           placeholder="Search shows"
           value={search}
@@ -156,24 +178,6 @@ function ShowsSection({ supabase }) {
           }}
           className={inputClass}
         />
-        <div className="space-x-2">
-          <button
-            onClick={() => setPage((p) => Math.max(p - 1, 0))}
-            disabled={page === 0}
-            className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
-          >
-            Prev
-          </button>
-          <button
-            onClick={() =>
-              setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
-            }
-            disabled={(page + 1) * pageSize >= count}
-            className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
-          >
-            Next
-          </button>
-        </div>
       </div>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
         <div className="flex flex-col">
@@ -263,6 +267,33 @@ function ShowsSection({ supabase }) {
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
+      {status && (
+        <p
+          className={`mb-4 ${
+            status.type === 'error' ? 'text-red-400' : 'text-green-400'
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
+      <div className="flex justify-end mb-2 space-x-2">
+        <button
+          onClick={() => setPage((p) => Math.max(p - 1, 0))}
+          disabled={page === 0}
+          className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
+        >
+          Prev
+        </button>
+        <button
+          onClick={() =>
+            setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
+          }
+          disabled={(page + 1) * pageSize >= count}
+          className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
+        >
+          Next
+        </button>
+      </div>
       <table className="w-full text-sm border border-theater-light">
         <thead className="bg-theater-light">
           <tr>
@@ -342,24 +373,40 @@ function EmployeesSection({ supabase }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    setStatus(null)
     if (!form.name.trim() || !form.role.trim()) {
-      alert('Name and role are required.')
+      setStatus({ type: 'error', message: 'Name and role are required.' })
       return
     }
     const payload = { ...form, dateOfBirth: form.dateOfBirth || null }
+    let result
     if (editingId) {
-      await supabase.from('employees').update(payload).eq('id', editingId)
+      result = await supabase.from('employees').update(payload).eq('id', editingId)
     } else {
-      await supabase.from('employees').insert([payload])
+      result = await supabase.from('employees').insert([payload])
     }
+    if (result.error) {
+      setStatus({ type: 'error', message: result.error.message })
+      return
+    }
+    setStatus({
+      type: 'success',
+      message: editingId ? 'Employee updated.' : 'Employee added.',
+    })
     setForm(emptyForm)
     setEditingId(null)
     fetchData()
   }
 
   async function handleDelete(id) {
-    await supabase.from('employees').delete().eq('id', id)
-    fetchData()
+    setStatus(null)
+    const { error } = await supabase.from('employees').delete().eq('id', id)
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+    } else {
+      setStatus({ type: 'success', message: 'Employee deleted.' })
+      fetchData()
+    }
   }
 
   function handleEdit(item) {
@@ -391,7 +438,7 @@ function EmployeesSection({ supabase }) {
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
       <h2 className="text-xl font-semibold mb-4">Employees</h2>
-      <div className="flex justify-between mb-4">
+      <div className="mb-4">
         <input
           placeholder="Search employees"
           value={search}
@@ -401,24 +448,6 @@ function EmployeesSection({ supabase }) {
           }}
           className={inputClass}
         />
-        <div className="space-x-2">
-          <button
-            onClick={() => setPage((p) => Math.max(p - 1, 0))}
-            disabled={page === 0}
-            className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
-          >
-            Prev
-          </button>
-          <button
-            onClick={() =>
-              setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
-            }
-            disabled={(page + 1) * pageSize >= count}
-            className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
-          >
-            Next
-          </button>
-        </div>
       </div>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
         <div className="flex flex-col">
@@ -475,6 +504,33 @@ function EmployeesSection({ supabase }) {
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
+      {status && (
+        <p
+          className={`mb-4 ${
+            status.type === 'error' ? 'text-red-400' : 'text-green-400'
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
+      <div className="flex justify-end mb-2 space-x-2">
+        <button
+          onClick={() => setPage((p) => Math.max(p - 1, 0))}
+          disabled={page === 0}
+          className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
+        >
+          Prev
+        </button>
+        <button
+          onClick={() =>
+            setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
+          }
+          disabled={(page + 1) * pageSize >= count}
+          className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
+        >
+          Next
+        </button>
+      </div>
       <table className="w-full text-sm border border-theater-light">
         <thead className="bg-theater-light">
           <tr>
@@ -518,6 +574,7 @@ function PerformancesSection({ supabase }) {
   const [shows, setShows] = useState([])
   const [form, setForm] = useState(emptyForm)
   const [editingId, setEditingId] = useState(null)
+  const [status, setStatus] = useState(null)
 
   useEffect(() => {
     fetchShows()
@@ -539,28 +596,47 @@ function PerformancesSection({ supabase }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    setStatus(null)
     if (!form.idShow || !form.time) {
-      alert('Show and time are required.')
+      setStatus({ type: 'error', message: 'Show and time are required.' })
       return
     }
+    let result
     if (editingId) {
-      await supabase
+      result = await supabase
         .from('performances')
         .update({ idShow: form.idShow, time: form.time })
         .eq('id', editingId)
     } else {
-      await supabase
+      result = await supabase
         .from('performances')
         .insert([{ idShow: form.idShow, time: form.time }])
     }
+    if (result.error) {
+      setStatus({ type: 'error', message: result.error.message })
+      return
+    }
+    setStatus({
+      type: 'success',
+      message: editingId ? 'Performance updated.' : 'Performance added.',
+    })
     setForm(emptyForm)
     setEditingId(null)
     fetchData()
   }
 
   async function handleDelete(id) {
-    await supabase.from('performances').delete().eq('id', id)
-    fetchData()
+    setStatus(null)
+    const { error } = await supabase
+      .from('performances')
+      .delete()
+      .eq('id', id)
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+    } else {
+      setStatus({ type: 'success', message: 'Performance deleted.' })
+      fetchData()
+    }
   }
 
   function handleEdit(item) {
@@ -578,7 +654,7 @@ function PerformancesSection({ supabase }) {
             value={form.idShow}
             onChange={(e) => setForm({ ...form, idShow: e.target.value })}
             required
-            className={inputClass}
+            className={selectClass}
           >
             <option value="">Select show</option>
             {shows.map((show) => (
@@ -602,6 +678,15 @@ function PerformancesSection({ supabase }) {
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
+      {status && (
+        <p
+          className={`mb-4 ${
+            status.type === 'error' ? 'text-red-400' : 'text-green-400'
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
       <table className="w-full text-sm border border-theater-light">
         <thead className="bg-theater-light">
           <tr>
@@ -646,6 +731,7 @@ function CastSection({ supabase }) {
   const [employees, setEmployees] = useState([])
   const [form, setForm] = useState(emptyForm)
   const [editingId, setEditingId] = useState(null)
+  const [status, setStatus] = useState(null)
 
   useEffect(() => {
     fetchShows()
@@ -673,28 +759,44 @@ function CastSection({ supabase }) {
 
   async function handleSubmit(e) {
     e.preventDefault()
+    setStatus(null)
     if (!form.idShow || !form.employeeId) {
-      alert('Show and employee are required.')
+      setStatus({ type: 'error', message: 'Show and employee are required.' })
       return
     }
+    let result
     if (editingId) {
-      await supabase
+      result = await supabase
         .from('cast_members')
         .update({ idShow: form.idShow, employeeId: form.employeeId })
         .eq('id', editingId)
     } else {
-      await supabase
+      result = await supabase
         .from('cast_members')
         .insert([{ idShow: form.idShow, employeeId: form.employeeId }])
     }
+    if (result.error) {
+      setStatus({ type: 'error', message: result.error.message })
+      return
+    }
+    setStatus({
+      type: 'success',
+      message: editingId ? 'Cast updated.' : 'Cast added.',
+    })
     setForm(emptyForm)
     setEditingId(null)
     fetchData()
   }
 
   async function handleDelete(id) {
-    await supabase.from('cast_members').delete().eq('id', id)
-    fetchData()
+    setStatus(null)
+    const { error } = await supabase.from('cast_members').delete().eq('id', id)
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+    } else {
+      setStatus({ type: 'success', message: 'Cast member deleted.' })
+      fetchData()
+    }
   }
 
   function handleEdit(item) {
@@ -712,7 +814,7 @@ function CastSection({ supabase }) {
             value={form.idShow}
             onChange={(e) => setForm({ ...form, idShow: e.target.value })}
             required
-            className={inputClass}
+            className={selectClass}
           >
             <option value="">Select show</option>
             {shows.map((show) => (
@@ -728,7 +830,7 @@ function CastSection({ supabase }) {
             value={form.employeeId}
             onChange={(e) => setForm({ ...form, employeeId: e.target.value })}
             required
-            className={inputClass}
+            className={selectClass}
           >
             <option value="">Select employee</option>
             {employees.map((emp) => (
@@ -742,6 +844,15 @@ function CastSection({ supabase }) {
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
+      {status && (
+        <p
+          className={`mb-4 ${
+            status.type === 'error' ? 'text-red-400' : 'text-green-400'
+          }`}
+        >
+          {status.message}
+        </p>
+      )}
       <table className="w-full text-sm border border-theater-light">
         <thead className="bg-theater-light">
           <tr>
