@@ -4,11 +4,12 @@ import { createClient } from "../../../lib/supabase/server";
 
 async function getShowsWithPerformances() {
   const supabase = await createClient();
-   const { data, error } = await supabase
+  const { data, error } = await supabase
     .from('shows')
     .select(`
       id,
       title,
+
       author,
       slug,
       image_URL,
@@ -22,21 +23,28 @@ async function getShowsWithPerformances() {
 
   if (error) {
     console.error('Error fetching shows with performances:', error);
-    return null;
+    return [];
   }
 
-  console.log('Shows and their performance times:', data);
-  return data;
+  return (
+    data?.map(({ performances, ...show }) => {
+      const perf = performances?.[0];
+      if (!perf) return show;
+      const dt = new Date(perf.time);
+      const date = `${dt.getUTCDate().toString().padStart(2, '0')}.${(dt.getUTCMonth() + 1)
+        .toString()
+        .padStart(2, '0')}`;
+      const time = `${dt.getUTCHours().toString().padStart(2, '0')}:${dt.getUTCMinutes()
+        .toString()
+        .padStart(2, '0')}`;
+      return { ...show, date, time, venue: perf.venue };
+    }) ?? []
+  );
 }
 
 
 
 export default async function ProgramPage() {
-
-  let dataShows = await getShowsWithPerformances();
-
-  return (
-    <MonthlyProgramGuide shows={dataShows} />
-  )
-
+  const dataShows = await getShowsWithPerformances();
+  return <MonthlyProgramGuide shows={dataShows} />
 }
