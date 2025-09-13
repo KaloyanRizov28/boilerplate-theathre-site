@@ -1,3 +1,12 @@
+-- Ensure initial admin user exists
+update auth.users
+set raw_app_meta_data = jsonb_set(
+  coalesce(raw_app_meta_data, '{}'::jsonb),
+  '{is_admin}',
+  'true'::jsonb
+)
+where email = 'kalopizata28@gmail.com';
+
 -- Enable RLS and restrict mutations to admins only
 alter table public.shows enable row level security;
 create policy "Shows admin mutations" on public.shows
