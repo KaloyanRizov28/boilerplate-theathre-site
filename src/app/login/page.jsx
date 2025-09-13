@@ -6,7 +6,6 @@ import { createClient } from '../../../lib/supabase/client';
 import StatusMessage from '../../components/StatusMessage';
 
 export default function LoginPage() {
-  const supabase = createClient();
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -15,6 +14,7 @@ export default function LoginPage() {
   async function handleSubmit(e) {
     e.preventDefault();
     setStatus(null);
+    const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
       setStatus({ type: 'error', message: error.message });

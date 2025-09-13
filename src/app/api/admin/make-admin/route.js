@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
-import { createAdminClient } from '../../../../lib/supabase/admin'
+import { createAdminClient } from '../../../../../lib/supabase/admin'
 
 export async function POST(request) {
   const { email, is_admin = true } = await request.json()
