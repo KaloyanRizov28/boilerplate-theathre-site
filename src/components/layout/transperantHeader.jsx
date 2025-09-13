@@ -2,11 +2,23 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { createClient } from '../../../lib/supabase/client'
 
 export function TransparentHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
+  }, [])
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    window.location.reload()
+  }
 
   const navigation = [
     { name: 'Програма', href: '/program' },
@@ -40,18 +52,33 @@ export function TransparentHeader() {
               }`}></div>
             </button>
 
-            {/* Logo Space */}
-            {/* Ensure your logo.svg is suitable for transparent backgrounds or use a specific version */}
-            <div className="w-12 h-12 flex items-center justify-center -mr-1">
-              <Link href="/" aria-label="Начало"> {/* Added Link and aria-label for accessibility */}
-                <Image
-                  src="/logo.svg" // Make sure this path is correct from the /public folder
-                  alt="Лого на театъра" // More descriptive alt text
-                  width={48}
-                  height={48}
-                  priority // If logo is LCP on homepage, otherwise optional
-                />
-              </Link>
+            <div className="flex items-center gap-4">
+              {user && (
+                <span className="text-sm text-white">
+                  {user.email}
+                  {user.app_metadata?.is_admin ? ' (Admin)' : ''}
+                </span>
+              )}
+              {user ? (
+                <button onClick={handleLogout} className="text-theater-accent">
+                  Log out
+                </button>
+              ) : (
+                <Link href="/login" className="text-theater-accent">
+                  Log in
+                </Link>
+              )}
+              <div className="w-12 h-12 flex items-center justify-center -mr-1">
+                <Link href="/" aria-label="Начало">
+                  <Image
+                    src="/logo.svg"
+                    alt="Лого на театъра"
+                    width={48}
+                    height={48}
+                    priority
+                  />
+                </Link>
+              </div>
             </div>
           </div>
         </div>

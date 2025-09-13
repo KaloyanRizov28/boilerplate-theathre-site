@@ -2,11 +2,23 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { createClient } from '../../../lib/supabase/client'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [user, setUser] = useState(null)
+  const supabase = createClient()
+
+  useEffect(() => {
+    supabase.auth.getUser().then(({ data: { user } }) => setUser(user))
+  }, [])
+
+  async function handleLogout() {
+    await supabase.auth.signOut()
+    window.location.reload()
+  }
 
   const navigation = [
     { name: 'Програма', href: '/program' },
@@ -46,15 +58,31 @@ export function Header() {
               </div>
             </Link>
 
-            {/* Logo Space */}
-            <div className="w-12 h-12 flex items-center justify-center -mr-1">
-              <Image
-                src="/logo.svg"
-                alt="Theater Logo"
-                width={48}
-                height={48}
-                className="text-white"
-              />
+            <div className="flex items-center gap-4">
+              {user && (
+                <span className="text-sm text-white">
+                  {user.email}
+                  {user.app_metadata?.is_admin ? ' (Admin)' : ''}
+                </span>
+              )}
+              {user ? (
+                <button onClick={handleLogout} className="text-theater-accent">
+                  Log out
+                </button>
+              ) : (
+                <Link href="/login" className="text-theater-accent">
+                  Log in
+                </Link>
+              )}
+              <div className="w-12 h-12 flex items-center justify-center -mr-1">
+                <Image
+                  src="/logo.svg"
+                  alt="Theater Logo"
+                  width={48}
+                  height={48}
+                  className="text-white"
+                />
+              </div>
             </div>
           </div>
         </div>
