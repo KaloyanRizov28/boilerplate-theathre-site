@@ -15,22 +15,29 @@ export default function AdminPage() {
   const [activeTab, setActiveTab] = useState('shows')
 
   return (
-    <div className="p-4">
-      <nav className="flex gap-4 mb-4">
-        {tabs.map((tab) => (
-          <button
-            key={tab.key}
-            onClick={() => setActiveTab(tab.key)}
-            className={activeTab === tab.key ? 'font-bold' : ''}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </nav>
-      {activeTab === 'shows' && <ShowsSection supabase={supabase} />}
-      {activeTab === 'employees' && <EmployeesSection supabase={supabase} />}
-      {activeTab === 'performances' && <PerformancesSection supabase={supabase} />}
-      {activeTab === 'cast_members' && <CastMembersSection supabase={supabase} />}
+    <div className="flex h-screen bg-gray-50">
+      <aside className="w-56 bg-gray-100 border-r p-4">
+        <h1 className="text-xl font-bold mb-6">Dashboard</h1>
+        <nav className="flex flex-col gap-2">
+          {tabs.map((tab) => (
+            <button
+              key={tab.key}
+              onClick={() => setActiveTab(tab.key)}
+              className={`text-left px-3 py-2 rounded transition-colors ${
+                activeTab === tab.key ? 'bg-white shadow font-medium' : 'hover:bg-white/60'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </aside>
+      <main className="flex-1 overflow-y-auto p-6">
+        {activeTab === 'shows' && <ShowsSection supabase={supabase} />}
+        {activeTab === 'employees' && <EmployeesSection supabase={supabase} />}
+        {activeTab === 'performances' && <PerformancesSection supabase={supabase} />}
+        {activeTab === 'cast_members' && <CastMembersSection supabase={supabase} />}
+      </main>
     </div>
   )
 }
@@ -61,39 +68,50 @@ function ShowsSection({ supabase }) {
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
-        <input
-          value={form.title}
-          onChange={(e) => setForm({ ...form, title: e.target.value })}
-          placeholder="Title"
-          className="border p-1"
-        />
-        <input
-          value={form.image_url}
-          onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-          placeholder="Image URL"
-          className="border p-1"
-        />
-        <button type="submit" className="border px-2">Add</button>
+    <section className="bg-white p-6 rounded shadow">
+      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Title</label>
+          <input
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            placeholder="Title"
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Image URL</label>
+          <input
+            value={form.image_url}
+            onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+            placeholder="Image URL"
+            className="border rounded p-2"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded self-end"
+        >
+          Add
+        </button>
       </form>
-      <table className="border-collapse border">
-        <thead>
+      <table className="w-full text-sm border border-gray-200">
+        <thead className="bg-gray-100">
           <tr>
-            <th className="border px-2">ID</th>
-            <th className="border px-2">Title</th>
-            <th className="border px-2">Image URL</th>
-            <th className="border px-2">Actions</th>
+            <th className="text-left p-2 border-b">ID</th>
+            <th className="text-left p-2 border-b">Title</th>
+            <th className="text-left p-2 border-b">Image URL</th>
+            <th className="text-left p-2 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items?.map((item) => (
-            <tr key={item.id}>
-              <td className="border px-2">{item.id}</td>
-              <td className="border px-2">{item.title}</td>
-              <td className="border px-2">{item.image_url}</td>
-              <td className="border px-2">
-                <button onClick={() => handleDelete(item.id)} className="text-red-500">Delete</button>
+            <tr key={item.id} className="odd:bg-gray-50">
+              <td className="p-2 border-b">{item.id}</td>
+              <td className="p-2 border-b">{item.title}</td>
+              <td className="p-2 border-b">{item.image_url}</td>
+              <td className="p-2 border-b">
+                <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:underline">Delete</button>
               </td>
             </tr>
           ))}
@@ -129,39 +147,50 @@ function EmployeesSection({ supabase }) {
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
-        <input
-          value={form.name}
-          onChange={(e) => setForm({ ...form, name: e.target.value })}
-          placeholder="Name"
-          className="border p-1"
-        />
-        <input
-          value={form.role}
-          onChange={(e) => setForm({ ...form, role: e.target.value })}
-          placeholder="Role"
-          className="border p-1"
-        />
-        <button type="submit" className="border px-2">Add</button>
+    <section className="bg-white p-6 rounded shadow">
+      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Name</label>
+          <input
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            placeholder="Name"
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Role</label>
+          <input
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
+            placeholder="Role"
+            className="border rounded p-2"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded self-end"
+        >
+          Add
+        </button>
       </form>
-      <table className="border-collapse border">
-        <thead>
+      <table className="w-full text-sm border border-gray-200">
+        <thead className="bg-gray-100">
           <tr>
-            <th className="border px-2">ID</th>
-            <th className="border px-2">Name</th>
-            <th className="border px-2">Role</th>
-            <th className="border px-2">Actions</th>
+            <th className="text-left p-2 border-b">ID</th>
+            <th className="text-left p-2 border-b">Name</th>
+            <th className="text-left p-2 border-b">Role</th>
+            <th className="text-left p-2 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items?.map((item) => (
-            <tr key={item.id}>
-              <td className="border px-2">{item.id}</td>
-              <td className="border px-2">{item.name}</td>
-              <td className="border px-2">{item.role}</td>
-              <td className="border px-2">
-                <button onClick={() => handleDelete(item.id)} className="text-red-500">Delete</button>
+            <tr key={item.id} className="odd:bg-gray-50">
+              <td className="p-2 border-b">{item.id}</td>
+              <td className="p-2 border-b">{item.name}</td>
+              <td className="p-2 border-b">{item.role}</td>
+              <td className="p-2 border-b">
+                <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:underline">Delete</button>
               </td>
             </tr>
           ))}
@@ -197,39 +226,50 @@ function PerformancesSection({ supabase }) {
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
-        <input
-          value={form.idShow}
-          onChange={(e) => setForm({ ...form, idShow: e.target.value })}
-          placeholder="Show ID"
-          className="border p-1"
-        />
-        <input
-          value={form.time}
-          onChange={(e) => setForm({ ...form, time: e.target.value })}
-          placeholder="Time"
-          className="border p-1"
-        />
-        <button type="submit" className="border px-2">Add</button>
+    <section className="bg-white p-6 rounded shadow">
+      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Show ID</label>
+          <input
+            value={form.idShow}
+            onChange={(e) => setForm({ ...form, idShow: e.target.value })}
+            placeholder="Show ID"
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Time</label>
+          <input
+            value={form.time}
+            onChange={(e) => setForm({ ...form, time: e.target.value })}
+            placeholder="Time"
+            className="border rounded p-2"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded self-end"
+        >
+          Add
+        </button>
       </form>
-      <table className="border-collapse border">
-        <thead>
+      <table className="w-full text-sm border border-gray-200">
+        <thead className="bg-gray-100">
           <tr>
-            <th className="border px-2">ID</th>
-            <th className="border px-2">Show ID</th>
-            <th className="border px-2">Time</th>
-            <th className="border px-2">Actions</th>
+            <th className="text-left p-2 border-b">ID</th>
+            <th className="text-left p-2 border-b">Show ID</th>
+            <th className="text-left p-2 border-b">Time</th>
+            <th className="text-left p-2 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items?.map((item) => (
-            <tr key={item.id}>
-              <td className="border px-2">{item.id}</td>
-              <td className="border px-2">{item.idShow}</td>
-              <td className="border px-2">{item.time}</td>
-              <td className="border px-2">
-                <button onClick={() => handleDelete(item.id)} className="text-red-500">Delete</button>
+            <tr key={item.id} className="odd:bg-gray-50">
+              <td className="p-2 border-b">{item.id}</td>
+              <td className="p-2 border-b">{item.idShow}</td>
+              <td className="p-2 border-b">{item.time}</td>
+              <td className="p-2 border-b">
+                <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:underline">Delete</button>
               </td>
             </tr>
           ))}
@@ -265,39 +305,50 @@ function CastMembersSection({ supabase }) {
   }
 
   return (
-    <section>
-      <form onSubmit={handleSubmit} className="flex gap-2 mb-4">
-        <input
-          value={form.idShow}
-          onChange={(e) => setForm({ ...form, idShow: e.target.value })}
-          placeholder="Show ID"
-          className="border p-1"
-        />
-        <input
-          value={form.employeeId}
-          onChange={(e) => setForm({ ...form, employeeId: e.target.value })}
-          placeholder="Employee ID"
-          className="border p-1"
-        />
-        <button type="submit" className="border px-2">Add</button>
+    <section className="bg-white p-6 rounded shadow">
+      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Show ID</label>
+          <input
+            value={form.idShow}
+            onChange={(e) => setForm({ ...form, idShow: e.target.value })}
+            placeholder="Show ID"
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Employee ID</label>
+          <input
+            value={form.employeeId}
+            onChange={(e) => setForm({ ...form, employeeId: e.target.value })}
+            placeholder="Employee ID"
+            className="border rounded p-2"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-4 py-2 rounded self-end"
+        >
+          Add
+        </button>
       </form>
-      <table className="border-collapse border">
-        <thead>
+      <table className="w-full text-sm border border-gray-200">
+        <thead className="bg-gray-100">
           <tr>
-            <th className="border px-2">ID</th>
-            <th className="border px-2">Show ID</th>
-            <th className="border px-2">Employee ID</th>
-            <th className="border px-2">Actions</th>
+            <th className="text-left p-2 border-b">ID</th>
+            <th className="text-left p-2 border-b">Show ID</th>
+            <th className="text-left p-2 border-b">Employee ID</th>
+            <th className="text-left p-2 border-b">Actions</th>
           </tr>
         </thead>
         <tbody>
           {items?.map((item) => (
-            <tr key={item.id}>
-              <td className="border px-2">{item.id}</td>
-              <td className="border px-2">{item.idShow}</td>
-              <td className="border px-2">{item.employeeId}</td>
-              <td className="border px-2">
-                <button onClick={() => handleDelete(item.id)} className="text-red-500">Delete</button>
+            <tr key={item.id} className="odd:bg-gray-50">
+              <td className="p-2 border-b">{item.id}</td>
+              <td className="p-2 border-b">{item.idShow}</td>
+              <td className="p-2 border-b">{item.employeeId}</td>
+              <td className="p-2 border-b">
+                <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:underline">Delete</button>
               </td>
             </tr>
           ))}
