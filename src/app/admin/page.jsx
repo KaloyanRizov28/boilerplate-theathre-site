@@ -3,12 +3,14 @@
 import { useState, useEffect } from 'react'
 import { createClient } from '../../../lib/supabase/client'
 import StatusMessage from '../../components/ui/status-message'
+import AdminsSection from './admins-section'
 
 const tabs = [
   { key: 'shows', label: 'Shows' },
   { key: 'employees', label: 'Employees' },
   { key: 'performances', label: 'Performances' },
   { key: 'cast', label: 'Cast' },
+  { key: 'admins', label: 'Admins' },
 ]
 
 const inputClass =
@@ -63,6 +65,7 @@ export default function AdminPage() {
         {activeTab === 'employees' && <EmployeesSection supabase={supabase} />}
         {activeTab === 'performances' && <PerformancesSection supabase={supabase} />}
         {activeTab === 'cast' && <CastSection supabase={supabase} />}
+        {activeTab === 'admins' && <AdminsSection />}
       </main>
     </div>
   )
