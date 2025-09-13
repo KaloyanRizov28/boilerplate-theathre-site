@@ -1,14 +1,6 @@
-import { Sofia_Sans } from 'next/font/google'
 import './globals.css'
 import { Footer } from '../components/layout/footer'
 import { ConditionalDefaultHeader } from '../components/layout/contidionalHeader'
-
-const sofiaSans = Sofia_Sans({
-  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
-  display: 'swap',
-  variable: '--font-sofia-sans',
-  weight: ['300', '400', '500', '600', '700', '800'],
-})
 
 export const metadata = {
   title: {
@@ -28,8 +20,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bg" className={`scroll-smooth ${sofiaSans.variable}`}>
-      <body className={`${sofiaSans.className} bg-theater-dark text-white antialiased`}>
+    <html lang="bg" className="scroll-smooth">
+      <body className="bg-theater-dark text-white antialiased">
         <div className="min-h-screen flex flex-col">
           <ConditionalDefaultHeader/>
           <main className="flex-1">
