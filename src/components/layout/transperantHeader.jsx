@@ -9,7 +9,7 @@ export function TransparentHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   const navigation = [
-    { name: 'Програма', href: '/calendar' },
+    { name: 'Програма', href: '/program' },
     { name: 'За нас', href: '/about' },
     { name: 'Билети', href: '/tickets' },
     { name: 'Контакти', href: '/contact' },

@@ -1,8 +1,8 @@
 
-import HeroSection from "../components/sections/hero-section";
-import ShowsSection from "../components/sections/show-selection"; // Corrected typo: show-selection -> ShowsSection
-import AboutTheaterSection from "../components/sections/about-theathre"; // Corrected typo: about-theathre -> AboutTheaterSection
-import CastSection from "../components/sections/cast-section";
+import HeroSection from "../components/homePage/hero-section";
+import ShowsSection from "../components/homePage/show-selection"; 
+import AboutTheaterSection from "@/components/homePage/about-theathre";
+import CastSection from "../components/homePage/cast-section";
 import { createClient } from "../../lib/supabase/server";
 
 
