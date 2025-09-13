@@ -202,7 +202,7 @@ function ShowsSection({ supabase }) {
             <img
               src={form.poster_URL}
               alt="poster preview"
-              className="mt-2 h-24 object-cover"
+              className="mt-2 h-48 object-cover"
             />
           )}
         </div>
@@ -217,7 +217,7 @@ function ShowsSection({ supabase }) {
             <img
               src={form.image_URL}
               alt="image preview"
-              className="mt-2 h-24 object-cover"
+              className="mt-2 h-48 object-cover"
             />
           )}
         </div>
@@ -436,7 +436,7 @@ function EmployeesSection({ supabase }) {
             <img
               src={form.profile_picture_URL}
               alt="profile preview"
-              className="mt-2 h-24 object-cover"
+              className="mt-2 h-48 object-cover"
             />
           )}
         </div>
