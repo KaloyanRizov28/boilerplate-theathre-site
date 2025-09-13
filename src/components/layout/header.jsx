@@ -30,7 +30,6 @@ export function Header() {
   return (
     <>
       {/* Header */}
-     {/* Header */}
       <header className="sticky top-0 left-0 w-full bg-theater-dark border-b border-gray-700 z-50">
         <div className="w-full px-4 sm:px-6 md:px-8">
           <div className="flex justify-between items-center py-4">
