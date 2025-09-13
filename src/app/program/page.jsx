@@ -9,8 +9,14 @@ async function getShowsWithPerformances() {
     .select(`
       id,
       title,
+      author,
+      slug,
+      image_URL,
+      poster_URL,
+      category,
       performances!inner (
-        time
+        time,
+        venues(name)
       )
     `);
 
