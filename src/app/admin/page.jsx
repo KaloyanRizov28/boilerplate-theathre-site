@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { createClient } from '../../../lib/supabase/client'
+import StatusMessage from '../../components/ui/status-message'
 
 const tabs = [
   { key: 'shows', label: 'Shows' },
@@ -12,8 +13,7 @@ const tabs = [
 
 const inputClass =
   'border border-theater-light rounded p-2 bg-theater-light text-white'
-const buttonClass =
-  'bg-theater-accent text-theater-dark px-4 py-2 rounded self-end'
+const buttonBaseClass = 'text-theater-dark px-4 py-2 rounded self-end'
 const selectClass =
   `${inputClass} cursor-pointer focus:ring-2 focus:ring-theater-accent`
 
@@ -188,6 +188,9 @@ function ShowsSection({ supabase }) {
           className={inputClass}
         />
       </div>
+      <h3 className="text-lg font-medium mb-2">
+        {editingId ? 'Edit Show' : 'Add New Show'}
+      </h3>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
         <div className="flex flex-col">
           <label className="text-sm font-medium">Title</label>
@@ -272,19 +275,16 @@ function ShowsSection({ supabase }) {
             className={inputClass}
           />
         </div>
-        <button type="submit" className={buttonClass}>
+        <button
+          type="submit"
+          className={`${buttonBaseClass} ${
+            editingId ? 'bg-blue-500' : 'bg-green-500'
+          }`}
+        >
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
-      {status && (
-        <p
-          className={`mb-4 ${
-            status.type === 'error' ? 'text-red-400' : 'text-green-400'
-          }`}
-        >
-          {status.message}
-        </p>
-      )}
+      <StatusMessage status={status} onClear={() => setStatus(null)} />
       <div className="flex justify-end mb-2 space-x-2">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 0))}
@@ -362,6 +362,7 @@ function EmployeesSection({ supabase }) {
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
   const [count, setCount] = useState(0)
+  const [status, setStatus] = useState(null)
 
   useEffect(() => {
     fetchData()
@@ -458,6 +459,9 @@ function EmployeesSection({ supabase }) {
           className={inputClass}
         />
       </div>
+      <h3 className="text-lg font-medium mb-2">
+        {editingId ? 'Edit Employee' : 'Add New Employee'}
+      </h3>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
         <div className="flex flex-col">
           <label className="text-sm font-medium">Name</label>
@@ -509,19 +513,16 @@ function EmployeesSection({ supabase }) {
             className={`${inputClass} h-32`}
           />
         </div>
-        <button type="submit" className={buttonClass}>
+        <button
+          type="submit"
+          className={`${buttonBaseClass} ${
+            editingId ? 'bg-blue-500' : 'bg-green-500'
+          }`}
+        >
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
-      {status && (
-        <p
-          className={`mb-4 ${
-            status.type === 'error' ? 'text-red-400' : 'text-green-400'
-          }`}
-        >
-          {status.message}
-        </p>
-      )}
+      <StatusMessage status={status} onClear={() => setStatus(null)} />
       <div className="flex justify-end mb-2 space-x-2">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 0))}
@@ -656,6 +657,9 @@ function PerformancesSection({ supabase }) {
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
       <h2 className="text-xl font-semibold mb-4">Performances</h2>
+      <h3 className="text-lg font-medium mb-2">
+        {editingId ? 'Edit Performance Date' : 'Add Performance Date'}
+      </h3>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
         <div className="flex flex-col">
           <label className="text-sm font-medium">Show</label>
@@ -683,19 +687,16 @@ function PerformancesSection({ supabase }) {
             className={inputClass}
           />
         </div>
-        <button type="submit" className={buttonClass}>
+        <button
+          type="submit"
+          className={`${buttonBaseClass} ${
+            editingId ? 'bg-blue-500' : 'bg-green-500'
+          }`}
+        >
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
-      {status && (
-        <p
-          className={`mb-4 ${
-            status.type === 'error' ? 'text-red-400' : 'text-green-400'
-          }`}
-        >
-          {status.message}
-        </p>
-      )}
+      <StatusMessage status={status} onClear={() => setStatus(null)} />
       <table className="w-full text-sm border border-theater-light">
         <thead className="bg-theater-light">
           <tr>
@@ -816,6 +817,9 @@ function CastSection({ supabase }) {
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
       <h2 className="text-xl font-semibold mb-4">Cast</h2>
+      <h3 className="text-lg font-medium mb-2">
+        {editingId ? 'Edit Cast Member' : 'Add Cast Member'}
+      </h3>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
         <div className="flex flex-col">
           <label className="text-sm font-medium">Show</label>
@@ -849,19 +853,16 @@ function CastSection({ supabase }) {
             ))}
           </select>
         </div>
-        <button type="submit" className={buttonClass}>
+        <button
+          type="submit"
+          className={`${buttonBaseClass} ${
+            editingId ? 'bg-blue-500' : 'bg-green-500'
+          }`}
+        >
           {editingId ? 'Update' : 'Add'}
         </button>
       </form>
-      {status && (
-        <p
-          className={`mb-4 ${
-            status.type === 'error' ? 'text-red-400' : 'text-green-400'
-          }`}
-        >
-          {status.message}
-        </p>
-      )}
+      <StatusMessage status={status} onClear={() => setStatus(null)} />
       <table className="w-full text-sm border border-theater-light">
         <thead className="bg-theater-light">
           <tr>
