@@ -55,20 +55,29 @@ function ShowsSection({ supabase }) {
     author: '',
     picture_personalURL: '',
   }
+  const pageSize = 10
   const [items, setItems] = useState([])
   const [form, setForm] = useState(emptyForm)
   const [editingId, setEditingId] = useState(null)
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(0)
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [search, page])
 
   async function fetchData() {
-    const { data } = await supabase
+    const from = page * pageSize
+    const to = from + pageSize - 1
+    const { data, count } = await supabase
       .from('shows')
-      .select('*')
+      .select('*, cast_members!left(employees(name))', { count: 'exact' })
+      .ilike('title', `%${search}%`)
       .order('id')
+      .range(from, to)
     if (data) setItems(data)
+    if (count !== null) setCount(count)
   }
 
   async function handleSubmit(e) {
@@ -102,28 +111,134 @@ function ShowsSection({ supabase }) {
     setEditingId(item.id)
   }
 
+  async function handleFileChange(e, key, folder) {
+    const file = e.target.files[0]
+    if (!file) return
+    const filePath = `${folder}/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage
+      .from('pictures')
+      .upload(filePath, file)
+    if (!error) {
+      const { data } = supabase.storage
+        .from('pictures')
+        .getPublicUrl(filePath)
+      setForm({ ...form, [key]: data.publicUrl })
+    }
+  }
+
   return (
     <section className="bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Shows</h2>
+      <div className="flex justify-between mb-4">
+        <input
+          placeholder="Search shows"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setPage(0)
+          }}
+          className="border rounded p-2"
+        />
+        <div className="space-x-2">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 0))}
+            disabled={page === 0}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() =>
+              setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
+            }
+            disabled={(page + 1) * pageSize >= count}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
-        {Object.keys(form).map((key) => (
-          <div key={key} className="flex flex-col">
-            <label className="text-sm font-medium capitalize">{key.replace('_', ' ')}</label>
-            {key === 'information' ? (
-              <textarea
-                value={form[key]}
-                onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                className="border rounded p-2"
-              />
-            ) : (
-              <input
-                value={form[key]}
-                onChange={(e) => setForm({ ...form, [key]: e.target.value })}
-                className="border rounded p-2"
-              />
-            )}
-          </div>
-        ))}
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Title</label>
+          <input
+            value={form.title}
+            onChange={(e) => setForm({ ...form, title: e.target.value })}
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Slug</label>
+          <input
+            value={form.slug}
+            onChange={(e) => setForm({ ...form, slug: e.target.value })}
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Category</label>
+          <input
+            value={form.category}
+            onChange={(e) => setForm({ ...form, category: e.target.value })}
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Author</label>
+          <input
+            value={form.author}
+            onChange={(e) => setForm({ ...form, author: e.target.value })}
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Poster</label>
+          <input
+            type="file"
+            onChange={(e) => handleFileChange(e, 'poster_URL', 'Posters')}
+            className="border rounded p-2"
+          />
+          {form.poster_URL && (
+            <img
+              src={form.poster_URL}
+              alt="poster preview"
+              className="mt-2 h-24 object-cover"
+            />
+          )}
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Image</label>
+          <input
+            type="file"
+            onChange={(e) => handleFileChange(e, 'image_URL', 'BigPicturePlays')}
+            className="border rounded p-2"
+          />
+          {form.image_URL && (
+            <img
+              src={form.image_URL}
+              alt="image preview"
+              className="mt-2 h-24 object-cover"
+            />
+          )}
+        </div>
+        <div className="flex flex-col sm:col-span-2">
+          <label className="text-sm font-medium">Information</label>
+          <textarea
+            value={form.information}
+            onChange={(e) => setForm({ ...form, information: e.target.value })}
+            className="border rounded p-2"
+          />
+        </div>
+        <div className="flex flex-col sm:col-span-2">
+          <label className="text-sm font-medium">Picture personal URL</label>
+          <input
+            value={form.picture_personalURL}
+            onChange={(e) =>
+              setForm({ ...form, picture_personalURL: e.target.value })
+            }
+            className="border rounded p-2"
+          />
+        </div>
         <button
           type="submit"
           className="bg-blue-600 text-white px-4 py-2 rounded self-end"
@@ -137,6 +252,7 @@ function ShowsSection({ supabase }) {
             <th className="p-2 text-left border-b">ID</th>
             <th className="p-2 text-left border-b">Title</th>
             <th className="p-2 text-left border-b">Category</th>
+            <th className="p-2 text-left border-b">Cast</th>
             <th className="p-2 text-left border-b">Actions</th>
           </tr>
         </thead>
@@ -146,6 +262,12 @@ function ShowsSection({ supabase }) {
               <td className="p-2 border-b">{item.id}</td>
               <td className="p-2 border-b">{item.title}</td>
               <td className="p-2 border-b">{item.category}</td>
+              <td className="p-2 border-b">
+                {item.cast_members
+                  ?.map((cm) => cm.employees?.name)
+                  .filter(Boolean)
+                  .join(', ')}
+              </td>
               <td className="p-2 border-b space-x-2">
                 <button
                   onClick={() => handleEdit(item)}
@@ -169,21 +291,36 @@ function ShowsSection({ supabase }) {
 }
 
 function EmployeesSection({ supabase }) {
-  const emptyForm = { name: '', role: '', dateOfBirth: '', bio: '' }
+  const emptyForm = {
+    name: '',
+    role: '',
+    dateOfBirth: '',
+    bio: '',
+    profile_picture_URL: '',
+  }
+  const pageSize = 10
   const [items, setItems] = useState([])
   const [form, setForm] = useState(emptyForm)
   const [editingId, setEditingId] = useState(null)
+  const [search, setSearch] = useState('')
+  const [page, setPage] = useState(0)
+  const [count, setCount] = useState(0)
 
   useEffect(() => {
     fetchData()
-  }, [])
+  }, [search, page])
 
   async function fetchData() {
-    const { data } = await supabase
+    const from = page * pageSize
+    const to = from + pageSize - 1
+    const { data, count } = await supabase
       .from('employees')
-      .select('*')
+      .select('*', { count: 'exact' })
+      .ilike('name', `%${search}%`)
       .order('id')
+      .range(from, to)
     if (data) setItems(data)
+    if (count !== null) setCount(count)
   }
 
   async function handleSubmit(e) {
@@ -210,13 +347,58 @@ function EmployeesSection({ supabase }) {
       role: item.role || '',
       dateOfBirth: item.dateOfBirth || '',
       bio: item.bio || '',
+      profile_picture_URL: item.profile_picture_URL || '',
     })
     setEditingId(item.id)
+  }
+
+  async function handleFileChange(e) {
+    const file = e.target.files[0]
+    if (!file) return
+    const filePath = `Actors/${Date.now()}-${file.name}`
+    const { error } = await supabase.storage
+      .from('pictures')
+      .upload(filePath, file)
+    if (!error) {
+      const { data } = supabase.storage
+        .from('pictures')
+        .getPublicUrl(filePath)
+      setForm({ ...form, profile_picture_URL: data.publicUrl })
+    }
   }
 
   return (
     <section className="bg-white p-6 rounded shadow">
       <h2 className="text-xl font-semibold mb-4">Employees</h2>
+      <div className="flex justify-between mb-4">
+        <input
+          placeholder="Search employees"
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value)
+            setPage(0)
+          }}
+          className="border rounded p-2"
+        />
+        <div className="space-x-2">
+          <button
+            onClick={() => setPage((p) => Math.max(p - 1, 0))}
+            disabled={page === 0}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            Prev
+          </button>
+          <button
+            onClick={() =>
+              setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
+            }
+            disabled={(page + 1) * pageSize >= count}
+            className="px-2 py-1 border rounded disabled:opacity-50"
+          >
+            Next
+          </button>
+        </div>
+      </div>
       <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
         <div className="flex flex-col">
           <label className="text-sm font-medium">Name</label>
@@ -242,6 +424,21 @@ function EmployeesSection({ supabase }) {
             onChange={(e) => setForm({ ...form, dateOfBirth: e.target.value })}
             className="border rounded p-2"
           />
+        </div>
+        <div className="flex flex-col">
+          <label className="text-sm font-medium">Profile Picture</label>
+          <input
+            type="file"
+            onChange={handleFileChange}
+            className="border rounded p-2"
+          />
+          {form.profile_picture_URL && (
+            <img
+              src={form.profile_picture_URL}
+              alt="profile preview"
+              className="mt-2 h-24 object-cover"
+            />
+          )}
         </div>
         <div className="flex flex-col sm:col-span-2">
           <label className="text-sm font-medium">Bio</label>
