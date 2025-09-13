@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Admin Authentication
+
+The app uses Supabase for authentication and role-based access:
+
+1. Users have an `is_admin` flag stored in their `auth.users` metadata.
+2. Run `node scripts/seed-admin.js you@example.com` with the `SUPABASE_SERVICE_ROLE_KEY` environment variable to promote an account.
+3. Row level security on admin tables allows mutations only when the JWT includes `is_admin = true` (see `supabase/rls-policies.sql`).
+4. The `/login` page uses Supabase `signInWithPassword` and admins can access `/admin` after authentication. Middleware enforces these rules and non-admins are redirected back to `/login`.
+
 ## Getting Started
 
 First, run the development server:
