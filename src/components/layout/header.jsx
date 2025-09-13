@@ -65,14 +65,10 @@ export function Header() {
                   {user.app_metadata?.is_admin ? ' (Admin)' : ''}
                 </span>
               )}
-              {user ? (
+              {user && (
                 <button onClick={handleLogout} className="text-theater-accent">
                   Log out
                 </button>
-              ) : (
-                <Link href="/login" className="text-theater-accent">
-                  Log in
-                </Link>
               )}
               <div className="w-12 h-12 flex items-center justify-center -mr-1">
                 <Image
