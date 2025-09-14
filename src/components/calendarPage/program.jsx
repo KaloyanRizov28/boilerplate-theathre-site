@@ -29,63 +29,59 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
   const [calendarWindowBaseYear, setCalendarWindowBaseYear] = useState(new Date().getUTCFullYear());
 
   const [activeFilter, setActiveFilter] = useState('all');
-  console.log(shows);
+  
   const processedShows = useMemo(() => {
-    return shows.map(show => {
-      const performance = show.performances ? show.performances[0] : null;
-      const fullDate = parseShowDateToUTC(performance ? performance.time : null);
-      return {
-        ...show,
-        fullDate,
-        time: performance && performance.time
-          ? new Date(performance.time).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
-          : '',
-        venue: performance && (performance.venues?.name || performance.venue)
-          ? (performance.venues?.name || performance.venue)
-          : '',
-      };
-    }).filter(show => show.fullDate !== null && !isNaN(show.fullDate.getTime()));
+    // Flatten: one entry per performance to handle multiple dates per show
+    const entries = [];
+    shows.forEach(show => {
+      const perfs = Array.isArray(show.performances) ? [...show.performances] : [];
+      // Sort by time ascending to keep UI stable
+      perfs.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
+      if (perfs.length === 0) return;
+      perfs.forEach(perf => {
+        const fullDate = parseShowDateToUTC(perf?.time ?? null);
+        if (!fullDate || isNaN(fullDate.getTime())) return;
+        entries.push({
+          ...show,
+          fullDate,
+          time: perf?.time
+            ? new Date(perf.time).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
+            : '',
+          venue: (perf?.venues?.name || perf?.venue) ?? '',
+          performanceId: perf?.id ?? `${show.id}-${perf?.time}`,
+        });
+      });
+    });
+    return entries;
   }, [shows]);
 
   useEffect(() => {
     if (processedShows.length === 0) return;
 
-    const december = 11;
-    const yearForEffect = new Date().getUTCFullYear();
+    // Build a unique set of months (UTC) that have shows
+    const monthMap = new Map(); // key = year*12 + month, value = { y, m }
+    processedShows.forEach(s => {
+      if (!s.fullDate) return;
+      const y = s.fullDate.getUTCFullYear();
+      const m = s.fullDate.getUTCMonth();
+      const key = y * 12 + m;
+      if (!monthMap.has(key)) monthMap.set(key, { y, m });
+    });
 
-    let initialBaseM = new Date().getUTCMonth();
-    let initialBaseY = new Date().getUTCFullYear();
-    let initialActiveM = initialBaseM;
-    let initialActiveY = initialBaseY;
+    if (monthMap.size === 0) return;
 
-    const hasDecemberData = processedShows.some(s =>
-      s.fullDate &&
-      s.fullDate.getUTCMonth() === december &&
-      s.fullDate.getUTCFullYear() === yearForEffect
-    );
+    const months = Array.from(monthMap.values()).sort((a, b) => (a.y * 12 + a.m) - (b.y * 12 + b.m));
+    const now = new Date();
+    const nowKey = now.getUTCFullYear() * 12 + now.getUTCMonth();
 
-    if (hasDecemberData) {
-      initialBaseM = december;
-      initialBaseY = yearForEffect;
-      initialActiveM = december;
-      initialActiveY = yearForEffect;
-    } else {
-      const firstAvailableShow = processedShows
-        .sort((a, b) => a.fullDate.getTime() - b.fullDate.getTime())
-      [0];
+    // Prefer current month if present; else the nearest future month; else the latest past month
+    let target = months.find(({ y, m }) => (y * 12 + m) >= nowKey);
+    if (!target) target = months[months.length - 1];
 
-      if (firstAvailableShow) {
-        initialBaseM = firstAvailableShow.fullDate.getUTCMonth();
-        initialBaseY = firstAvailableShow.fullDate.getUTCFullYear();
-        initialActiveM = initialBaseM;
-        initialActiveY = initialBaseY;
-      }
-    }
-
-    setCalendarWindowBaseMonth(initialBaseM);
-    setCalendarWindowBaseYear(initialBaseY);
-    setActiveDisplayMonth(initialActiveM);
-    setActiveDisplayYear(initialActiveY);
+    setCalendarWindowBaseMonth(target.m);
+    setCalendarWindowBaseYear(target.y);
+    setActiveDisplayMonth(target.m);
+    setActiveDisplayYear(target.y);
     setSelectedDate(null);
 
   }, [processedShows]);
@@ -182,7 +178,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
                 </div>
                 <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10 ">
                   {showsForDay.map(show => (
-                    <div key={show.id} className="group mx-auto max-w-sm w-full sm:max-w-none sm:mx-0">
+                    <div key={`${show.id}-${show.performanceId || show.time}`} className="group mx-auto max-w-sm w-full sm:max-w-none sm:mx-0">
                       <Link href={`/shows/${show.slug}`} legacyBehavior>
                         <a className="block space-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">
                           <div className="relative w-full shadow-lg" style={{ aspectRatio: '10/14' }}>

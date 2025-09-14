@@ -80,12 +80,9 @@ const ProgramCalendar = ({
     monthToDisplay = currentMonthProp;
   }
   
-  console.log('[ProgramCalendar] Props In:', { currentYearProp, currentMonthProp, passedBaseYear, passedBaseMonth });
-  console.log('[ProgramCalendar] Nav Base For Buttons Set To:', { navYear: calendarNavBaseYear, navMonth: calendarNavBaseMonth });
-  console.log('[ProgramCalendar] Displaying Grid For:', { displayYear: yearToDisplay, displayMonth: monthToDisplay });
+  
 
   const { weeks } = useMemo(() => {
-    console.log('[ProgramCalendar] Calculating new weeks for:', { year: yearToDisplay, month: monthToDisplay });
     return getMonthCalendarDetails(yearToDisplay, monthToDisplay, 1);
   }, [yearToDisplay, monthToDisplay]);
 
@@ -119,7 +116,6 @@ const ProgramCalendar = ({
       onDayClick(dayNumberFromCell, monthToDisplay, yearToDisplay, isDayWithShowFlag);
     } else {
       const clickedMonthName = new Date(yearToDisplay, monthToDisplay).toLocaleString('default', { month: 'long' });
-      console.log(`ProgramCalendar Clicked day: ${dayNumberFromCell}, Month: ${clickedMonthName}, Year: ${yearToDisplay}, Has Shows: ${isDayWithShowFlag}`);
     }
   };
 

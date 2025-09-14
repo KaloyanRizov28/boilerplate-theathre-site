@@ -22,7 +22,7 @@ export default async function SinglePlayPage({ params }) {
   const { slug } = await params;
   // 
   let show = await fetchShow(slug);
-  console.log(show);
+  
   let employees = await fetchEmployees(show[0].id)
   return (
     <main> {/* Or your main layout component */}
