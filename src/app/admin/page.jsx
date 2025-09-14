@@ -170,12 +170,14 @@ function ShowsSection({ supabase }) {
     const { error } = await supabase.storage
       .from('pictures')
       .upload(filePath, file)
-    if (!error) {
-      const { data } = supabase.storage
-        .from('pictures')
-        .getPublicUrl(filePath)
-      setForm({ ...form, [key]: data.publicUrl })
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+      return
     }
+    const { data } = supabase.storage
+      .from('pictures')
+      .getPublicUrl(filePath)
+    setForm({ ...form, [key]: data.publicUrl })
   }
 
   return (
@@ -442,12 +444,14 @@ function EmployeesSection({ supabase }) {
     const { error } = await supabase.storage
       .from('pictures')
       .upload(filePath, file)
-    if (!error) {
-      const { data } = supabase.storage
-        .from('pictures')
-        .getPublicUrl(filePath)
-      setForm({ ...form, profile_picture_URL: data.publicUrl })
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+      return
     }
+    const { data } = supabase.storage
+      .from('pictures')
+      .getPublicUrl(filePath)
+    setForm({ ...form, profile_picture_URL: data.publicUrl })
   }
 
   return (
