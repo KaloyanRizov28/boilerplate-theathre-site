@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { createClient } from '@/lib/supabase/server';
+import { createClient } from '../../../../lib/supabase/server';
 
 async function fetchEmployee(id) {
   const supabase = await createClient();
@@ -18,7 +18,7 @@ async function fetchShows(employeeId) {
 }
 
 export default async function EmployeePage({ params }) {
-  const { id } = await params;
+  const { id } = params;
   const employee = await fetchEmployee(id);
   const showsData = await fetchShows(id);
 
