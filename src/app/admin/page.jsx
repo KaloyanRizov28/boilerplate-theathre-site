@@ -90,6 +90,8 @@ function ShowsSection({ supabase }) {
   const [page, setPage] = useState(0)
   const [count, setCount] = useState(0)
   const [status, setStatus] = useState(null)
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
 
   useEffect(() => {
     fetchData()
@@ -395,31 +397,61 @@ function EmployeesSection({ supabase }) {
       return
     }
     const payload = { ...form, dateOfBirth: form.dateOfBirth || null }
-    let result
-    if (editingId) {
-      result = await supabase.from('employees').update(payload).eq('id', editingId)
-    } else {
-      result = await supabase.from('employees').insert([payload])
+
+    if (file) {
+      const filePath = `Actors/${Date.now()}-${file.name}`
+      const { error: uploadError } = await supabase.storage
+        .from('pictures')
+        .upload(filePath, file)
+      if (uploadError) {
+        setStatus({ type: 'error', message: uploadError.message })
+        return
+      }
+      const { data } = supabase.storage.from('pictures').getPublicUrl(filePath)
+      payload.profile_picture_URL = data.publicUrl
     }
-    if (result.error) {
-      setStatus({ type: 'error', message: result.error.message })
+
+    let response
+    if (editingId) {
+      response = await fetch('/api/admin/employees', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: editingId, ...payload }),
+      })
+    } else {
+      response = await fetch('/api/admin/employees', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+    }
+    const result = await response.json()
+    if (!response.ok) {
+      setStatus({ type: 'error', message: result.error || 'Request failed.' })
       return
     }
+
     setStatus({
       type: 'success',
       message: editingId ? 'Employee updated.' : 'Employee added.',
     })
+    if (preview) URL.revokeObjectURL(preview)
     setForm(emptyForm)
     setEditingId(null)
+    setFile(null)
+    setPreview(null)
     fetchData()
   }
 
   async function handleDelete(id) {
     setStatus(null)
     if (!window.confirm('Are you sure you want to delete this employee?')) return
-    const { error } = await supabase.from('employees').delete().eq('id', id)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
+    const response = await fetch(`/api/admin/employees?id=${id}`, {
+      method: 'DELETE',
+    })
+    const result = await response.json()
+    if (!response.ok) {
+      setStatus({ type: 'error', message: result.error || 'Delete failed.' })
     } else {
       setStatus({ type: 'success', message: 'Employee deleted.' })
       fetchData()
@@ -435,23 +467,16 @@ function EmployeesSection({ supabase }) {
       profile_picture_URL: item.profile_picture_URL || '',
     })
     setEditingId(item.id)
+    setPreview(item.profile_picture_URL || null)
+    setFile(null)
   }
 
-  async function handleFileChange(e) {
-    const file = e.target.files[0]
-    if (!file) return
-    const filePath = `Actors/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage
-      .from('pictures')
-      .upload(filePath, file)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-      return
-    }
-    const { data } = supabase.storage
-      .from('pictures')
-      .getPublicUrl(filePath)
-    setForm({ ...form, profile_picture_URL: data.publicUrl })
+  function handleFileChange(e) {
+    const f = e.target.files[0]
+    if (!f) return
+    if (preview) URL.revokeObjectURL(preview)
+    setFile(f)
+    setPreview(URL.createObjectURL(f))
   }
 
   return (
@@ -506,9 +531,9 @@ function EmployeesSection({ supabase }) {
             onChange={handleFileChange}
             className={inputClass}
           />
-          {form.profile_picture_URL && (
+          {preview && (
             <img
-              src={form.profile_picture_URL}
+              src={preview}
               alt="profile preview"
               className="mt-2 h-48 object-cover"
             />
