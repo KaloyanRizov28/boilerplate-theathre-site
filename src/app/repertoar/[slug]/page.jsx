@@ -13,7 +13,7 @@ async function fetchEmployees(showId) {
     const supabase = await createClient();
     const { data, error } = await supabase
       .from('cast_members') // Start by querying the cast_members table
-      .select('employees(id, name, role)') // Select the 'employees' relationship and specify desired columns
+      .select('employees(id, name, role, profile_picture_URL)') // Select the 'employees' relationship and specify desired columns
       .eq('idShow', showId)
       return data;
 }
