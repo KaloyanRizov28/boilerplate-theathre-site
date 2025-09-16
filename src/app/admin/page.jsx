@@ -369,10 +369,20 @@ function EmployeesSection({ supabase }) {
   const [page, setPage] = useState(0)
   const [count, setCount] = useState(0)
   const [status, setStatus] = useState(null)
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
 
   useEffect(() => {
     fetchData()
   }, [search, page])
+
+  useEffect(() => {
+    return () => {
+      if (preview && preview.startsWith('blob:')) {
+        URL.revokeObjectURL(preview)
+      }
+    }
+  }, [preview])
 
   async function fetchData() {
     const from = page * pageSize
@@ -394,7 +404,26 @@ function EmployeesSection({ supabase }) {
       setStatus({ type: 'error', message: 'Name and role are required.' })
       return
     }
-    const payload = { ...form, dateOfBirth: form.dateOfBirth || null }
+    const payload = {
+      ...form,
+      dateOfBirth: form.dateOfBirth || null,
+      profile_picture_URL: form.profile_picture_URL || null,
+    }
+
+    if (file) {
+      const filePath = `Actors/${Date.now()}-${file.name}`
+      const { error } = await supabase.storage
+        .from('pictures')
+        .upload(filePath, file)
+      if (error) {
+        setStatus({ type: 'error', message: getFriendlyErrorMessage(error) })
+        return
+      }
+      const { data } = supabase.storage
+        .from('pictures')
+        .getPublicUrl(filePath)
+      payload.profile_picture_URL = data.publicUrl
+    }
     let result
     if (editingId) {
       result = await supabase.from('employees').update(payload).eq('id', editingId)
@@ -402,7 +431,10 @@ function EmployeesSection({ supabase }) {
       result = await supabase.from('employees').insert([payload])
     }
     if (result.error) {
-      setStatus({ type: 'error', message: result.error.message })
+      setStatus({
+        type: 'error',
+        message: getFriendlyErrorMessage(result.error),
+      })
       return
     }
     setStatus({
@@ -411,6 +443,8 @@ function EmployeesSection({ supabase }) {
     })
     setForm(emptyForm)
     setEditingId(null)
+    setFile(null)
+    setPreview(null)
     fetchData()
   }
 
@@ -419,7 +453,7 @@ function EmployeesSection({ supabase }) {
     if (!window.confirm('Are you sure you want to delete this employee?')) return
     const { error } = await supabase.from('employees').delete().eq('id', id)
     if (error) {
-      setStatus({ type: 'error', message: error.message })
+      setStatus({ type: 'error', message: getFriendlyErrorMessage(error) })
     } else {
       setStatus({ type: 'success', message: 'Employee deleted.' })
       fetchData()
@@ -435,23 +469,39 @@ function EmployeesSection({ supabase }) {
       profile_picture_URL: item.profile_picture_URL || '',
     })
     setEditingId(item.id)
+    setFile(null)
+    setPreview(item.profile_picture_URL || null)
   }
 
-  async function handleFileChange(e) {
-    const file = e.target.files[0]
-    if (!file) return
-    const filePath = `Actors/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage
-      .from('pictures')
-      .upload(filePath, file)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-      return
+  function handleFileChange(e) {
+    const selectedFile = e.target.files[0]
+    if (!selectedFile) return
+    setForm((prev) => ({ ...prev, profile_picture_URL: '' }))
+    setFile(selectedFile)
+    setPreview(URL.createObjectURL(selectedFile))
+  }
+
+  function handleClearImage() {
+    if (preview && preview.startsWith('blob:')) {
+      URL.revokeObjectURL(preview)
     }
-    const { data } = supabase.storage
-      .from('pictures')
-      .getPublicUrl(filePath)
-    setForm({ ...form, profile_picture_URL: data.publicUrl })
+    setPreview(null)
+    setFile(null)
+    setForm((prev) => ({ ...prev, profile_picture_URL: '' }))
+  }
+
+  function getFriendlyErrorMessage(error) {
+    if (!error) {
+      return 'An unexpected error occurred.'
+    }
+    const message = error.message || 'An unexpected error occurred.'
+    if (message.toLowerCase().includes('row level security')) {
+      return (
+        'You do not have permission to upload images. ' +
+        'Please adjust your Supabase policies to allow inserting into the pictures bucket.'
+      )
+    }
+    return message
   }
 
   return (
@@ -506,12 +556,21 @@ function EmployeesSection({ supabase }) {
             onChange={handleFileChange}
             className={inputClass}
           />
-          {form.profile_picture_URL && (
-            <img
-              src={form.profile_picture_URL}
-              alt="profile preview"
-              className="mt-2 h-48 object-cover"
-            />
+          {(preview || form.profile_picture_URL) && (
+            <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-start">
+              <img
+                src={preview || form.profile_picture_URL}
+                alt="profile preview"
+                className="h-48 w-48 rounded object-cover"
+              />
+              <button
+                type="button"
+                onClick={handleClearImage}
+                className="rounded bg-red-500 px-3 py-2 text-white"
+              >
+                Remove picture
+              </button>
+            </div>
           )}
         </div>
         <div className="flex flex-col sm:col-span-2">
