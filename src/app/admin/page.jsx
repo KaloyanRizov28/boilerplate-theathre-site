@@ -369,6 +369,8 @@ function EmployeesSection({ supabase }) {
   const [page, setPage] = useState(0)
   const [count, setCount] = useState(0)
   const [status, setStatus] = useState(null)
+  const [file, setFile] = useState(null)
+  const [preview, setPreview] = useState(null)
 
   useEffect(() => {
     fetchData()
@@ -395,6 +397,21 @@ function EmployeesSection({ supabase }) {
       return
     }
     const payload = { ...form, dateOfBirth: form.dateOfBirth || null }
+
+    if (file) {
+      const filePath = `Actors/${Date.now()}-${file.name}`
+      const { error } = await supabase.storage
+        .from('pictures')
+        .upload(filePath, file)
+      if (error) {
+        setStatus({ type: 'error', message: error.message })
+        return
+      }
+      const { data } = supabase.storage
+        .from('pictures')
+        .getPublicUrl(filePath)
+      payload.profile_picture_URL = data.publicUrl
+    }
     let result
     if (editingId) {
       result = await supabase.from('employees').update(payload).eq('id', editingId)
@@ -411,6 +428,8 @@ function EmployeesSection({ supabase }) {
     })
     setForm(emptyForm)
     setEditingId(null)
+    setFile(null)
+    setPreview(null)
     fetchData()
   }
 
@@ -435,23 +454,14 @@ function EmployeesSection({ supabase }) {
       profile_picture_URL: item.profile_picture_URL || '',
     })
     setEditingId(item.id)
+    setPreview(item.profile_picture_URL || null)
   }
 
-  async function handleFileChange(e) {
-    const file = e.target.files[0]
-    if (!file) return
-    const filePath = `Actors/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage
-      .from('pictures')
-      .upload(filePath, file)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-      return
-    }
-    const { data } = supabase.storage
-      .from('pictures')
-      .getPublicUrl(filePath)
-    setForm({ ...form, profile_picture_URL: data.publicUrl })
+  function handleFileChange(e) {
+    const selectedFile = e.target.files[0]
+    if (!selectedFile) return
+    setFile(selectedFile)
+    setPreview(URL.createObjectURL(selectedFile))
   }
 
   return (
@@ -506,9 +516,9 @@ function EmployeesSection({ supabase }) {
             onChange={handleFileChange}
             className={inputClass}
           />
-          {form.profile_picture_URL && (
+          {(preview || form.profile_picture_URL) && (
             <img
-              src={form.profile_picture_URL}
+              src={preview || form.profile_picture_URL}
               alt="profile preview"
               className="mt-2 h-48 object-cover"
             />
