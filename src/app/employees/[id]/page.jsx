@@ -56,7 +56,7 @@ export default async function EmployeePage({ params }) {
                 <div className="mt-auto">
                   <Link
                     href={`/repertoar/${shows.slug}`}
-                    className="inline-block text-white border border-white px-4 py-2 rounded hover:bg-white hover:text-theater-dark transition-colors"
+                    className="inline-block text-white border border-white px-4 py-2 rounded hover:bg-theater-hover hover:text-white transition-colors"
                   >
                     Билети
                   </Link>

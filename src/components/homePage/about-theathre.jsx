@@ -19,11 +19,11 @@ const AboutTheaterSection = () => {
               libero.Lorem ipsum dolor sit amet consectetur.
             </p>
             
-            <Link 
-              href="/about" 
-              className="inline-flex items-center text-white text-xl font-light group"
+            <Link
+              href="/about"
+              className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
             >
-              <span className="border-b border-transparent transition-all duration-300">
+              <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                 Виж още
               </span>
               <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
@@ -38,7 +38,7 @@ const AboutTheaterSection = () => {
                 src="/logo.svg" // Replace with your actual icon path
                 alt="Theater Icon"
                 fill
-                className="object-contain filter brightness-0 invert"
+                className="object-contain"
               />
               
               {/* Alternative: If you want to use the icon as a background pattern */}
@@ -81,11 +81,11 @@ const AboutTheaterSectionWithSVG = () => {
               libero.Lorem ipsum dolor sit amet consectetur.
             </p>
             
-            <Link 
-              href="/about" 
-              className="inline-flex items-center text-white text-xl font-light group"
+            <Link
+              href="/about"
+              className="inline-flex items-center text-white text-xl font-light group hover:text-theater-hover"
             >
-              <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
+              <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300">
                 Виж още
               </span>
               <span className="ml-2 inline-block transition-all duration-300 group-hover:translate-x-2 group-hover:scale-110">

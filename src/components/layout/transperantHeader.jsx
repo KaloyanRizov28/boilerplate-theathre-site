@@ -28,7 +28,7 @@ export function TransparentHeader() {
   ]
 
   // Ensures hamburger icon lines are visible (e.g., white against dark hero images)
-  const iconColorClass = 'bg-white';
+  const iconBaseClass = 'w-6 h-0.5 transition-all duration-300';
 
   return (
     <>
@@ -39,17 +39,23 @@ export function TransparentHeader() {
             {/* Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="flex flex-col space-y-1 p-2 z-50 relative -ml-1" // z-50 ensures button is above other header elements if needed
+              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // z-50 ensures button is above other header elements if needed
             >
-              <div className={`w-6 h-0.5 ${iconColorClass} transition-all duration-300 ${
-                isMenuOpen ? 'rotate-45 translate-y-2' : ''
-              }`}></div>
-              <div className={`w-6 h-0.5 ${iconColorClass} transition-all duration-300 ${
-                isMenuOpen ? 'opacity-0' : ''
-              }`}></div>
-              <div className={`w-6 h-0.5 ${iconColorClass} transition-all duration-300 ${
-                isMenuOpen ? '-rotate-45 -translate-y-2' : ''
-              }`}></div>
+              <div
+                className={`${iconBaseClass} ${
+                  isMenuOpen ? 'bg-theater-hover rotate-45 translate-y-2' : 'bg-white'
+                } group-hover:bg-theater-hover`}
+              ></div>
+              <div
+                className={`${iconBaseClass} ${
+                  isMenuOpen ? 'bg-theater-hover opacity-0' : 'bg-white'
+                } group-hover:bg-theater-hover`}
+              ></div>
+              <div
+                className={`${iconBaseClass} ${
+                  isMenuOpen ? 'bg-theater-hover -rotate-45 -translate-y-2' : 'bg-white'
+                } group-hover:bg-theater-hover`}
+              ></div>
             </button>
 
             <div className="flex items-center gap-4">
@@ -125,7 +131,7 @@ export function TransparentHeader() {
               >
                 <Link
                   href={item.href}
-                  className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block py-1"
+                  className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block py-1"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}

@@ -5,7 +5,7 @@ import Link from "next/link" // Using the current Next.js Link component
 
 export function Footer() {
   // Define styles for links that *do* have arrows
-  const linkStyleWithArrow = "text-gray-300 hover:text-white transition-colors flex items-center group text-sm py-1";
+  const linkStyleWithArrow = "text-gray-300 hover:text-theater-hover transition-colors flex items-center group text-sm py-1";
   const arrowStyle = "inline-block transition-transform duration-300 group-hover:translate-x-1 w-4 h-4 ml-2";
 
   return (
