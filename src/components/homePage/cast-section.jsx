@@ -44,9 +44,9 @@ const CastCard = ({ member }) => (
                 </div>
                 <Link
                     href={`/employees/${member.id}`}
-                    className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2"
+                    className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2 hover:text-theater-hover"
                 >
-                    <span className="border-b border-transparent transition-all duration-300">
+                    <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                         Виж още
                     </span>
                     <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
@@ -111,8 +111,8 @@ const SwiperCastSection = ({ castMembers = [] }) => {
                                 </SwiperSlide>
                             ))}
 
-                            <div className="swiper-button-next text-white hover:text-gray-300 transition-colors"></div>
-                            <div className="swiper-button-prev text-white hover:text-gray-300 transition-colors"></div>
+                            <div className="swiper-button-next text-white hover:text-theater-hover transition-colors"></div>
+                            <div className="swiper-button-prev text-white hover:text-theater-hover transition-colors"></div>
                         </Swiper>
                     ) : (
                         <p className="text-gray-400 text-center py-8">
@@ -126,9 +126,9 @@ const SwiperCastSection = ({ castMembers = [] }) => {
                     <Link
                         href="/cast"
                         // MODIFIED: New class, using text-lg as it was before, group added
-                        className="inline-flex items-center text-white text-lg font-light group transition-colors duration-300"
+                        className="inline-flex items-center text-white text-lg font-light group transition-colors duration-300 hover:text-theater-hover"
                     >
-                        <span className="border-b border-transparent  transition-all duration-300">
+                        <span className="border-b border-transparent  transition-all duration-300 group-hover:border-theater-hover">
                             Виж целия състав
                         </span>
                         {/* MODIFIED: Added arrow */}

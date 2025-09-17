@@ -15,13 +15,13 @@ export default function AboutPage() {
             </p>
             <div className="space-y-2">
               <Link href="/cast" className="inline-flex items-center text-white text-xl font-light group">
-                <span className="border-b border-transparent transition-all duration-300 group-hover:border-white">
+                <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                   Състав
                 </span>
                 <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
               </Link>
               <Link href="/scenes" className="inline-flex items-center text-white text-xl font-light group">
-                <span className="border-b border-transparent transition-all duration-300 group-hover:border-white">
+                <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                   Сцени
                 </span>
                 <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
@@ -30,7 +30,7 @@ export default function AboutPage() {
           </div>
           <div className="flex justify-center lg:justify-end">
             <div className="relative w-64 h-64 sm:w-80 sm:h-80">
-              <Image src="/logo.svg" alt="Theater Icon" fill className="object-contain filter brightness-0 invert" />
+              <Image src="/logo.svg" alt="Theater Icon" fill className="object-contain" />
             </div>
           </div>
         </div>

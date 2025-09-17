@@ -3,9 +3,9 @@ export const Button = ({ className = '', variant = 'default', size = 'md', child
   const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50'
   
   const variants = {
-    default: 'bg-white text-black hover:bg-gray-200',
-    ghost: 'hover:bg-gray-800',
-    outline: 'border border-gray-700 hover:bg-gray-800',
+    default: 'bg-white text-black hover:bg-theater-hover hover:text-white',
+    ghost: 'hover:bg-theater-hover hover:text-white',
+    outline: 'border border-gray-700 hover:bg-theater-hover hover:text-white hover:border-theater-hover',
   }
   
   const sizes = {

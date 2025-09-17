@@ -25,13 +25,13 @@ const EkipSection = (props) => {
                     <div className="flex gap-6 md:gap-8">
                         <button
                             onClick={() => setActiveFilter('актьори')}
-                            className={`text-lg font-light transition-all duration-300 ${activeFilter === 'актьори' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+                            className={`text-lg font-light transition-all duration-300 ${activeFilter === 'актьори' ? 'text-white' : 'text-gray-500 hover:text-theater-hover'}`}
                         >
                             АКТЬОРИ
                         </button>
                         <button
                             onClick={() => setActiveFilter('ekip')}
-                            className={`text-lg font-light transition-all duration-300 ${activeFilter === 'ekip' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+                            className={`text-lg font-light transition-all duration-300 ${activeFilter === 'ekip' ? 'text-white' : 'text-gray-500 hover:text-theater-hover'}`}
                         >
                             ЕКИП
                         </button>

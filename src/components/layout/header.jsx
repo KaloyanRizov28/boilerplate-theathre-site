@@ -52,20 +52,20 @@ export function Header() {
               }}
               className="flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
             >
-              <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
+              <div className={`w-6 h-0.5 bg-theater-hover transition-all duration-300 ${
                 isMenuOpen ? 'rotate-45 translate-y-2' : ''
               }`}></div>
-              <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
+              <div className={`w-6 h-0.5 bg-theater-hover transition-all duration-300 ${
                 isMenuOpen ? 'opacity-0' : ''
               }`}></div>
-              <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
+              <div className={`w-6 h-0.5 bg-theater-hover transition-all duration-300 ${
                 isMenuOpen ? '-rotate-45 -translate-y-2' : ''
               }`}></div>
             </button>
 
             {/* Theater Title */}
             <Link href="/" className="text-center">
-              <div className="text-sm font-light tracking-wide text-white">
+              <div className="text-sm font-light tracking-wide text-theater-hover">
                 <div>МУЗИКАЛНО-ДРАМАТИЧЕН ТЕАТЪР</div>
                 <div>"КОНСТАНТИН КИСИМОВ"</div>
               </div>
@@ -120,7 +120,7 @@ export function Header() {
             <button
               aria-label="Назад"
               onClick={() => setActiveMenu('root')}
-              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 flex items-center mb-4 sm:mb-6"
+              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 flex items-center mb-4 sm:mb-6"
             >
               <span className="inline-block mr-3">←</span>
               <span className="sr-only">Назад</span>
@@ -148,14 +148,14 @@ export function Header() {
                 {item.submenu ? (
                   <button
                     onClick={() => setActiveMenu(item.submenu)}
-                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block"
+                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block"
                   >
                     {item.name}
                   </button>
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block"
+                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block"
                     onClick={() => { setIsMenuOpen(false); setActiveMenu('root'); }}
                   >
                     {item.name}

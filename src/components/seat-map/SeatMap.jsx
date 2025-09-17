@@ -606,9 +606,9 @@ export default function SeatMap({ venueData }) {
                         {seats.map((seat, index) => (
                           <div key={`selection-${tierKey}-${seat.id}-${index}`} className="flex justify-between items-center py-1 border-b border-gray-100 last:border-0">
                             <span className="text-black">Row {seat.row}, Seat {seat.number}</span>
-                            <button 
+                            <button
                               onClick={() => removeSeat(seat.id)}
-                              className="text-red-500 hover:text-red-700 p-1"
+                              className="text-red-500 hover:text-theater-hover p-1"
                               aria-label="Remove seat"
                             >
                               ✕
@@ -627,8 +627,8 @@ export default function SeatMap({ venueData }) {
                 </div>
                 
                 {/* Continue button */}
-                <button 
-                  className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
+                <button
+                  className="mt-4 bg-blue-600 hover:bg-theater-hover text-white font-bold py-2 px-4 rounded w-full disabled:bg-gray-400 disabled:cursor-not-allowed"
                   disabled={selectedSeats.length === 0}
                 >
                   Continue to Checkout
