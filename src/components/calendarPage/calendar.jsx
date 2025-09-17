@@ -151,7 +151,7 @@ const ProgramCalendar = ({
             <button
               onClick={navigateToFirstMonth}
               disabled={isDisplayingNavFirstMonth}
-              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavFirstMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-gray-200'}`}
+              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavFirstMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-theater-hover'}`}
             >
               {firstMonthInWindow.name} {/* This will now be currentViewMonth's name */}
             </button>
@@ -159,7 +159,7 @@ const ProgramCalendar = ({
             <button
               onClick={navigateToSecondMonth}
               disabled={isDisplayingNavSecondMonth}
-              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavSecondMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-gray-200'}`}
+              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavSecondMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-theater-hover'}`}
             >
               {secondMonthInWindow.name} {/* This will now be (currentViewMonth + 1)'s name */}
             </button>
@@ -192,7 +192,7 @@ const ProgramCalendar = ({
                   if (isSelected && isDayWithShow) {
                     cellClasses += " bg-gray-300 text-gray-900 font-bold transform scale-110 cursor-pointer";
                   } else if (isDayWithShow) {
-                    cellClasses += " text-gray-300 font-semibold cursor-pointer hover:bg-gray-700 hover:text-white hover:scale-105 active:bg-gray-600 active:text-white active:scale-100";
+                    cellClasses += " text-gray-300 font-semibold cursor-pointer hover:bg-theater-hover hover:text-white hover:scale-105 active:bg-gray-600 active:text-white active:scale-100";
                   } else {
                     if (dayObj.isWeekend) {
                       cellClasses += " text-gray-500 opacity-70 cursor-default pointer-events-none";

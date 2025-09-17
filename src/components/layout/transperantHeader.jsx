@@ -28,7 +28,7 @@ export function TransparentHeader() {
   ]
 
   // Ensures hamburger icon lines are visible (e.g., white against dark hero images)
-  const iconColorClass = 'bg-white';
+  const iconColorClass = 'bg-theater-hover';
 
   return (
     <>
@@ -125,7 +125,7 @@ export function TransparentHeader() {
               >
                 <Link
                   href={item.href}
-                  className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block py-1"
+                  className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block py-1"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
