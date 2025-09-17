@@ -8,6 +8,7 @@ import { createClient } from '../../../lib/supabase/client'
 
 export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeMenu, setActiveMenu] = useState('root')
   const [user, setUser] = useState(null)
   const supabase = createClient()
 
@@ -20,13 +21,24 @@ export function Header() {
     window.location.reload()
   }
 
-  const navigation = [
-    { name: 'Програма', href: '/program' },
-    { name: 'За нас', href: '/about' },
-    { name: 'Сцени', href: '/scenes' },
-    { name: 'Билети', href: '/tickets' },
-    { name: 'Контакти', href: '/contact' },
-  ]
+
+  const menus = {
+    root: [
+      { name: 'Програма', href: '/program' },
+      { name: 'За нас', submenu: 'about' },
+      { name: 'Билети', href: '/tickets' },
+      { name: 'Контакти', href: '/contact' },
+    ],
+    about: [
+      { name: 'Творчески състав', href: '/about?section=creative' },
+      { name: 'Технически състав', href: '/about?section=technical' },
+      { name: 'Ръководство', href: '/about?section=leadership' },
+      { name: 'Административен състав', href: '/about?section=administrative' },
+      { name: 'За театъра', href: '/about' },
+      { name: 'Сцени', href: '/scenes' },
+    ],
+  }
+
 
   return (
     <>
@@ -36,7 +48,10 @@ export function Header() {
           <div className="flex justify-between items-center py-4">
             {/* Hamburger Menu */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => {
+                if (isMenuOpen) setActiveMenu('root')
+                setIsMenuOpen(!isMenuOpen)
+              }}
               className="flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
             >
               <div className={`w-6 h-0.5 bg-theater-grey transition-all duration-300 ${
@@ -85,7 +100,7 @@ export function Header() {
       </header>
 
       {/* Full Page Overlay Menu */}
-      <div className={`fixed top-0 left-0 w-full h-full z-40 transform transition-transform duration-500 ease-in-out ${
+      <div className={`fixed top-0 left-0 w-screen h-screen overflow-x-hidden z-40 transform transform-gpu transition-transform duration-500 ease-in-out ${
         isMenuOpen ? 'translate-x-0' : '-translate-x-full'
       }`}>
         {/* Background Image */}
@@ -102,36 +117,52 @@ export function Header() {
         <div className="absolute inset-0 bg-theater-dark bg-opacity-70" />
 
         {/* Menu Content - Staircase with Overshoot Animation */}
-        <div className="relative z-20 flex flex-col justify-center h-full pl-16 md:pl-24">
-          {navigation.map((item, index) => {
+        <div className="relative z-20 flex flex-col justify-center h-full pl-8 pr-16 md:pl-24 md:pr-8 overflow-y-auto overflow-x-hidden py-20 md:py-0">
+          {activeMenu !== 'root' && (
+            <button
+              aria-label="Назад"
+              onClick={() => setActiveMenu('root')}
+              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 flex items-center mb-4 sm:mb-6"
+            >
+              <span className="inline-block mr-3">←</span>
+              <span className="sr-only">Назад</span>
+            </button>
+          )}
+
+          {menus[activeMenu].map((item, index) => {
             const startPosition = -250 + (index * 40); // Staircase start positions
             const finalPosition = 0; // Final aligned position
-            const initialDelay = index * 20; // Staggered entry
-            const overshootDelay = index ; // Overshoot happens 300ms after entry starts
-            
+            const initialDelay = index * 15; // Slightly faster stagger for submenu/mobile
+
             return (
               <div
                 key={item.name}
-                className="mb-8"
+                className="mb-4 sm:mb-5 md:mb-8"
                 style={{
                   transform: isMenuOpen 
                     ? `translateX(${finalPosition}px)` 
                     : `translateX(${startPosition}px)`,
                   opacity: isMenuOpen ? 1 : 0,
-                  transition: isMenuOpen 
-                    ? `transform 0.4s ease-out ${initialDelay}ms, transform 0.3s ease-in-out ${overshootDelay}ms, opacity 0.3s ease-out ${initialDelay}ms`
-                    : 'all 0.2s ease-in',
                   // Custom keyframe animation for the overshoot effect
-                  animation: isMenuOpen ? `staircaseEntry-${index} 1s ease-out ${initialDelay}ms forwards` : 'none',
+                  animation: isMenuOpen ? `staircaseEntry-${index} 0.45s ease-out ${initialDelay}ms forwards` : 'none',
                 }}
               >
-                <Link
-                  href={item.href}
-                  className="text-white text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
+                {item.submenu ? (
+                  <button
+                    onClick={() => setActiveMenu(item.submenu)}
+                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block"
+                  >
+                    {item.name}
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-gray-300 transition-colors duration-300 block"
+                    onClick={() => { setIsMenuOpen(false); setActiveMenu('root'); }}
+                  >
+                    {item.name}
+                  </Link>
+                )}
               </div>
             );
           })}
@@ -157,6 +188,26 @@ export function Header() {
           @keyframes staircaseEntry-3 {
             0% { transform: translateX(-130px); opacity: 0; }
             60% { transform: translateX(40px); opacity: 1; }
+            100% { transform: translateX(0px); opacity: 1; }
+          }
+          @keyframes staircaseEntry-4 {
+            0% { transform: translateX(-90px); opacity: 0; }
+            60% { transform: translateX(30px); opacity: 1; }
+            100% { transform: translateX(0px); opacity: 1; }
+          }
+          @keyframes staircaseEntry-5 {
+            0% { transform: translateX(-50px); opacity: 0; }
+            60% { transform: translateX(25px); opacity: 1; }
+            100% { transform: translateX(0px); opacity: 1; }
+          }
+          @keyframes staircaseEntry-6 {
+            0% { transform: translateX(-30px); opacity: 0; }
+            60% { transform: translateX(20px); opacity: 1; }
+            100% { transform: translateX(0px); opacity: 1; }
+          }
+          @keyframes staircaseEntry-7 {
+            0% { transform: translateX(-20px); opacity: 0; }
+            60% { transform: translateX(15px); opacity: 1; }
             100% { transform: translateX(0px); opacity: 1; }
           }
         `}</style>
