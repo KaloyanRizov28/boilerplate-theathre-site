@@ -29,6 +29,12 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Prevent horizontal scrollbar from appearing sitewide */
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 /* globals.css */
 
 /* Ensure Swiper container has room and doesn't clip shadows */
@@ -69,4 +75,3 @@ body {
   outline: none !important;
   box-shadow: none !important;
 }
-
