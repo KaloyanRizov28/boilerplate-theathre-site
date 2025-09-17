@@ -23,6 +23,7 @@ export function Header() {
   const navigation = [
     { name: 'Програма', href: '/program' },
     { name: 'За нас', href: '/about' },
+    { name: 'Сцени', href: '/scenes' },
     { name: 'Билети', href: '/tickets' },
     { name: 'Контакти', href: '/contact' },
   ]
