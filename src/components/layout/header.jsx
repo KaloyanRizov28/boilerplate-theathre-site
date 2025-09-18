@@ -21,6 +21,7 @@ export function Header() {
     window.location.reload()
   }
 
+
   const menus = {
     root: [
       { name: 'Програма', href: '/program' },
@@ -34,9 +35,10 @@ export function Header() {
       { name: 'Ръководство', href: '/about?section=leadership' },
       { name: 'Административен състав', href: '/about?section=administrative' },
       { name: 'За театъра', href: '/about' },
-      { name: 'Сцени', href: '/about?section=scenes' },
+      { name: 'Сцени', href: '/scenes' },
     ],
   }
+
 
   return (
     <>
