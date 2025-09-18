@@ -30,10 +30,7 @@ export function Header() {
       { name: 'Контакти', href: '/contact' },
     ],
     about: [
-      { name: 'Творчески състав', href: '/about?section=creative' },
-      { name: 'Технически състав', href: '/about?section=technical' },
-      { name: 'Ръководство', href: '/about?section=leadership' },
-      { name: 'Административен състав', href: '/about?section=administrative' },
+      { name: 'Състав', href: '/cast' },
       { name: 'За театъра', href: '/about' },
       { name: 'Сцени', href: '/scenes' },
     ],
@@ -57,25 +54,25 @@ export function Header() {
 
               <div
                 className={`w-6 h-0.5 transition-all duration-300 ${
-                  isMenuOpen ? 'bg-theater-hover' : 'bg-white'
-                } group-hover:bg-theater-hover ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
+                  isMenuOpen ? 'bg-[#27AAE1]' : 'bg-white'
+                } group-hover:bg-[#27AAE1] ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
               ></div>
               <div
                 className={`w-6 h-0.5 transition-all duration-300 ${
-                  isMenuOpen ? 'bg-theater-hover opacity-0' : 'bg-white'
-                } group-hover:bg-theater-hover`}
+                  isMenuOpen ? 'bg-[#27AAE1] opacity-0' : 'bg-white'
+                } group-hover:bg-[#27AAE1]`}
               ></div>
               <div
                 className={`w-6 h-0.5 transition-all duration-300 ${
-                  isMenuOpen ? 'bg-theater-hover -rotate-45 -translate-y-2' : 'bg-white'
-                } group-hover:bg-theater-hover`}
+                  isMenuOpen ? 'bg-[#27AAE1] -rotate-45 -translate-y-2' : 'bg-white'
+                } group-hover:bg-[#27AAE1]`}
               ></div>
 
             </button>
 
             {/* Theater Title */}
-            <Link href="/" className="text-center">
-              <div className="text-sm font-light tracking-wide text-theater-hover">
+            <Link href="/" className="text-center group" aria-label="Начало">
+              <div className="text-sm font-light tracking-wide text-white group-hover:text-[#27AAE1] transition-colors duration-300">
                 <div>МУЗИКАЛНО-ДРАМАТИЧЕН ТЕАТЪР</div>
                 <div>"КОНСТАНТИН КИСИМОВ"</div>
               </div>
@@ -130,7 +127,7 @@ export function Header() {
             <button
               aria-label="Назад"
               onClick={() => setActiveMenu('root')}
-              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 flex items-center mb-4 sm:mb-6"
+              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-[#27AAE1] transition-colors duration-300 flex items-center mb-4 sm:mb-6"
             >
               <span className="inline-block mr-3">←</span>
               <span className="sr-only">Назад</span>
@@ -158,14 +155,14 @@ export function Header() {
                 {item.submenu ? (
                   <button
                     onClick={() => setActiveMenu(item.submenu)}
-                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block"
+                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-[#27AAE1] transition-colors duration-300 block"
                   >
                     {item.name}
                   </button>
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block"
+                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-[#27AAE1] transition-colors duration-300 block"
                     onClick={() => { setIsMenuOpen(false); setActiveMenu('root'); }}
                   >
                     {item.name}

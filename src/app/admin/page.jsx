@@ -334,13 +334,13 @@ function ShowsSection({ supabase }) {
               <td className="p-2 border-b border-theater-light space-x-2">
                 <button
                   onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-theater-hover hover:underline"
+                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-theater-hover hover:underline"
+                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
                 >
                   Delete
                 </button>
@@ -627,13 +627,13 @@ function EmployeesSection({ supabase }) {
               <td className="p-2 border-b border-theater-light space-x-2">
                 <button
                   onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-theater-hover hover:underline"
+                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-theater-hover hover:underline"
+                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
                 >
                   Delete
                 </button>
@@ -784,13 +784,13 @@ function PerformancesSection({ supabase }) {
               <td className="p-2 border-b border-theater-light space-x-2">
                 <button
                   onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-theater-hover hover:underline"
+                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-theater-hover hover:underline"
+                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
                 >
                   Delete
                 </button>
@@ -951,13 +951,13 @@ function CastSection({ supabase }) {
               <td className="p-2 border-b border-theater-light space-x-2">
                 <button
                   onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-theater-hover hover:underline"
+                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
                 >
                   Edit
                 </button>
                 <button
                   onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-theater-hover hover:underline"
+                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
                 >
                   Delete
                 </button>
@@ -969,4 +969,3 @@ function CastSection({ supabase }) {
     </section>
   )
 }
-

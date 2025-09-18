@@ -8,6 +8,7 @@ import { createClient } from '../../../lib/supabase/client'
 
 export function TransparentHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const [activeMenu, setActiveMenu] = useState('root')
   const [user, setUser] = useState(null)
   const supabase = createClient()
 
@@ -20,12 +21,19 @@ export function TransparentHeader() {
     window.location.reload()
   }
 
-  const navigation = [
-    { name: 'Програма', href: '/program' },
-    { name: 'За нас', href: '/about' },
-    { name: 'Билети', href: '/tickets' },
-    { name: 'Контакти', href: '/contact' },
-  ]
+  const menus = {
+    root: [
+      { name: 'Програма', href: '/program' },
+      { name: 'За нас', submenu: 'about' },
+      { name: 'Билети', href: '/tickets' },
+      { name: 'Контакти', href: '/contact' },
+    ],
+    about: [
+      { name: 'Състав', href: '/cast' },
+      { name: 'За театъра', href: '/about' },
+      { name: 'Сцени', href: '/scenes' },
+    ],
+  }
 
 
   const iconBaseClass = 'w-6 h-0.5 transition-all duration-300';
@@ -39,23 +47,26 @@ export function TransparentHeader() {
           <div className="flex justify-between items-center py-4">
             {/* Hamburger Menu */}
             <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              onClick={() => {
+                if (isMenuOpen) setActiveMenu('root')
+                setIsMenuOpen(!isMenuOpen)
+              }}
               className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // z-50 ensures button is above other header elements if needed
             >
               <div
                 className={`${iconBaseClass} ${
-                  isMenuOpen ? 'bg-theater-hover rotate-45 translate-y-2' : 'bg-white'
-                } group-hover:bg-theater-hover`}
+                  isMenuOpen ? 'bg-[#27AAE1] rotate-45 translate-y-2' : 'bg-white'
+                } group-hover:bg-[#27AAE1]`}
               ></div>
               <div
                 className={`${iconBaseClass} ${
-                  isMenuOpen ? 'bg-theater-hover opacity-0' : 'bg-white'
-                } group-hover:bg-theater-hover`}
+                  isMenuOpen ? 'bg-[#27AAE1] opacity-0' : 'bg-white'
+                } group-hover:bg-[#27AAE1]`}
               ></div>
               <div
                 className={`${iconBaseClass} ${
-                  isMenuOpen ? 'bg-theater-hover -rotate-45 -translate-y-2' : 'bg-white'
-                } group-hover:bg-theater-hover`}
+                  isMenuOpen ? 'bg-[#27AAE1] -rotate-45 -translate-y-2' : 'bg-white'
+                } group-hover:bg-[#27AAE1]`}
               ></div>
             </button>
 
@@ -107,7 +118,17 @@ export function TransparentHeader() {
 
         {/* Menu Content */}
         <nav className="relative z-30 flex flex-col justify-center h-full pl-12 sm:pl-16 md:pl-24" aria-label="Основна навигация">
-          {navigation.map((item, index) => {
+          {activeMenu !== 'root' && (
+            <button
+              aria-label="Назад"
+              onClick={() => setActiveMenu('root')}
+              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-[#27AAE1] transition-colors duration-300 flex items-center mb-6"
+            >
+              <span className="inline-block mr-3">←</span>
+              <span className="sr-only">Назад</span>
+            </button>
+          )}
+          {menus[activeMenu].map((item, index) => {
             const startPosition = -250 + (index * 40); // Initial off-screen position
             const finalPosition = 0; // Final on-screen position
             // Animation delays can be fine-tuned
@@ -130,13 +151,22 @@ export function TransparentHeader() {
                   // animation: isMenuOpen ? `staircaseEntry-${index} 0.7s cubic-bezier(0.23, 1, 0.32, 1) ${initialDelay}ms forwards` : 'none',
                 }}
               >
-                <Link
-                  href={item.href}
-                  className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block py-1"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
+                {item.submenu ? (
+                  <button
+                    onClick={() => setActiveMenu(item.submenu)}
+                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-[#27AAE1] transition-colors duration-300 block py-1"
+                  >
+                    {item.name}
+                  </button>
+                ) : (
+                  <Link
+                    href={item.href}
+                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-[#27AAE1] transition-colors duration-300 block py-1"
+                    onClick={() => { setIsMenuOpen(false); setActiveMenu('root'); }}
+                  >
+                    {item.name}
+                  </Link>
+                )}
               </div>
             );
           })}

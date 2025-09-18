@@ -151,7 +151,7 @@ const ProgramCalendar = ({
             <button
               onClick={navigateToFirstMonth}
               disabled={isDisplayingNavFirstMonth}
-              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavFirstMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-theater-hover'}`}
+              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavFirstMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-[#27AAE1]'}`}
             >
               {firstMonthInWindow.name} {/* This will now be currentViewMonth's name */}
             </button>
@@ -159,7 +159,7 @@ const ProgramCalendar = ({
             <button
               onClick={navigateToSecondMonth}
               disabled={isDisplayingNavSecondMonth}
-              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavSecondMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-theater-hover'}`}
+              className={`${monthNameSizeClasses} font-medium capitalize transition-colors duration-150 ${isDisplayingNavSecondMonth ? 'text-white cursor-default' : 'text-gray-400 hover:text-[#27AAE1]'}`}
             >
               {secondMonthInWindow.name} {/* This will now be (currentViewMonth + 1)'s name */}
             </button>

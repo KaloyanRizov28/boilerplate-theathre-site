@@ -5,8 +5,8 @@ import Link from "next/link" // Using the current Next.js Link component
 
 export function Footer() {
   // Define styles for links that *do* have arrows
-  const linkStyleWithArrow = "text-gray-300 hover:text-theater-hover transition-colors flex items-center group text-sm py-1";
-  const arrowStyle = "inline-block transition-transform duration-300 group-hover:translate-x-1 w-4 h-4 ml-2";
+  const linkStyleWithArrow = "text-gray-300 hover:text-[#27AAE1] transition-colors flex items-center group text-sm py-1";
+  const arrowStyle = "inline-block transition-transform duration-300 group-hover:translate-x-1 w-4 h-4 ml-2 fill-current group-hover:text-[#27AAE1]";
 
   return (
     <footer className="bg-theater-dark py-12 text-white"> {/* Adjusted padding for a better look */}
@@ -19,12 +19,12 @@ export function Footer() {
             <div className="space-y-2">
               {/* Privacy Policy Link - New Syntax */}
               <Link href="/privacy-policy" className={linkStyleWithArrow}>
-                  Политика за неприкосновеност и "бисквитки"
+                  <span className="hover:text-[#27AAE1] group-hover:text-[#27AAE1]">Политика за неприкосновеност и "бисквитки"</span>
                   <Arrow className={arrowStyle} />
               </Link>
               {/* Terms and Conditions Link - New Syntax */}
               <Link href="/terms" className={linkStyleWithArrow}>
-                  Общи условия
+                  <span className="hover:text-[#27AAE1] group-hover:text-[#27AAE1]">Общи условия</span>
                   <Arrow className={arrowStyle} />
               </Link>
             </div>

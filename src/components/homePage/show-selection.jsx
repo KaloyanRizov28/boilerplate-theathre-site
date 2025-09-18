@@ -30,11 +30,10 @@ const ShowsSection = (props) => {
           <div className="flex justify-start items-center mb-8">
             <Link
               href="/tickets"
-
-              className="text-white text-2xl sm:text-3xl font-[700] group transition-colors duration-300 hover:text-theater-hover"
-
+              className="text-white text-2xl sm:text-3xl font-[700] group transition-colors duration-300 hover:text-[#27AAE1]"
             >
-              Билети <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-1 "></Arrow>
+              <span className="hover:text-[#27AAE1] group-hover:text-[#27AAE1]">Билети</span>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-1 fill-current group-hover:text-[#27AAE1]"></Arrow>
             </Link>
           </div>
 
@@ -44,7 +43,7 @@ const ShowsSection = (props) => {
               onClick={() => setActiveFilter('all')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'all'
                 ? 'text-white'
-                : 'text-gray-500 hover:text-theater-hover'
+                : 'text-gray-500 hover:text-[#27AAE1]'
                 }`}
             >
               ВСИЧКИ
@@ -53,7 +52,7 @@ const ShowsSection = (props) => {
               onClick={() => setActiveFilter('theater')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'theater'
                 ? 'text-white'
-                : 'text-gray-500 hover:text-theater-hover'
+                : 'text-gray-500 hover:text-[#27AAE1]'
                 }`}
             >
               ТЕАТЪР
@@ -62,7 +61,7 @@ const ShowsSection = (props) => {
               onClick={() => setActiveFilter('music')}
               className={`text-xl font-light transition-all duration-300 ${activeFilter === 'music'
                 ? 'text-white'
-                : 'text-gray-500 hover:text-theater-hover'
+                : 'text-gray-500 hover:text-[#27AAE1]'
                 }`}
             >
               МУЗИКА
@@ -126,15 +125,15 @@ const ShowsSection = (props) => {
 
               {/* "Информация" and Arrow section - styled to replicate the original Link's appearance */}
               {/* Original Link classes: "inline-flex items-center text-white text-base font-light transition-colors duration-300" */}
-              <div className="inline-flex items-center text-white text-base font-light transition-colors duration-300 mt-2 group-hover:text-theater-hover"> {/* "mt-2" added for spacing */}
+              <div className="inline-flex items-center text-white text-base font-light transition-colors duration-300 mt-2 group-hover:text-[#27AAE1] hover:text-[#27AAE1]"> {/* "mt-2" added for spacing */}
                 {/* Original span classes: "border-b border-transparent transition-all duration-300" */}
                 {/* "group-hover:border-theater-hover" is added for visual feedback when the card (group) is hovered.
                     The original span didn't have an explicit hover state for the border. Remove if not desired. */}
-                <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300">
+                <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                   Информация
                 </span>
                 {/* Arrow classes are preserved. "group-hover:translate-x-2" works due to "group" on the parent Link. */}
-                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
+                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current group-hover:text-[#27AAE1]" />
               </div>
             </div>
           </div>
@@ -147,14 +146,14 @@ const ShowsSection = (props) => {
           <div className="text-right mt-12 pr-6">
             <Link
               href="/calendar"
-              className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group hover:text-theater-hover" // Added 'group' for hover effects
+              className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group hover:text-[#27AAE1]" // Added 'group' for hover effects
             >
               {/* Span for the text with an underline effect on hover */}
-              <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 text-lg">
+              <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 text-lg hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                 Виж всички представления {/* Kept your original text */}
               </span>
               {/* Arrow icon, matching the target style */}
-              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2"></Arrow>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
             </Link>
           </div>
         )}

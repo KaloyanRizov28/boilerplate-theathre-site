@@ -44,13 +44,12 @@ const CastCard = ({ member }) => (
                 </div>
                 <Link
                     href={`/employees/${member.id}`}
-
-                    className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2 hover:text-theater-hover group"
+                    className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2 hover:text-[#27AAE1] group"
                 >
-                    <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
+                    <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                         Виж още
                     </span>
-                    <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
+                    <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current group-hover:text-[#27AAE1]" />
                 </Link>
             </div>
         </div>
@@ -112,8 +111,8 @@ const SwiperCastSection = ({ castMembers = [] }) => {
                                 </SwiperSlide>
                             ))}
 
-                            <div className="swiper-button-next text-white hover:text-theater-hover transition-colors"></div>
-                            <div className="swiper-button-prev text-white hover:text-theater-hover transition-colors"></div>
+                            <div className="swiper-button-next text-white hover:text-[#27AAE1] transition-colors"></div>
+                            <div className="swiper-button-prev text-white hover:text-[#27AAE1] transition-colors"></div>
                         </Swiper>
                     ) : (
                         <p className="text-gray-400 text-center py-8">
@@ -126,14 +125,12 @@ const SwiperCastSection = ({ castMembers = [] }) => {
                 <div className="text-right pr-2"> {/* MODIFIED: text-right */}
                     <Link
                         href="/cast"
-                        // MODIFIED: New class, using text-lg as it was before, group added
-                        className="inline-flex items-center text-white text-lg font-light group transition-colors duration-300 hover:text-theater-hover"
+                        className="inline-flex items-center text-white text-lg font-light group transition-colors duration-300 hover:text-[#27AAE1]"
                     >
-                        <span className="border-b border-transparent  transition-all duration-300 group-hover:border-theater-hover">
+                        <span className="border-b border-transparent  transition-all duration-300 group-hover:border-theater-hover hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                             Виж целия състав
                         </span>
-                        {/* MODIFIED: Added arrow */}
-                        <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2" />
+                        <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2 fill-current group-hover:text-[#27AAE1]" />
                     </Link>
                 </div>
             </div>

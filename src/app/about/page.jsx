@@ -17,24 +17,25 @@ export default function AboutPage() {
 
               <Link
                 href="/cast"
-                className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
+                className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-[#27AAE1]"
               >
 
-                <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
+                <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                   Състав
                 </span>
-                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
+                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current  
+                  group-hover:text-[#27AAE1]" />
               </Link>
 
               <Link
                 href="/scenes"
-                className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
+                className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-[#27AAE1]"
               >
 
-                <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
+                <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                   Сцени
                 </span>
-                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
+                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current group-hover:text-[#27AAE1]" />
               </Link>
             </div>
           </div>
@@ -53,4 +54,3 @@ export default function AboutPage() {
     </>
   );
 }
-

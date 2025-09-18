@@ -608,7 +608,7 @@ export default function SeatMap({ venueData }) {
                             <span className="text-black">Row {seat.row}, Seat {seat.number}</span>
                             <button
                               onClick={() => removeSeat(seat.id)}
-                              className="text-red-500 hover:text-theater-hover p-1"
+                              className="text-red-500 hover:text-[#27AAE1] p-1"
                               aria-label="Remove seat"
                             >
                               ✕

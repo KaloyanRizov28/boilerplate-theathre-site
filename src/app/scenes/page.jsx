@@ -46,27 +46,6 @@ const venues = [
 export default function ScenesPage() {
   return (
     <main className="bg-theater-dark text-white">
-      <section className="relative isolate overflow-hidden">
-        <Image
-          src="/hero.jpg"
-          alt="Голяма сцена на театъра"
-          fill
-          priority
-          className="object-cover brightness-[0.35]"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-theater-dark/40 via-theater-dark/70 to-theater-dark" />
-        <div className="relative px-6 py-24 sm:py-28 md:py-32">
-          <div className="mx-auto max-w-4xl space-y-6 text-center">
-            <p className="uppercase tracking-[0.35em] text-xs sm:text-sm text-theater-grey">Сцени</p>
-            <h1 className="text-4xl sm:text-5xl md:text-6xl font-light">Сцените на театъра</h1>
-            <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
-              Разгледайте пространствата, в които оживяват нашите спектакли – от внушителната голяма сцена до
-              камерното пространство за експериментални проекти.
-            </p>
-          </div>
-        </div>
-      </section>
-
       <section className="px-6 py-16 sm:py-20 md:py-24">
         <div className="mx-auto max-w-6xl space-y-16">
           {venues.map((venue, index) => (
@@ -80,43 +59,15 @@ export default function ScenesPage() {
                   <h2 className="text-3xl sm:text-4xl font-light">{venue.name}</h2>
                 </header>
                 <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{venue.description}</p>
-
-                <dl className="grid grid-cols-1 gap-6 sm:grid-cols-3">
-                  {venue.specs.map((spec) => (
-                    <div
-                      key={spec.label}
-                      className="rounded-2xl border border-gray-700/80 bg-theater-dark/60 px-6 py-5 text-center shadow-[0_0_45px_-30px_rgba(255,255,255,0.6)]"
-                    >
-                      <dt className="text-sm uppercase tracking-[0.25em] text-theater-grey">{spec.label}</dt>
-                      <dd className="mt-2 text-xl font-light text-white">{spec.value}</dd>
-                    </div>
-                  ))}
-                </dl>
-
-                <div className="space-y-2">
-                  <h3 className="text-sm uppercase tracking-[0.3em] text-theater-grey">Акценти</h3>
-                  <ul className="grid gap-3 text-gray-200 sm:grid-cols-2">
-                    {venue.features.map((feature) => (
-                      <li
-                        key={feature}
-                        className="flex items-start gap-3 rounded-2xl border border-gray-800/60 bg-theater-dark/40 px-5 py-4"
-                      >
-                        <span className="mt-1 h-2.5 w-2.5 flex-none rounded-full bg-theater-accent" aria-hidden />
-                        <span className="text-sm sm:text-base leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
                 <Link href={venue.schemeHref} className="inline-flex items-center text-lg font-light group">
-                  <span className="border-b border-transparent pb-1 transition-all duration-300 group-hover:border-white">
+                  <span className="border-b border-transparent pb-1 transition-all duration-300 group-hover:border-white hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                     Схеми на залата
                   </span>
-                  <Arrow className="ml-3 h-6 w-6 transition-transform duration-300 group-hover:translate-x-1.5" />
+                  <Arrow className="ml-3 h-6 w-6 transition-transform duration-300 group-hover:translate-x-1.5 fill-current group-hover:text-[#27AAE1]" />
                 </Link>
               </div>
 
-              <div className={`relative overflow-hidden rounded-3xl border border-gray-700/70 bg-gradient-to-br from-gray-700/40 via-gray-600/30 to-gray-500/20 backdrop-blur ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
+              <div className={`relative overflow-hidden rounded-none border border-gray-700/70 bg-gradient-to-br from-gray-700/40 via-gray-600/30 to-gray-500/20 backdrop-blur ${index % 2 === 1 ? 'lg:order-1' : ''}`}>
                 <div className="aspect-[4/3] sm:aspect-[3/2]">
                   <Image
                     src="/logo.svg"

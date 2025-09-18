@@ -151,13 +151,13 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
           />
         </div>
         <div className="flex flex-wrap justify-right gap-x-6 gap-y-3 sm:gap-x-8 my-8">
-          <button onClick={() => { setActiveFilter('all'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'all' ? 'text-white' : 'text-gray-500 hover:text-theater-hover'}`}>ВСИЧКИ</button>
-          <button onClick={() => { setActiveFilter('theater'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'theater' ? 'text-white' : 'text-gray-500 hover:text-theater-hover'}`}>ТЕАТЪР</button>
-          <button onClick={() => { setActiveFilter('music'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'music' ? 'text-white' : 'text-gray-500 hover:text-theater-hover'}`}>МУЗИКА</button>
+          <button onClick={() => { setActiveFilter('all'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'all' ? 'text-white' : 'text-gray-500 hover:text-[#27AAE1]'}`}>ВСИЧКИ</button>
+          <button onClick={() => { setActiveFilter('theater'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'theater' ? 'text-white' : 'text-gray-500 hover:text-[#27AAE1]'}`}>ТЕАТЪР</button>
+          <button onClick={() => { setActiveFilter('music'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'music' ? 'text-white' : 'text-gray-500 hover:text-[#27AAE1]'}`}>МУЗИКА</button>
         </div>
         {selectedDate && (
           <div className="text-center mb-6">
-            <button onClick={() => setSelectedDate(null)} className="text-yellow-400 hover:text-theater-hover underline text-sm sm:text-base">
+            <button onClick={() => setSelectedDate(null)} className="text-yellow-400 hover:text-[#27AAE1] underline text-sm sm:text-base">
               Покажи всички за месеца
             </button>
           </div>
@@ -185,12 +185,12 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
                             <Image src={show.poster_URL || show.image_URL} alt={show.title} fill sizes="(max-width: 426px) 90vw, (max-width: 639px) 384px, (max-width: 1279px) 45vw, 30vw" style={{ objectFit: 'cover' }} className="rounded" />
                           </div>
                           <div>
-                            <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-theater-hover transition-colors leading-tight">{show.title}</h3>
+                            <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-[#27AAE1] transition-colors leading-tight">{show.title}</h3>
                             <p className="text-xs text-gray-400 mt-0.5">{show.author}</p>
                             <p className="text-xs sm:text-sm text-gray-200 mt-1.5">{show.time} {show.venue}</p>
-                            <div className="inline-flex items-center text-xs sm:text-sm text-yellow-500 group-hover:text-theater-hover transition-colors mt-1 font-medium">
+                            <div className="inline-flex items-center text-xs sm:text-sm text-yellow-500 transition-colors mt-1 font-medium hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                               Билети
-                              <Arrow className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-1.5 transition-transform duration-200 group-hover:translate-x-1" />
+                              <Arrow className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-1.5 transition-transform duration-200 group-hover:translate-x-1 fill-current group-hover:text-[#27AAE1]" />
                             </div>
                           </div>
                         </a>

@@ -21,13 +21,12 @@ const AboutTheaterSection = () => {
             
             <Link
               href="/about"
-
-              className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
+              className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-[#27AAE1]"
             >
-              <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
+              <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                 Виж още
               </span>
-              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2"></Arrow>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
             </Link>
           </div>
           
@@ -84,7 +83,7 @@ const AboutTheaterSectionWithSVG = () => {
             
             <Link
               href="/about"
-              className="inline-flex items-center text-white text-xl font-light group hover:text-theater-hover"
+              className="inline-flex items-center text-white text-xl font-light group hover:text-[#27AAE1]"
             >
               <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300">
                 Виж още
