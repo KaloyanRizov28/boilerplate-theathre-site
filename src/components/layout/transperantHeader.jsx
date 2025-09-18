@@ -31,6 +31,9 @@ export function TransparentHeader() {
   const iconBaseClass = 'w-6 h-0.5 transition-all duration-300';
 
 
+  const interactiveMenuItemClasses =
+    'text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide transition-colors duration-300 block py-1 hover:text-theater-hover focus-visible:outline-none focus-visible:text-theater-hover focus-visible:underline focus-visible:decoration-theater-hover focus-visible:decoration-2';
+
   return (
     <>
       {/* Header - Now Transparent and FIXED */}
@@ -40,7 +43,7 @@ export function TransparentHeader() {
             {/* Hamburger Menu */}
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // z-50 ensures button is above other header elements if needed
+              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theater-hover focus-visible:ring-offset-2 focus-visible:ring-offset-theater-dark" // z-50 ensures button is above other header elements if needed
             >
               <div
                 className={`${iconBaseClass} ${
@@ -67,7 +70,10 @@ export function TransparentHeader() {
                 </span>
               )}
               {user && (
-                <button onClick={handleLogout} className="text-theater-accent">
+                <button
+                  onClick={handleLogout}
+                  className="text-white transition-colors hover:text-theater-hover focus-visible:text-theater-hover focus-visible:outline-none"
+                >
                   Log out
                 </button>
               )}
@@ -132,7 +138,7 @@ export function TransparentHeader() {
               >
                 <Link
                   href={item.href}
-                  className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block py-1"
+                  className={interactiveMenuItemClasses}
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {item.name}
