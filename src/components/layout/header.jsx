@@ -40,6 +40,9 @@ export function Header() {
   }
 
 
+  const interactiveMenuItemClasses =
+    'text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide transition-colors duration-300 block hover:text-theater-hover focus-visible:outline-none focus-visible:text-theater-hover focus-visible:underline focus-visible:decoration-theater-hover focus-visible:decoration-2';
+
   return (
     <>
       {/* Header */}
@@ -52,7 +55,7 @@ export function Header() {
                 if (isMenuOpen) setActiveMenu('root')
                 setIsMenuOpen(!isMenuOpen)
               }}
-              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
+              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-theater-hover focus-visible:ring-offset-2 focus-visible:ring-offset-theater-dark"
             >
 
               <div
@@ -74,8 +77,8 @@ export function Header() {
             </button>
 
             {/* Theater Title */}
-            <Link href="/" className="text-center">
-              <div className="text-sm font-light tracking-wide text-theater-hover">
+            <Link href="/" className="text-center group focus-visible:outline-none">
+              <div className="text-sm font-light tracking-wide text-theater-hover transition-colors duration-300 group-hover:text-theater-hover group-focus-visible:text-theater-hover">
                 <div>МУЗИКАЛНО-ДРАМАТИЧЕН ТЕАТЪР</div>
                 <div>"КОНСТАНТИН КИСИМОВ"</div>
               </div>
@@ -89,7 +92,10 @@ export function Header() {
                 </span>
               )}
               {user && (
-                <button onClick={handleLogout} className="text-theater-accent">
+                <button
+                  onClick={handleLogout}
+                  className="text-white transition-colors hover:text-theater-hover focus-visible:text-theater-hover focus-visible:outline-none"
+                >
                   Log out
                 </button>
               )}
@@ -130,7 +136,7 @@ export function Header() {
             <button
               aria-label="Назад"
               onClick={() => setActiveMenu('root')}
-              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 flex items-center mb-4 sm:mb-6"
+              className="text-white text-2xl md:text-3xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 flex items-center mb-4 sm:mb-6 focus-visible:outline-none focus-visible:text-theater-hover focus-visible:underline focus-visible:decoration-theater-hover focus-visible:decoration-2"
             >
               <span className="inline-block mr-3">←</span>
               <span className="sr-only">Назад</span>
@@ -158,14 +164,14 @@ export function Header() {
                 {item.submenu ? (
                   <button
                     onClick={() => setActiveMenu(item.submenu)}
-                    className="text-left text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block"
+                    className={`text-left ${interactiveMenuItemClasses}`}
                   >
                     {item.name}
                   </button>
                 ) : (
                   <Link
                     href={item.href}
-                    className="text-white text-3xl sm:text-4xl md:text-5xl font-light tracking-wide hover:text-theater-hover transition-colors duration-300 block"
+                    className={interactiveMenuItemClasses}
                     onClick={() => { setIsMenuOpen(false); setActiveMenu('root'); }}
                   >
                     {item.name}
