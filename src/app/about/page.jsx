@@ -13,7 +13,7 @@ export default function AboutPage() {
               Lorem ipsum dolor sit amet consectetur. Commodo proin commodo cras nisl sem. Dis malesuada
               in interdum aenean est lacus libero.Lorem ipsum dolor sit amet consectetur.
             </p>
-            <div className="space-y-2">
+            <div className="flex gap-4 justify-start">
 
               <Link
                 href="/cast"
@@ -48,7 +48,7 @@ export default function AboutPage() {
       </section>
       <section className="bg-gray-200 text-theater-dark flex items-center justify-center h-96 px-16 text-center">
         <p className="text-2xl">
-          snimka na teatura (mojebi ot vutre che da ne e grozna)
+          snimka na teatura (mojebi ot vutre che da ne e grozna XD XD)
         </p>
       </section>
     </>
