@@ -14,13 +14,23 @@ export default function AboutPage() {
               in interdum aenean est lacus libero.Lorem ipsum dolor sit amet consectetur.
             </p>
             <div className="space-y-2">
-              <Link href="/cast" className="inline-flex items-center text-white text-xl font-light group">
+
+              <Link
+                href="/cast"
+                className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
+              >
+
                 <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                   Състав
                 </span>
                 <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2" />
               </Link>
-              <Link href="/scenes" className="inline-flex items-center text-white text-xl font-light group">
+
+              <Link
+                href="/scenes"
+                className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
+              >
+
                 <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                   Сцени
                 </span>

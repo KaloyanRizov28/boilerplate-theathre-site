@@ -21,7 +21,8 @@ const AboutTheaterSection = () => {
             
             <Link
               href="/about"
-              className="inline-flex items-center text-white text-xl font-light group hover:text-theater-hover"
+
+              className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-theater-hover"
             >
               <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                 Виж още

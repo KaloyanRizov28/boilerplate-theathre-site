@@ -44,7 +44,8 @@ const CastCard = ({ member }) => (
                 </div>
                 <Link
                     href={`/employees/${member.id}`}
-                    className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2 hover:text-theater-hover"
+
+                    className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2 hover:text-theater-hover group"
                 >
                     <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover">
                         Виж още

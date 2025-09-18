@@ -52,17 +52,25 @@ export function Header() {
                 if (isMenuOpen) setActiveMenu('root')
                 setIsMenuOpen(!isMenuOpen)
               }}
-              className="flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
+              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
             >
-              <div className={`w-6 h-0.5 bg-theater-hover transition-all duration-300 ${
-                isMenuOpen ? 'rotate-45 translate-y-2' : ''
-              }`}></div>
-              <div className={`w-6 h-0.5 bg-theater-hover transition-all duration-300 ${
-                isMenuOpen ? 'opacity-0' : ''
-              }`}></div>
-              <div className={`w-6 h-0.5 bg-theater-hover transition-all duration-300 ${
-                isMenuOpen ? '-rotate-45 -translate-y-2' : ''
-              }`}></div>
+
+              <div
+                className={`w-6 h-0.5 transition-all duration-300 ${
+                  isMenuOpen ? 'bg-theater-hover' : 'bg-white'
+                } group-hover:bg-theater-hover ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
+              ></div>
+              <div
+                className={`w-6 h-0.5 transition-all duration-300 ${
+                  isMenuOpen ? 'bg-theater-hover opacity-0' : 'bg-white'
+                } group-hover:bg-theater-hover`}
+              ></div>
+              <div
+                className={`w-6 h-0.5 transition-all duration-300 ${
+                  isMenuOpen ? 'bg-theater-hover -rotate-45 -translate-y-2' : 'bg-white'
+                } group-hover:bg-theater-hover`}
+              ></div>
+
             </button>
 
             {/* Theater Title */}
