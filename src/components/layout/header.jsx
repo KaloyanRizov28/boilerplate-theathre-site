@@ -21,6 +21,7 @@ export function Header() {
     window.location.reload()
   }
 
+
   const menus = {
     root: [
       { name: 'Програма', href: '/program' },
@@ -34,9 +35,10 @@ export function Header() {
       { name: 'Ръководство', href: '/about?section=leadership' },
       { name: 'Административен състав', href: '/about?section=administrative' },
       { name: 'За театъра', href: '/about' },
-      { name: 'Сцени', href: '/about?section=scenes' },
+      { name: 'Сцени', href: '/scenes' },
     ],
   }
+
 
   return (
     <>
@@ -52,6 +54,7 @@ export function Header() {
               }}
               className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // `relative` is fine here on the button itself
             >
+
               <div
                 className={`w-6 h-0.5 transition-all duration-300 ${
                   isMenuOpen ? 'bg-theater-hover' : 'bg-white'
@@ -67,6 +70,7 @@ export function Header() {
                   isMenuOpen ? 'bg-theater-hover -rotate-45 -translate-y-2' : 'bg-white'
                 } group-hover:bg-theater-hover`}
               ></div>
+
             </button>
 
             {/* Theater Title */}

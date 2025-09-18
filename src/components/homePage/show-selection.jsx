@@ -30,7 +30,9 @@ const ShowsSection = (props) => {
           <div className="flex justify-start items-center mb-8">
             <Link
               href="/tickets"
+
               className="text-white text-2xl sm:text-3xl font-[700] group transition-colors duration-300 hover:text-theater-hover"
+
             >
               Билети <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-1 "></Arrow>
             </Link>

@@ -27,8 +27,9 @@ export function TransparentHeader() {
     { name: 'Контакти', href: '/contact' },
   ]
 
-  // Ensures hamburger icon lines are visible (e.g., white against dark hero images)
+
   const iconBaseClass = 'w-6 h-0.5 transition-all duration-300';
+
 
   return (
     <>
