@@ -103,7 +103,6 @@ export function Header() {
           </div>
         </div>
       </header>
-
       {/* Full Page Overlay Menu */}
       <div className={`fixed top-0 left-0 w-screen h-screen overflow-x-hidden z-40 transform transform-gpu transition-transform duration-500 ease-in-out ${
         isMenuOpen ? 'translate-x-0' : '-translate-x-full'
@@ -218,5 +217,5 @@ export function Header() {
         `}</style>
       </div>
     </>
-  )
+  );
 }

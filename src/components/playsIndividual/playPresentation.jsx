@@ -22,14 +22,14 @@ const PlayPresentation = ({
           {synopsis}
         </p>
         {ticketLink && ( // Only render button if ticketLink is provided
-          <a
+          (<a
             href={ticketLink}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex items-center bg-neutral-700 text-white py-3 px-6 sm:py-4 sm:px-8 rounded text-lg sm:text-xl font-bold hover:bg-theater-hover active:bg-[#1F8EC1] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-theater-hover focus:ring-opacity-75"
           >
             {ticketButtonText}
-          </a>
+          </a>)
         )}
       </div>
     </div>

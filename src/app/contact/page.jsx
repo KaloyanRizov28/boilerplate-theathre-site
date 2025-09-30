@@ -36,7 +36,6 @@ export default function ContactPage() {
       <section className="px-6 md:px-12 lg:px-16 py-14 md:py-18 lg:py-20">
         <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold">Контакти</h1>
       </section>
-
       {/* Content grid */}
       <section className="px-6 md:px-12 lg:px-16 pb-20">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
@@ -50,12 +49,18 @@ export default function ContactPage() {
                     <div key={`${sec.title}-${idx}`} className="text-gray-200">
                       <p className="text-base font-medium text-white mb-2">{p.name}</p>
                       <div className="space-y-1.5">
-                        <Link href={`tel:${p.phone.replace(/\s+/g, '')}`} className="inline-flex items-center group hover:text-[#27AAE1] transition-colors">
+                        <Link
+                          href={`tel:${p.phone.replace(/\s+/g, '')}`}
+                          className="inline-flex items-center group hover:text-[#27AAE1] transition-colors"
+                        >
                           <span className="tabular-nums">{p.phone}</span>
                           <Arrow className="w-4 h-4 ml-2 inline-block transition-transform duration-200 group-hover:translate-x-1 fill-current group-hover:text-[#27AAE1]" />
                         </Link>
                         <br />
-                        <Link href={`mailto:${p.email}`} className="inline-flex items-center group hover:text-[#27AAE1] transition-colors">
+                        <Link
+                          href={`mailto:${p.email}`}
+                          className="inline-flex items-center group hover:text-[#27AAE1] transition-colors"
+                        >
                           <span>{p.email}</span>
                           <Arrow className="w-4 h-4 ml-2 inline-block transition-transform duration-200 group-hover:translate-x-1 fill-current group-hover:text-[#27AAE1]" />
                         </Link>

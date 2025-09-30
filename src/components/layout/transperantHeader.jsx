@@ -97,7 +97,6 @@ export function TransparentHeader() {
           </div>
         </div>
       </header>
-
       {/* Full Page Overlay Menu */}
       <div className={`fixed top-0 left-0 w-full h-full z-40 transform transition-transform duration-500 ease-in-out ${
         isMenuOpen ? 'translate-x-0' : '-translate-x-full'
@@ -180,5 +179,5 @@ export function TransparentHeader() {
         */}
       </div>
     </>
-  )
+  );
 }

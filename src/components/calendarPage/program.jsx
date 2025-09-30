@@ -179,8 +179,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
                 <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10 ">
                   {showsForDay.map(show => (
                     <div key={`${show.id}-${show.performanceId || show.time}`} className="group mx-auto max-w-sm w-full sm:max-w-none sm:mx-0">
-                      <Link href={`/repertoar/${show.slug}`} legacyBehavior>
-                        <a className="block space-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">
+                      <Link href={`/repertoar/${show.slug}`} className="block space-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">
                           <div className="relative w-full shadow-lg" style={{ aspectRatio: '10/14' }}>
                             <Image src={show.poster_URL || show.image_URL} alt={show.title} fill sizes="(max-width: 426px) 90vw, (max-width: 639px) 384px, (max-width: 1279px) 45vw, 30vw" style={{ objectFit: 'cover' }} className="rounded" />
                           </div>
@@ -193,7 +192,6 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
                               <Arrow className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-1.5 transition-transform duration-200 group-hover:translate-x-1 fill-current group-hover:text-[#27AAE1]" />
                             </div>
                           </div>
-                        </a>
                       </Link>
                     </div>
                   ))}

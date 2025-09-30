@@ -29,7 +29,6 @@ const HeroSection = () => {
           </h1>
         </div>
       </section>
-
       {/* Date/Time Section - Fixed height */}
       {/* 2. Applied consistent responsive padding */}
       <div className="bg-theater-dark text-whitepy-4">

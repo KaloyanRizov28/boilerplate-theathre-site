@@ -13,7 +13,7 @@ function slugify(text) {
     .toLowerCase()
     .trim()
     .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
+    .replace(/\s+/g, '-');
 }
 
 async function fetchCollection(initialPath, apiKey) {

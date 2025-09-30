@@ -59,7 +59,10 @@ export default function ScenesPage() {
                   <h2 className="text-3xl sm:text-4xl font-light">{venue.name}</h2>
                 </header>
                 <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{venue.description}</p>
-                <Link href={venue.schemeHref} className="inline-flex items-center text-lg font-light group">
+                <Link
+                  href={venue.schemeHref}
+                  className="inline-flex items-center text-lg font-light group"
+                >
                   <span className="border-b border-transparent pb-1 transition-all duration-300 group-hover:border-white hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                     Схеми на залата
                   </span>

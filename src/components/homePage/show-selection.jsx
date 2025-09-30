@@ -73,7 +73,8 @@ const ShowsSection = (props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {displayedShows.map((show) => (
         <Link
-          key={show.id} // Preserved from the original outer div
+          // Preserved from the original outer div
+          key={show.id}
           href={`/repertoar/${show.slug}`}
           // Classes from original outer div ("group cursor-pointer") and card div ("bg-theater-dark...")
           // "cursor-pointer" is default for <a> tags rendered by Link, so explicitly adding it is optional.
@@ -146,7 +147,8 @@ const ShowsSection = (props) => {
           <div className="text-right mt-12 pr-6">
             <Link
               href="/calendar"
-              className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group hover:text-[#27AAE1]" // Added 'group' for hover effects
+              // Added 'group' for hover effects
+              className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group hover:text-[#27AAE1]"
             >
               {/* Span for the text with an underline effect on hover */}
               <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 text-lg hover:text-[#27AAE1] group-hover:text-[#27AAE1]">

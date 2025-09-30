@@ -41,7 +41,11 @@ const EkipSection = (props) => {
                 {/* Ekip Grid */}
                 <div className="flex flex-wrap gap-6 items-center justify-center sm:justify-start">
                     {filteredEkip.map((member) => (
-                        <Link key={member.id} href={`/employees/${member.id}`} className="flex flex-col items-center">
+                        <Link
+                            key={member.id}
+                            href={`/employees/${member.id}`}
+                            className="flex flex-col items-center"
+                        >
                             {member.profile_picture_URL ? (
                                 <Image
                                     src={member.profile_picture_URL}

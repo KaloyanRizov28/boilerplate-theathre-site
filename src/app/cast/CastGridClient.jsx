@@ -39,7 +39,11 @@ export default function CastGridClient({ people = [] }) {
         {/* Grid of people */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-16">
           {filtered.map((p) => (
-            <Link key={p.id} href={`/employees/${p.id}`} className="group block">
+            <Link
+              key={p.id}
+              href={`/employees/${p.id}`}
+              className="group block"
+            >
               <div className="relative w-full aspect-[3/4] overflow-hidden rounded bg-gray-300/70">
                 {p.profile_picture_URL && (
                   <Image
@@ -69,4 +73,3 @@ export default function CastGridClient({ people = [] }) {
     </section>
   );
 }
-
