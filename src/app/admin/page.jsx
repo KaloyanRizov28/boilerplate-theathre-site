@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { createClient } from '../../../lib/supabase/client'
 import StatusMessage from '../../components/ui/status-message'
 import AdminsSection from './admins-section'
@@ -72,6 +72,8 @@ function ShowsSection({ supabase }) {
   const [status, setStatus] = useState(null)
   const [syncing, setSyncing] = useState(false)
 
+
+
   useEffect(() => {
     fetchData()
   }, [search, page])
@@ -90,6 +92,7 @@ function ShowsSection({ supabase }) {
   }
 
   async function handleSync() {
+
     setStatus(null)
     setSyncing(true)
     try {
@@ -113,6 +116,12 @@ function ShowsSection({ supabase }) {
       setSyncing(false)
     }
   }
+
+  useEffect(() => {
+    if (hasSyncedRef.current) return
+    hasSyncedRef.current = true
+    handleSync()
+  }, [])
 
   async function handleDelete(id) {
     setStatus(null)
