@@ -19,14 +19,6 @@ const buttonBaseClass = 'text-theater-dark px-4 py-2 rounded self-end'
 const selectClass =
   `${inputClass} cursor-pointer focus:ring-2 focus:ring-theater-accent`
 
-function generateSlug(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
-}
-
 export default function AdminPage() {
   const supabase = createClient()
   const [activeTab, setActiveTab] = useState('shows')
@@ -72,24 +64,13 @@ export default function AdminPage() {
 }
 
 function ShowsSection({ supabase }) {
-  const emptyForm = {
-    title: '',
-    slug: '',
-    category: '',
-    image_URL: '',
-    poster_URL: '',
-    information: '',
-    author: '',
-    picture_personalURL: '',
-  }
   const pageSize = 10
   const [items, setItems] = useState([])
-  const [form, setForm] = useState(emptyForm)
-  const [editingId, setEditingId] = useState(null)
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)
   const [count, setCount] = useState(0)
   const [status, setStatus] = useState(null)
+  const [syncing, setSyncing] = useState(false)
 
   useEffect(() => {
     fetchData()
@@ -108,33 +89,29 @@ function ShowsSection({ supabase }) {
     if (count !== null) setCount(count)
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault()
+  async function handleSync() {
     setStatus(null)
-    if (!form.title.trim() || !form.slug.trim() || !form.category.trim()) {
-      setStatus({
-        type: 'error',
-        message: 'Title, category and slug are required.',
+    setSyncing(true)
+    try {
+      const response = await fetch('/api/entase/sync', {
+        method: 'POST',
       })
-      return
+      const result = await response.json()
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to sync with Entase.')
+      }
+      const { showCount = 0, performanceCount = 0 } = result
+      setStatus({
+        type: 'success',
+        message: `Synced ${showCount} shows and ${performanceCount} performances from Entase.`,
+      })
+      setPage(0)
+      await fetchData()
+    } catch (error) {
+      setStatus({ type: 'error', message: error.message })
+    } finally {
+      setSyncing(false)
     }
-    let result
-    if (editingId) {
-      result = await supabase.from('shows').update(form).eq('id', editingId)
-    } else {
-      result = await supabase.from('shows').insert([form])
-    }
-    if (result.error) {
-      setStatus({ type: 'error', message: result.error.message })
-      return
-    }
-    setStatus({
-      type: 'success',
-      message: editingId ? 'Show updated.' : 'Show added.',
-    })
-    setForm(emptyForm)
-    setEditingId(null)
-    fetchData()
   }
 
   async function handleDelete(id) {
@@ -149,41 +126,9 @@ function ShowsSection({ supabase }) {
     }
   }
 
-  function handleEdit(item) {
-    setForm({
-      title: item.title || '',
-      slug: item.slug || '',
-      category: item.category || '',
-      image_URL: item.image_URL || '',
-      poster_URL: item.poster_URL || '',
-      information: item.information || '',
-      author: item.author || '',
-      picture_personalURL: item.picture_personalURL || '',
-    })
-    setEditingId(item.id)
-  }
-
-  async function handleFileChange(e, key, folder) {
-    const file = e.target.files[0]
-    if (!file) return
-    const filePath = `${folder}/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage
-      .from('pictures')
-      .upload(filePath, file)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-      return
-    }
-    const { data } = supabase.storage
-      .from('pictures')
-      .getPublicUrl(filePath)
-    setForm({ ...form, [key]: data.publicUrl })
-  }
-
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
-      <h2 className="text-xl font-semibold mb-4">Shows</h2>
-      <div className="mb-4">
+      <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <input
           placeholder="Search shows"
           value={search}
@@ -193,103 +138,16 @@ function ShowsSection({ supabase }) {
           }}
           className={inputClass}
         />
-      </div>
-      <h3 className="text-lg font-medium mb-2">
-        {editingId ? 'Edit Show' : 'Add New Show'}
-      </h3>
-      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Title</label>
-          <input
-            value={form.title}
-            onChange={(e) => {
-              const title = e.target.value
-              setForm({ ...form, title, slug: generateSlug(title) })
-            }}
-            required
-            className={inputClass}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Slug</label>
-          <input value={form.slug} readOnly className={`${inputClass} opacity-50`} />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Category</label>
-          <input
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            required
-            className={inputClass}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Author</label>
-          <input
-            value={form.author}
-            onChange={(e) => setForm({ ...form, author: e.target.value })}
-            required
-            className={inputClass}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Poster</label>
-          <input
-            type="file"
-            onChange={(e) => handleFileChange(e, 'poster_URL', 'Posters')}
-            className={inputClass}
-          />
-          {form.poster_URL && (
-            <img
-              src={form.poster_URL}
-              alt="poster preview"
-              className="mt-2 h-48 object-cover"
-            />
-          )}
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Image</label>
-          <input
-            type="file"
-            onChange={(e) => handleFileChange(e, 'image_URL', 'BigPicturePlays')}
-            className={inputClass}
-          />
-          {form.image_URL && (
-            <img
-              src={form.image_URL}
-              alt="image preview"
-              className="mt-2 h-48 object-cover"
-            />
-          )}
-        </div>
-        <div className="flex flex-col sm:col-span-2">
-          <label className="text-sm font-medium">Information</label>
-          <textarea
-            value={form.information}
-            onChange={(e) => setForm({ ...form, information: e.target.value })}
-            className={`${inputClass} h-32`}
-            required
-          />
-        </div>
-        <div className="flex flex-col sm:col-span-2">
-          <label className="text-sm font-medium">Picture personal URL</label>
-          <input
-            value={form.picture_personalURL}
-            onChange={(e) =>
-              setForm({ ...form, picture_personalURL: e.target.value })
-            }
-            className={inputClass}
-          />
-        </div>
         <button
-          type="submit"
+          onClick={handleSync}
+          disabled={syncing}
           className={`${buttonBaseClass} ${
-            editingId ? 'bg-blue-500' : 'bg-green-500'
-          }`}
+            syncing ? 'bg-theater-hover text-white' : 'bg-theater-accent'
+          } disabled:opacity-60`}
         >
-          {editingId ? 'Update' : 'Add'}
+          {syncing ? 'Syncing…' : 'Sync from Entase'}
         </button>
-      </form>
+      </div>
       <StatusMessage status={status} onClear={() => setStatus(null)} />
       <div className="flex justify-end mb-2 space-x-2">
         <button
@@ -331,13 +189,7 @@ function ShowsSection({ supabase }) {
                   .filter(Boolean)
                   .join(', ')}
               </td>
-              <td className="p-2 border-b border-theater-light space-x-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                >
-                  Edit
-                </button>
+              <td className="p-2 border-b border-theater-light">
                 <button
                   onClick={() => handleDelete(item.id)}
                   className="text-red-500 hover:text-[#27AAE1] hover:underline"
