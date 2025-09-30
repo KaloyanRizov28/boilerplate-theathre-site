@@ -71,7 +71,8 @@ function ShowsSection({ supabase }) {
   const [count, setCount] = useState(0)
   const [status, setStatus] = useState(null)
   const [syncing, setSyncing] = useState(false)
-  const hasSyncedRef = useRef(false)
+
+
 
   useEffect(() => {
     fetchData()
@@ -91,7 +92,7 @@ function ShowsSection({ supabase }) {
   }
 
   async function handleSync() {
-    if (syncing) return
+
     setStatus(null)
     setSyncing(true)
     try {
