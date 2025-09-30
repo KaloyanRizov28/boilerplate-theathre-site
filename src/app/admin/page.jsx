@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { createClient } from '../../../lib/supabase/client'
 import StatusMessage from '../../components/ui/status-message'
 import AdminsSection from './admins-section'
@@ -19,17 +19,183 @@ const buttonBaseClass = 'text-theater-dark px-4 py-2 rounded self-end'
 const selectClass =
   `${inputClass} cursor-pointer focus:ring-2 focus:ring-theater-accent`
 
-function generateSlug(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-')
+function getValueAtPath(obj, path) {
+  return path.split('.').reduce((acc, key) => acc?.[key], obj)
+}
+
+function getFirstValue(obj, paths) {
+  for (const path of paths) {
+    const value = getValueAtPath(obj, path)
+    if (value !== undefined && value !== null && value !== '') {
+      return value
+    }
+  }
+  return undefined
+}
+
+function toArray(value) {
+  if (Array.isArray(value)) return value
+  if (value === undefined || value === null) return []
+  return [value]
+}
+
+function extractPerformances(production) {
+  const candidates = [
+    production.performances,
+    production.events,
+    production.performance,
+    production.productionPerformances,
+    production.slots,
+  ]
+  for (const candidate of candidates) {
+    const arr = toArray(candidate)
+    if (arr.length > 0) {
+      return arr
+    }
+  }
+  return []
+}
+
+function getPerformanceRawDate(performance) {
+  return getFirstValue(performance, [
+    'startAt',
+    'start_at',
+    'start',
+    'startTime',
+    'startsAt',
+    'starts_at',
+    'time',
+    'date',
+  ])
+}
+
+function getPerformanceDateValue(performance) {
+  const raw = getPerformanceRawDate(performance)
+  if (!raw) return null
+  const parsed = new Date(raw)
+  if (!Number.isNaN(parsed.valueOf())) {
+    return parsed
+  }
+  return null
+}
+
+function getPerformanceDate(performance) {
+  const raw = getPerformanceRawDate(performance)
+  if (!raw) return '-'
+  const parsed = getPerformanceDateValue(performance)
+  if (parsed) {
+    return parsed.toLocaleString()
+  }
+  return typeof raw === 'string' ? raw : JSON.stringify(raw)
+}
+
+function getProductionId(production) {
+  return (
+    getFirstValue(production, ['id', 'production.id', 'productionId', 'entaseId']) ||
+    null
+  )
+}
+
+function getProductionTitle(production) {
+  return (
+    getFirstValue(production, ['title', 'name', 'production.title', 'production.name']) ||
+    'Untitled production'
+  )
+}
+
+function getProductionSlug(production) {
+  return (
+    getFirstValue(production, ['slug', 'production.slug', 'slugified', 'slug_raw']) ||
+    ''
+  )
+}
+
+function getProductionCategory(production) {
+  return (
+    getFirstValue(production, [
+      'category',
+      'production.category',
+      'categories.0.name',
+      'tags.0',
+    ]) || ''
+  )
+}
+
+function getProductionPoster(production) {
+  return (
+    getFirstValue(production, [
+      'posterUrl',
+      'poster_url',
+      'poster',
+      'poster.image',
+      'images.poster',
+      'assets.poster',
+      'media.poster',
+    ]) || ''
+  )
+}
+
+function getProductionDescription(production) {
+  return (
+    getFirstValue(production, [
+      'information',
+      'synopsis',
+      'description',
+      'summary',
+      'details',
+      'about',
+    ]) || ''
+  )
 }
 
 export default function AdminPage() {
   const supabase = createClient()
   const [activeTab, setActiveTab] = useState('shows')
+  const [productions, setProductions] = useState([])
+  const [productionsLoading, setProductionsLoading] = useState(true)
+  const [productionsError, setProductionsError] = useState(null)
+
+  useEffect(() => {
+    let isMounted = true
+
+    async function loadProductions() {
+      setProductionsLoading(true)
+      setProductionsError(null)
+      try {
+        const response = await fetch('/api/entase/productions')
+        if (!response.ok) {
+          throw new Error(`Failed to load productions (${response.status})`)
+        }
+        const payload = await response.json()
+        const items = Array.isArray(payload)
+          ? payload
+          : Array.isArray(payload?.productions)
+            ? payload.productions
+            : Array.isArray(payload?.data)
+              ? payload.data
+              : []
+        if (isMounted) {
+          setProductions(items)
+        }
+      } catch (error) {
+        if (isMounted) {
+          setProductionsError(
+            error instanceof Error ? error.message : 'Unknown error'
+          )
+        }
+      } finally {
+        if (isMounted) {
+          setProductionsLoading(false)
+        }
+      }
+    }
+
+    loadProductions()
+
+    return () => {
+      isMounted = false
+    }
+  }, [])
 
   return (
     <div className="flex h-screen bg-theater-light text-white">
@@ -61,294 +227,170 @@ export default function AdminPage() {
         </button>
       </aside>
       <main className="flex-1 overflow-y-auto p-6 space-y-8">
-        {activeTab === 'shows' && <ShowsSection supabase={supabase} />}
+        {activeTab === 'shows' && (
+          <ShowsSection
+            productions={productions}
+            isLoading={productionsLoading}
+            error={productionsError}
+          />
+        )}
         {activeTab === 'employees' && <EmployeesSection supabase={supabase} />}
-        {activeTab === 'performances' && <PerformancesSection supabase={supabase} />}
-        {activeTab === 'cast' && <CastSection supabase={supabase} />}
+        {activeTab === 'performances' && (
+          <PerformancesSection
+            productions={productions}
+            isLoading={productionsLoading}
+            error={productionsError}
+          />
+        )}
+        {activeTab === 'cast' && (
+          <CastSection
+            supabase={supabase}
+            productions={productions}
+          />
+        )}
         {activeTab === 'admins' && <AdminsSection />}
       </main>
     </div>
   )
 }
 
-function ShowsSection({ supabase }) {
-  const emptyForm = {
-    title: '',
-    slug: '',
-    category: '',
-    image_URL: '',
-    poster_URL: '',
-    information: '',
-    author: '',
-    picture_personalURL: '',
-  }
-  const pageSize = 10
-  const [items, setItems] = useState([])
-  const [form, setForm] = useState(emptyForm)
-  const [editingId, setEditingId] = useState(null)
+function ShowsSection({ productions, isLoading, error }) {
   const [search, setSearch] = useState('')
-  const [page, setPage] = useState(0)
-  const [count, setCount] = useState(0)
-  const [status, setStatus] = useState(null)
 
-  useEffect(() => {
-    fetchData()
-  }, [search, page])
+  const normalizedShows = useMemo(() => {
+    return (productions ?? []).map((production, index) => {
+      const id = getProductionId(production) ?? `production-${index}`
+      const title = getProductionTitle(production)
+      const slug = getProductionSlug(production)
+      const category = getProductionCategory(production)
+      const description = getProductionDescription(production)
+      const poster = getProductionPoster(production)
+      const performances = extractPerformances(production).map((performance, perfIndex) => ({
+        id:
+          getFirstValue(performance, ['id', 'performanceId', 'uuid', 'slug']) ??
+          `${id}-performance-${perfIndex}`,
+        time: getPerformanceDate(performance),
+        venue:
+          getFirstValue(performance, [
+            'venue.name',
+            'venue',
+            'location.name',
+            'location',
+            'space',
+          ]) ?? '',
+      }))
 
-  async function fetchData() {
-    const from = page * pageSize
-    const to = from + pageSize - 1
-    const { data, count } = await supabase
-      .from('shows')
-      .select('*, cast_members!left(employees(name))', { count: 'exact' })
-      .ilike('title', `%${search}%`)
-      .order('id')
-      .range(from, to)
-    if (data) setItems(data)
-    if (count !== null) setCount(count)
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    setStatus(null)
-    if (!form.title.trim() || !form.slug.trim() || !form.category.trim()) {
-      setStatus({
-        type: 'error',
-        message: 'Title, category and slug are required.',
-      })
-      return
-    }
-    let result
-    if (editingId) {
-      result = await supabase.from('shows').update(form).eq('id', editingId)
-    } else {
-      result = await supabase.from('shows').insert([form])
-    }
-    if (result.error) {
-      setStatus({ type: 'error', message: result.error.message })
-      return
-    }
-    setStatus({
-      type: 'success',
-      message: editingId ? 'Show updated.' : 'Show added.',
+      return {
+        id,
+        title,
+        slug,
+        category,
+        description,
+        poster,
+        performances,
+      }
     })
-    setForm(emptyForm)
-    setEditingId(null)
-    fetchData()
-  }
+  }, [productions])
 
-  async function handleDelete(id) {
-    setStatus(null)
-    if (!window.confirm('Are you sure you want to delete this show?')) return
-    const { error } = await supabase.from('shows').delete().eq('id', id)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-    } else {
-      setStatus({ type: 'success', message: 'Show deleted.' })
-      fetchData()
-    }
-  }
-
-  function handleEdit(item) {
-    setForm({
-      title: item.title || '',
-      slug: item.slug || '',
-      category: item.category || '',
-      image_URL: item.image_URL || '',
-      poster_URL: item.poster_URL || '',
-      information: item.information || '',
-      author: item.author || '',
-      picture_personalURL: item.picture_personalURL || '',
+  const filteredShows = useMemo(() => {
+    if (!search.trim()) return normalizedShows
+    const term = search.trim().toLowerCase()
+    return normalizedShows.filter((show) => {
+      const haystack = [show.id, show.title, show.slug, show.category]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+      return haystack.includes(term)
     })
-    setEditingId(item.id)
-  }
-
-  async function handleFileChange(e, key, folder) {
-    const file = e.target.files[0]
-    if (!file) return
-    const filePath = `${folder}/${Date.now()}-${file.name}`
-    const { error } = await supabase.storage
-      .from('pictures')
-      .upload(filePath, file)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-      return
-    }
-    const { data } = supabase.storage
-      .from('pictures')
-      .getPublicUrl(filePath)
-    setForm({ ...form, [key]: data.publicUrl })
-  }
+  }, [normalizedShows, search])
 
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
-      <h2 className="text-xl font-semibold mb-4">Shows</h2>
+      <h2 className="text-xl font-semibold mb-2">Shows</h2>
+      <p className="text-sm text-theater-accent/80 mb-4">
+        Read-only data synced from Entase productions.
+      </p>
       <div className="mb-4">
         <input
-          placeholder="Search shows"
+          placeholder="Search productions"
           value={search}
-          onChange={(e) => {
-            setSearch(e.target.value)
-            setPage(0)
-          }}
+          onChange={(e) => setSearch(e.target.value)}
           className={inputClass}
         />
       </div>
-      <h3 className="text-lg font-medium mb-2">
-        {editingId ? 'Edit Show' : 'Add New Show'}
-      </h3>
-      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-2 mb-6">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Title</label>
-          <input
-            value={form.title}
-            onChange={(e) => {
-              const title = e.target.value
-              setForm({ ...form, title, slug: generateSlug(title) })
-            }}
-            required
-            className={inputClass}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Slug</label>
-          <input value={form.slug} readOnly className={`${inputClass} opacity-50`} />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Category</label>
-          <input
-            value={form.category}
-            onChange={(e) => setForm({ ...form, category: e.target.value })}
-            required
-            className={inputClass}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Author</label>
-          <input
-            value={form.author}
-            onChange={(e) => setForm({ ...form, author: e.target.value })}
-            required
-            className={inputClass}
-          />
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Poster</label>
-          <input
-            type="file"
-            onChange={(e) => handleFileChange(e, 'poster_URL', 'Posters')}
-            className={inputClass}
-          />
-          {form.poster_URL && (
-            <img
-              src={form.poster_URL}
-              alt="poster preview"
-              className="mt-2 h-48 object-cover"
-            />
-          )}
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Image</label>
-          <input
-            type="file"
-            onChange={(e) => handleFileChange(e, 'image_URL', 'BigPicturePlays')}
-            className={inputClass}
-          />
-          {form.image_URL && (
-            <img
-              src={form.image_URL}
-              alt="image preview"
-              className="mt-2 h-48 object-cover"
-            />
-          )}
-        </div>
-        <div className="flex flex-col sm:col-span-2">
-          <label className="text-sm font-medium">Information</label>
-          <textarea
-            value={form.information}
-            onChange={(e) => setForm({ ...form, information: e.target.value })}
-            className={`${inputClass} h-32`}
-            required
-          />
-        </div>
-        <div className="flex flex-col sm:col-span-2">
-          <label className="text-sm font-medium">Picture personal URL</label>
-          <input
-            value={form.picture_personalURL}
-            onChange={(e) =>
-              setForm({ ...form, picture_personalURL: e.target.value })
-            }
-            className={inputClass}
-          />
-        </div>
-        <button
-          type="submit"
-          className={`${buttonBaseClass} ${
-            editingId ? 'bg-blue-500' : 'bg-green-500'
-          }`}
-        >
-          {editingId ? 'Update' : 'Add'}
-        </button>
-      </form>
-      <StatusMessage status={status} onClear={() => setStatus(null)} />
-      <div className="flex justify-end mb-2 space-x-2">
-        <button
-          onClick={() => setPage((p) => Math.max(p - 1, 0))}
-          disabled={page === 0}
-          className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
-        >
-          Prev
-        </button>
-        <button
-          onClick={() =>
-            setPage((p) => (p + 1) * pageSize < count ? p + 1 : p)
-          }
-          disabled={(page + 1) * pageSize >= count}
-          className="px-2 py-1 border border-theater-light rounded disabled:opacity-50 bg-theater-light"
-        >
-          Next
-        </button>
+      {isLoading && (
+        <p className="text-sm text-theater-accent">Loading productions…</p>
+      )}
+      {error && !isLoading && (
+        <p className="text-sm text-red-400">Failed to load productions: {error}</p>
+      )}
+      {!isLoading && !error && filteredShows.length === 0 && (
+        <p className="text-sm text-white/70">No productions found.</p>
+      )}
+      <div className="grid gap-4">
+        {filteredShows.map((show) => (
+          <article
+            key={show.id}
+            className="border border-theater-light rounded p-4 bg-theater-light/40"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-start sm:gap-4">
+              {show.poster && (
+                <img
+                  src={show.poster}
+                  alt={`${show.title} poster`}
+                  className="w-32 h-48 object-cover rounded mb-3 sm:mb-0"
+                />
+              )}
+              <div className="flex-1 space-y-2">
+                <div>
+                  <h3 className="text-lg font-semibold">{show.title}</h3>
+                  <p className="text-xs text-white/60">ID: {show.id}</p>
+                </div>
+                {show.slug && (
+                  <p className="text-sm">
+                    <span className="font-medium text-white/80">Slug:</span>{' '}
+                    {show.slug}
+                  </p>
+                )}
+                {show.category && (
+                  <p className="text-sm">
+                    <span className="font-medium text-white/80">Category:</span>{' '}
+                    {show.category}
+                  </p>
+                )}
+                {show.description && (
+                  <p className="text-sm text-white/80 whitespace-pre-line">
+                    {typeof show.description === 'string'
+                      ? show.description
+                      : JSON.stringify(show.description, null, 2)}
+                  </p>
+                )}
+                {show.performances.length > 0 && (
+                  <div>
+                    <p className="text-sm font-medium text-white/80">
+                      Upcoming performances
+                    </p>
+                    <ul className="mt-1 space-y-1 text-sm text-white/70">
+                      {show.performances.slice(0, 5).map((performance) => (
+                        <li key={performance.id}>
+                          {performance.time}
+                          {performance.venue && ` · ${performance.venue}`}
+                        </li>
+                      ))}
+                      {show.performances.length > 5 && (
+                        <li className="text-xs text-white/50">
+                          +{show.performances.length - 5} more performance
+                          {show.performances.length - 5 === 1 ? '' : 's'}
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
-      <table className="w-full text-sm border border-theater-light">
-        <thead className="bg-theater-light">
-          <tr>
-            <th className="p-2 text-left border-b border-theater-light">ID</th>
-            <th className="p-2 text-left border-b border-theater-light">Title</th>
-            <th className="p-2 text-left border-b border-theater-light">Category</th>
-            <th className="p-2 text-left border-b border-theater-light">Cast</th>
-            <th className="p-2 text-left border-b border-theater-light">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id} className="odd:bg-theater-light/20">
-              <td className="p-2 border-b border-theater-light">{item.id}</td>
-              <td className="p-2 border-b border-theater-light">{item.title}</td>
-              <td className="p-2 border-b border-theater-light">{item.category}</td>
-              <td className="p-2 border-b border-theater-light">
-                {item.cast_members
-                  ?.map((cm) => cm.employees?.name)
-                  .filter(Boolean)
-                  .join(', ')}
-              </td>
-              <td className="p-2 border-b border-theater-light space-x-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </section>
   )
 }
@@ -646,164 +688,135 @@ function EmployeesSection({ supabase }) {
   )
 }
 
-function PerformancesSection({ supabase }) {
-  const emptyForm = { idShow: '', time: '' }
-  const [items, setItems] = useState([])
-  const [shows, setShows] = useState([])
-  const [form, setForm] = useState(emptyForm)
-  const [editingId, setEditingId] = useState(null)
-  const [status, setStatus] = useState(null)
+function PerformancesSection({ productions, isLoading, error }) {
+  const [search, setSearch] = useState('')
 
-  useEffect(() => {
-    fetchShows()
-    fetchData()
-  }, [])
+  const performances = useMemo(() => {
+    return (productions ?? []).flatMap((production, productionIndex) => {
+      const showId = getProductionId(production) ?? `production-${productionIndex}`
+      const showTitle = getProductionTitle(production)
+      const showSlug = getProductionSlug(production)
+      return extractPerformances(production).map((performance, performanceIndex) => {
+        const id =
+          getFirstValue(performance, ['id', 'performanceId', 'uuid', 'slug']) ||
+          `${showId}-performance-${performanceIndex}`
+        const venue =
+          getFirstValue(performance, [
+            'venue.name',
+            'venue',
+            'location.name',
+            'location',
+            'space',
+          ]) || ''
+        const timezone =
+          getFirstValue(performance, ['timezone', 'timeZone', 'tz']) || ''
+        const status =
+          getFirstValue(performance, ['status', 'state']) || ''
+        const parsedDate = getPerformanceDateValue(performance)
 
-  async function fetchShows() {
-    const { data } = await supabase.from('shows').select('id, title')
-    if (data) setShows(data)
-  }
-
-  async function fetchData() {
-    const { data } = await supabase
-      .from('performances')
-      .select('id, idShow, time, shows(title)')
-      .order('id')
-    if (data) setItems(data)
-  }
-
-  async function handleSubmit(e) {
-    e.preventDefault()
-    setStatus(null)
-    if (!form.idShow || !form.time) {
-      setStatus({ type: 'error', message: 'Show and time are required.' })
-      return
-    }
-    let result
-    if (editingId) {
-      result = await supabase
-        .from('performances')
-        .update({ idShow: form.idShow, time: form.time })
-        .eq('id', editingId)
-    } else {
-      result = await supabase
-        .from('performances')
-        .insert([{ idShow: form.idShow, time: form.time }])
-    }
-    if (result.error) {
-      setStatus({ type: 'error', message: result.error.message })
-      return
-    }
-    setStatus({
-      type: 'success',
-      message: editingId ? 'Performance updated.' : 'Performance added.',
+        return {
+          id,
+          showId,
+          showTitle,
+          showSlug,
+          venue,
+          timezone,
+          status,
+          dateLabel: getPerformanceDate(performance),
+          timestamp: parsedDate ? parsedDate.getTime() : null,
+        }
+      })
     })
-    setForm(emptyForm)
-    setEditingId(null)
-    fetchData()
-  }
+  }, [productions])
 
-  async function handleDelete(id) {
-    setStatus(null)
-    if (!window.confirm('Are you sure you want to delete this performance?')) return
-    const { error } = await supabase
-      .from('performances')
-      .delete()
-      .eq('id', id)
-    if (error) {
-      setStatus({ type: 'error', message: error.message })
-    } else {
-      setStatus({ type: 'success', message: 'Performance deleted.' })
-      fetchData()
-    }
-  }
+  const sortedPerformances = useMemo(() => {
+    return [...performances].sort((a, b) => {
+      if (a.timestamp === null && b.timestamp === null) return 0
+      if (a.timestamp === null) return 1
+      if (b.timestamp === null) return -1
+      return a.timestamp - b.timestamp
+    })
+  }, [performances])
 
-  function handleEdit(item) {
-    setForm({ idShow: item.idShow || '', time: item.time || '' })
-    setEditingId(item.id)
-  }
+  const filteredPerformances = useMemo(() => {
+    if (!search.trim()) return sortedPerformances
+    const term = search.trim().toLowerCase()
+    return sortedPerformances.filter((performance) => {
+      const haystack = [
+        performance.showTitle,
+        performance.showSlug,
+        performance.showId,
+        performance.venue,
+        performance.dateLabel,
+        performance.status,
+      ]
+        .filter(Boolean)
+        .join(' ')
+        .toLowerCase()
+      return haystack.includes(term)
+    })
+  }, [sortedPerformances, search])
 
   return (
     <section className="bg-theater-dark p-6 rounded shadow text-white">
-      <h2 className="text-xl font-semibold mb-4">Performances</h2>
-      <h3 className="text-lg font-medium mb-2">
-        {editingId ? 'Edit Performance Date' : 'Add Performance Date'}
-      </h3>
-      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Show</label>
-          <select
-            value={form.idShow}
-            onChange={(e) => setForm({ ...form, idShow: e.target.value })}
-            required
-            className={selectClass}
-          >
-            <option value="">Select show</option>
-            {shows.map((show) => (
-              <option key={show.id} value={show.id}>
-                {show.title}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Time</label>
-          <input
-            type="datetime-local"
-            value={form.time}
-            onChange={(e) => setForm({ ...form, time: e.target.value })}
-            required
-            className={inputClass}
-          />
-        </div>
-        <button
-          type="submit"
-          className={`${buttonBaseClass} ${
-            editingId ? 'bg-blue-500' : 'bg-green-500'
-          }`}
-        >
-          {editingId ? 'Update' : 'Add'}
-        </button>
-      </form>
-      <StatusMessage status={status} onClear={() => setStatus(null)} />
-      <table className="w-full text-sm border border-theater-light">
-        <thead className="bg-theater-light">
-          <tr>
-            <th className="p-2 text-left border-b border-theater-light">ID</th>
-            <th className="p-2 text-left border-b border-theater-light">Show</th>
-            <th className="p-2 text-left border-b border-theater-light">Time</th>
-            <th className="p-2 text-left border-b border-theater-light">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id} className="odd:bg-theater-light/20">
-              <td className="p-2 border-b border-theater-light">{item.id}</td>
-              <td className="p-2 border-b border-theater-light">{item.shows?.title}</td>
-              <td className="p-2 border-b border-theater-light">{item.time}</td>
-              <td className="p-2 border-b border-theater-light space-x-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
-                >
-                  Delete
-                </button>
-              </td>
+      <h2 className="text-xl font-semibold mb-2">Performances</h2>
+      <p className="text-sm text-theater-accent/80 mb-4">
+        Synced performance schedule from Entase. Editing is managed via Entase.
+      </p>
+      <div className="mb-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+        <input
+          placeholder="Search performances"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className={inputClass}
+        />
+        <span className="text-xs text-white/60">
+          Showing {filteredPerformances.length} of {performances.length} performances
+        </span>
+      </div>
+      {isLoading && (
+        <p className="text-sm text-theater-accent">Loading performances…</p>
+      )}
+      {error && !isLoading && (
+        <p className="text-sm text-red-400">Failed to load performances: {error}</p>
+      )}
+      {!isLoading && !error && filteredPerformances.length === 0 && (
+        <p className="text-sm text-white/70">No performances available.</p>
+      )}
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm border border-theater-light">
+          <thead className="bg-theater-light">
+            <tr>
+              <th className="p-2 text-left border-b border-theater-light">Show</th>
+              <th className="p-2 text-left border-b border-theater-light">Slug</th>
+              <th className="p-2 text-left border-b border-theater-light">Performance</th>
+              <th className="p-2 text-left border-b border-theater-light">Venue</th>
+              <th className="p-2 text-left border-b border-theater-light">Timezone</th>
+              <th className="p-2 text-left border-b border-theater-light">Status</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {filteredPerformances.map((performance) => (
+              <tr key={performance.id} className="odd:bg-theater-light/20">
+                <td className="p-2 border-b border-theater-light">
+                  <div className="font-medium text-white">{performance.showTitle}</div>
+                  <div className="text-xs text-white/60">{performance.showId}</div>
+                </td>
+                <td className="p-2 border-b border-theater-light">{performance.showSlug}</td>
+                <td className="p-2 border-b border-theater-light">{performance.dateLabel}</td>
+                <td className="p-2 border-b border-theater-light">{performance.venue || '-'}</td>
+                <td className="p-2 border-b border-theater-light">{performance.timezone || '-'}</td>
+                <td className="p-2 border-b border-theater-light">{performance.status || '-'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }
 
-function CastSection({ supabase }) {
+function CastSection({ supabase, productions }) {
   const emptyForm = { idShow: '', employeeId: '' }
   const [items, setItems] = useState([])
   const [shows, setShows] = useState([])
@@ -812,15 +825,39 @@ function CastSection({ supabase }) {
   const [editingId, setEditingId] = useState(null)
   const [status, setStatus] = useState(null)
 
+  const entaseProductionIds = useMemo(() => {
+    return (productions ?? [])
+      .map((production) => {
+        const id = getProductionId(production)
+        return id !== null && id !== undefined ? String(id) : null
+      })
+      .filter(Boolean)
+  }, [productions])
+
   useEffect(() => {
     fetchShows()
+  }, [supabase, entaseProductionIds])
+
+  useEffect(() => {
     fetchEmployees()
     fetchData()
   }, [])
 
   async function fetchShows() {
-    const { data } = await supabase.from('shows').select('id, title')
-    if (data) setShows(data)
+    const { data } = await supabase
+      .from('shows')
+      .select('id, title, slug')
+      .order('title')
+    if (data) {
+      const entaseSet = new Set(entaseProductionIds)
+      const filtered = data.filter((show) => {
+        const slug = show.slug ? String(show.slug).trim() : ''
+        if (!slug) return false
+        if (slug.toLowerCase().startsWith('entase:')) return true
+        return entaseSet.has(slug)
+      })
+      setShows(filtered)
+    }
   }
 
   async function fetchEmployees() {
@@ -843,28 +880,45 @@ function CastSection({ supabase }) {
       setStatus({ type: 'error', message: 'Show and employee are required.' })
       return
     }
-    let result
-    if (editingId) {
-      result = await supabase
-        .from('cast_members')
-        .update({ idShow: form.idShow, employeeId: form.employeeId })
-        .eq('id', editingId)
-    } else {
-      result = await supabase
-        .from('cast_members')
-        .insert([{ idShow: form.idShow, employeeId: form.employeeId }])
+
+    try {
+      const payload = {
+        id: editingId ?? undefined,
+        showId: form.idShow,
+        employeeId: form.employeeId,
+      }
+      const response = await fetch('/api/assignments', {
+        method: editingId ? 'PUT' : 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+      if (!response.ok) {
+        let message = `Failed to save cast assignment (${response.status})`
+        try {
+          const body = await response.json()
+          message = body?.error || body?.message || message
+        } catch (parseError) {
+          // Ignore JSON parsing errors
+        }
+        throw new Error(message)
+      }
+
+      setStatus({
+        type: 'success',
+        message: editingId ? 'Cast updated.' : 'Cast added.',
+      })
+      setForm(emptyForm)
+      setEditingId(null)
+      fetchData()
+    } catch (error) {
+      setStatus({
+        type: 'error',
+        message:
+          error instanceof Error
+            ? error.message
+            : 'Unable to save cast assignment.',
+      })
     }
-    if (result.error) {
-      setStatus({ type: 'error', message: result.error.message })
-      return
-    }
-    setStatus({
-      type: 'success',
-      message: editingId ? 'Cast updated.' : 'Cast added.',
-    })
-    setForm(emptyForm)
-    setEditingId(null)
-    fetchData()
   }
 
   async function handleDelete(id) {
@@ -903,6 +957,7 @@ function CastSection({ supabase }) {
             {shows.map((show) => (
               <option key={show.id} value={show.id}>
                 {show.title}
+                {show.slug ? ` (${show.slug})` : ''}
               </option>
             ))}
           </select>
