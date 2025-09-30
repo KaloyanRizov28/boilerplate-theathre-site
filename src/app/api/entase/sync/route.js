@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { DateTime } from 'luxon'
 
 import { createAdminClient } from '../../../../../lib/supabase/admin'
 import { createClient as createServerClient } from '../../../../../lib/supabase/server'
@@ -46,7 +47,7 @@ async function fetchCollection(initialPath, apiKey) {
       url = null
     }
   }
-
+  
   return items
 }
 
@@ -87,10 +88,38 @@ function buildShowRecord(production) {
   }
 }
 
-function normalizeDate(dateStart) {
+function normalizeDate(dateStart, timezone) {
+  if (!dateStart) return null
+
+  // If we have a location timezone, interpret dateStart in that zone and convert to UTC ISO.
+  // Handles common Entase formats: ISO-like and SQL-like without timezone info.
+  const tryInZone = (zone) => {
+    if (!zone) return null
+    // Try ISO first
+    let dt = DateTime.fromISO(String(dateStart), { zone })
+    if (!dt.isValid) {
+      // Try SQL format (e.g. 'YYYY-MM-DD HH:mm:ss')
+      dt = DateTime.fromSQL(String(dateStart), { zone })
+    }
+    if (dt.isValid) return dt.toUTC().toISO()
+    return null
+  }
+
+  const zoned = tryInZone(timezone)
+  if (zoned) return zoned
+
+  // Fallback: numeric timestamp
+  const asNum = Number(dateStart)
+  if (!Number.isNaN(asNum) && Number.isFinite(asNum)) {
+    const millis = asNum < 1e12 ? asNum * 1000 : asNum
+    const dt = DateTime.fromMillis(millis)
+    if (dt.isValid) return dt.toUTC().toISO()
+  }
+
+  // Last resort: native Date parse
   try {
     return new Date(dateStart).toISOString()
-  } catch (error) {
+  } catch (_) {
     return null
   }
 }
@@ -136,38 +165,19 @@ export async function POST() {
         { status: 502 }
       )
     }
-
     const productionsById = new Map()
     productions.forEach((production) => {
       productionsById.set(production.id, production)
     })
 
-    const productionIdsWithEvents = new Set()
-    events.forEach((event) => {
-      if (productionsById.has(event.productionID)) {
-        productionIdsWithEvents.add(event.productionID)
-      }
-    })
-
-    if (!productionIdsWithEvents.size) {
-      return NextResponse.json(
-        {
-          error:
-            'No active events with matching productions were found in the Entase API.',
-        },
-        { status: 502 }
-      )
-    }
-
-    const showsPayload = Array.from(productionIdsWithEvents).map((id) =>
-      buildShowRecord(productionsById.get(id))
-    )
+    // Upsert ALL productions as shows, regardless of events
+    const showsPayload = productions.map((p) => buildShowRecord(p))
 
     const adminClient = createAdminClient()
 
     const { data: upsertedShows, error: upsertError } = await adminClient
       .from('shows')
-      .upsert(showsPayload, { onConflict: 'slug' })
+      .upsert(showsPayload, { onConflict: 'slug', ignoreDuplicates: true })
       .select('id, slug')
 
     if (upsertError) {
@@ -190,6 +200,7 @@ export async function POST() {
 
     const slugToId = new Map(shows.map((show) => [show.slug, show.id]))
 
+    console.log(events)
     const performancesPayload = events
       .map((event) => {
         const production = productionsById.get(event.productionID)
@@ -197,7 +208,7 @@ export async function POST() {
         const slug = buildSlug(production.title, production.id)
         const idShow = slugToId.get(slug)
         if (!idShow) return null
-        const time = normalizeDate(event.dateStart)
+        const time = normalizeDate(event.dateStart, event.location?.timezone)
         if (!time) return null
         const payload = {
           idShow,
@@ -210,8 +221,8 @@ export async function POST() {
       })
       .filter(Boolean)
 
-    const showIds = Array.from(new Set(performancesPayload.map((perf) => perf.idShow)))
-
+    // Delete and rebuild performances for ALL synced shows to avoid stale data
+    const showIds = Array.from(new Set(shows.map((s) => s.id)))
     if (showIds.length) {
       const { error: deletePerformancesError } = await adminClient
         .from('performances')

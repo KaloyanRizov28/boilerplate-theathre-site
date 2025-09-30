@@ -71,6 +71,16 @@ function ShowsSection({ supabase }) {
   const [count, setCount] = useState(0)
   const [status, setStatus] = useState(null)
   const [syncing, setSyncing] = useState(false)
+  const [editing, setEditing] = useState(null) // current show being edited
+  const [form, setForm] = useState({
+    title: '',
+    category: '',
+    author: '',
+    information: '',
+    image_URL: '',
+    poster_URL: '',
+    picture_personalURL: '',
+  })
 
 
 
@@ -118,8 +128,8 @@ function ShowsSection({ supabase }) {
   }
 
   useEffect(() => {
-    if (hasSyncedRef.current) return
-    hasSyncedRef.current = true
+    
+    
     handleSync()
   }, [])
 
@@ -132,6 +142,45 @@ function ShowsSection({ supabase }) {
     } else {
       setStatus({ type: 'success', message: 'Show deleted.' })
       fetchData()
+    }
+  }
+
+  function handleEdit(show) {
+    setEditing(show)
+    setForm({
+      title: show.title || '',
+      category: show.category || '',
+      author: show.author || '',
+      information: show.information || '',
+      image_URL: show.image_URL || '',
+      poster_URL: show.poster_URL || '',
+      picture_personalURL: show.picture_personalURL || '',
+    })
+  }
+
+  async function handleUpdate(e) {
+    e?.preventDefault?.()
+    if (!editing) return
+    setStatus(null)
+    const payload = {
+      title: String(form.title || '').trim(),
+      category: String(form.category || '').trim(),
+      author: String(form.author || '').trim(),
+      information: String(form.information || '').trim(),
+      image_URL: form.image_URL?.trim() || null,
+      poster_URL: form.poster_URL?.trim() || null,
+      picture_personalURL: form.picture_personalURL?.trim() || null,
+    }
+    const { error } = await supabase
+      .from('shows')
+      .update(payload)
+      .eq('id', editing.id)
+    if (error) {
+      setStatus({ type: 'error', message: error.message })
+    } else {
+      setStatus({ type: 'success', message: 'Show updated.' })
+      setEditing(null)
+      await fetchData()
     }
   }
 
@@ -158,6 +207,112 @@ function ShowsSection({ supabase }) {
         </button>
       </div>
       <StatusMessage status={status} onClear={() => setStatus(null)} />
+
+      {editing && (
+        <form
+          onSubmit={handleUpdate}
+          className="mb-6 grid gap-4 border border-theater-light rounded p-4 bg-theater-light/30"
+        >
+          <h3 className="text-lg font-semibold">Edit show: {editing.title}</h3>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="flex flex-col">
+              <label className="text-sm">Title</label>
+              <input
+                className={inputClass}
+                value={form.title}
+                onChange={(e) => setForm({ ...form, title: e.target.value })}
+                required
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm">Category</label>
+              <input
+                className={inputClass}
+                value={form.category}
+                onChange={(e) => setForm({ ...form, category: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm">Author</label>
+              <input
+                className={inputClass}
+                value={form.author}
+                onChange={(e) => setForm({ ...form, author: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-col sm:col-span-2">
+              <label className="text-sm">Information</label>
+              <textarea
+                className={`${inputClass} h-32`}
+                value={form.information}
+                onChange={(e) => setForm({ ...form, information: e.target.value })}
+              />
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm">Poster URL</label>
+              <input
+                className={inputClass}
+                placeholder="https://..."
+                value={form.poster_URL}
+                onChange={(e) => setForm({ ...form, poster_URL: e.target.value })}
+              />
+              {form.poster_URL && (
+                <img
+                  src={form.poster_URL}
+                  alt="poster preview"
+                  className="mt-2 h-40 w-28 object-cover rounded"
+                />)
+              }
+            </div>
+            <div className="flex flex-col">
+              <label className="text-sm">Image URL</label>
+              <input
+                className={inputClass}
+                placeholder="https://..."
+                value={form.image_URL}
+                onChange={(e) => setForm({ ...form, image_URL: e.target.value })}
+              />
+              {form.image_URL && (
+                <img
+                  src={form.image_URL}
+                  alt="image preview"
+                  className="mt-2 h-32 w-56 object-cover rounded"
+                />)
+              }
+            </div>
+            <div className="flex flex-col sm:col-span-2">
+              <label className="text-sm">Landscape Image URL</label>
+              <input
+                className={inputClass}
+                placeholder="https://..."
+                value={form.picture_personalURL}
+                onChange={(e) =>
+                  setForm({ ...form, picture_personalURL: e.target.value })
+                }
+              />
+              {form.picture_personalURL && (
+                <img
+                  src={form.picture_personalURL}
+                  alt="landscape preview"
+                  className="mt-2 h-40 w-full object-cover rounded"
+                />)
+              }
+            </div>
+          </div>
+          <div className="flex gap-2">
+            <button type="submit" className={`${buttonBaseClass} bg-blue-500`}>
+              Save changes
+            </button>
+            <button
+              type="button"
+              className={`${buttonBaseClass} bg-theater-hover text-white`}
+              onClick={() => setEditing(null)}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
       <div className="flex justify-end mb-2 space-x-2">
         <button
           onClick={() => setPage((p) => Math.max(p - 1, 0))}
@@ -198,7 +353,13 @@ function ShowsSection({ supabase }) {
                   .filter(Boolean)
                   .join(', ')}
               </td>
-              <td className="p-2 border-b border-theater-light">
+              <td className="p-2 border-b border-theater-light space-x-3">
+                <button
+                  onClick={() => handleEdit(item)}
+                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
+                >
+                  Edit
+                </button>
                 <button
                   onClick={() => handleDelete(item.id)}
                   className="text-red-500 hover:text-[#27AAE1] hover:underline"

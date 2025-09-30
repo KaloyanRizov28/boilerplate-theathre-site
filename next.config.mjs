@@ -53,7 +53,11 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'iennkegfooqahiwwovwb.supabase.co',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
     ],
   },
 };
