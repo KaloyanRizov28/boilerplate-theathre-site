@@ -58,6 +58,15 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'via.placeholder.com',
       },
+      // Allow external images from the theatre site
+      {
+        protocol: 'http',
+        hostname: 'www.tba.art.bg',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.tba.art.bg',
+      },
     ],
   },
 };

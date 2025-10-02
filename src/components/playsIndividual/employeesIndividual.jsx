@@ -46,7 +46,7 @@ const EkipSection = (props) => {
                             href={`/employees/${member.id}`}
                             className="flex flex-col items-center"
                         >
-                            {member.profile_picture_URL ? (
+                            {member.profile_picture_URL && (
                                 <Image
                                     src={member.profile_picture_URL}
                                     alt={member.name}
@@ -54,8 +54,6 @@ const EkipSection = (props) => {
                                     height={192}
                                     className="w-48 h-48 object-cover rounded-md mb-2"
                                 />
-                            ) : (
-                                <div className="bg-theater-grey w-48 h-48 rounded-md mb-2" />
                             )}
                             <p className="text-white text-sm text-center">{member.name}</p>
                             {member.role && (

@@ -29,14 +29,19 @@ async function getShowsWithPerformances() {
     data?.map(({ performances, ...show }) => {
       const perf = performances?.[0];
       if (!perf) return { ...show, performances };
+      console.log(perf.time)
       const dt = new Date(perf.time);
-
-      const date = `${dt.getUTCDate().toString().padStart(2, '0')}.${(dt.getUTCMonth() + 1)
-        .toString()
-        .padStart(2, '0')}`;
-      const time = `${dt.getUTCHours().toString().padStart(2, '0')}:${dt.getUTCMinutes()
-        .toString()
-        .padStart(2, '0')}`;
+      const sofiaTz = 'Europe/Sofia';
+      const date = dt.toLocaleString('bg-BG', {
+        day: '2-digit',
+        month: '2-digit',
+        timeZone: sofiaTz,
+      });
+      const time = dt.toLocaleTimeString('bg-BG', {
+        hour: '2-digit',
+        minute: '2-digit',
+        timeZone: sofiaTz,
+      });
       return { ...show, performances, date, time, venue: perf.venue };
     }) ?? []
   );

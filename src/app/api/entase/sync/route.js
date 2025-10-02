@@ -88,40 +88,46 @@ function buildShowRecord(production) {
   }
 }
 
-function normalizeDate(dateStart, timezone) {
-  if (!dateStart) return null
+function normalizeDate(timestampInSeconds) {
+   
+    const timestampInMilliseconds = timestampInSeconds * 1000;
+    
+    
+    const date = new Date(timestampInMilliseconds);
 
-  // If we have a location timezone, interpret dateStart in that zone and convert to UTC ISO.
-  // Handles common Entase formats: ISO-like and SQL-like without timezone info.
-  const tryInZone = (zone) => {
-    if (!zone) return null
-    // Try ISO first
-    let dt = DateTime.fromISO(String(dateStart), { zone })
-    if (!dt.isValid) {
-      // Try SQL format (e.g. 'YYYY-MM-DD HH:mm:ss')
-      dt = DateTime.fromSQL(String(dateStart), { zone })
-    }
-    if (dt.isValid) return dt.toUTC().toISO()
-    return null
-  }
+    
+    const options = {
+        year: 'numeric',
+        month: 'numeric',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: false, // Use 24-hour format
+        timeZone: 'Europe/Sofia' // Specify the target timezone
+    };
 
-  const zoned = tryInZone(timezone)
-  if (zoned) return zoned
+    
+    const formatter = new Intl.DateTimeFormat('bg-BG', options);
 
-  // Fallback: numeric timestamp
-  const asNum = Number(dateStart)
-  if (!Number.isNaN(asNum) && Number.isFinite(asNum)) {
-    const millis = asNum < 1e12 ? asNum * 1000 : asNum
-    const dt = DateTime.fromMillis(millis)
-    if (dt.isValid) return dt.toUTC().toISO()
-  }
+    return convertSofiaStringToISO(formatter.format(date));
+}
+function convertSofiaStringToISO(sofiaTimeString) {
+    // 1. Manually parse the components (assuming DD.MM.YYYY and HH:MM:SS)
+    // For "3.10.2025 г., 19:00:00"
+    const datePart = sofiaTimeString.split(' ')[0]; // "3.10.2025"
+    const timePart = sofiaTimeString.split(', ')[1]; // "19:00:00"
 
-  // Last resort: native Date parse
-  try {
-    return new Date(dateStart).toISOString()
-  } catch (_) {
-    return null
-  }
+    // Assuming it's already Oct 3, 2025
+    const [day, month, year] = datePart.split('.').map(Number);
+    
+    // 2. Reconstruct the ISO 8601 string (YYYY-MM-DD HH:MM:SS)
+    const isoDatePart = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+    
+    // 3. Determine the Time Zone Offset for Europe/Sofia on that date (EEST is +03)
+    const timezoneOffset = "+03"; // For Sofia during Daylight Saving Time (Oct 3)
+
+    return `${isoDatePart} ${timePart} ${timezoneOffset}`;
 }
 
 export async function POST() {
@@ -158,7 +164,7 @@ export async function POST() {
         apiKey
       ),
     ])
-
+    console.log(events)
     if (!productions.length) {
       return NextResponse.json(
         { error: 'No productions were returned by the Entase API.' },
@@ -200,15 +206,16 @@ export async function POST() {
 
     const slugToId = new Map(shows.map((show) => [show.slug, show.id]))
 
-    console.log(events)
+    
     const performancesPayload = events
       .map((event) => {
         const production = productionsById.get(event.productionID)
         if (!production) return null
         const slug = buildSlug(production.title, production.id)
         const idShow = slugToId.get(slug)
-        if (!idShow) return null
-        const time = normalizeDate(event.dateStart, event.location?.timezone)
+        if (!idShow) return nullc
+        console.log(normalizeDate(event.dateStart));
+        const time = normalizeDate(event.dateStart)
         if (!time) return null
         const payload = {
           idShow,
@@ -217,6 +224,7 @@ export async function POST() {
         if (event.location?.placeName) {
           payload.venue = event.location.placeName
         }
+        console.log(payload);
         return payload
       })
       .filter(Boolean)

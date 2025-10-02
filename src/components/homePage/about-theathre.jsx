@@ -4,16 +4,16 @@ import Link from 'next/link';
 import Arrow from "@/components/ui/icons/Arrow.svg"
 const AboutTheaterSection = () => {
   return (
-    <section className="bg-theater-dark py-16 px-16 ">
+    <section className="bg-theater-dark py-8 px-6 ">
       <div className="mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left side - Content */}
           <div>
-            <h2 className="text-white text-4xl sm:text-5xl font-light mb-8">
+            <h2 className="text-white text-3xl sm:text-4xl font-light mb-4">
               За Театъра
             </h2>
             
-            <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            <p className="text-gray-300 text-base leading-relaxed mb-6">
               Lorem ipsum dolor sit amet consectetur. Commodo proin commodo 
               cras nisl sem. Dis malesuada in interdum aenean est lacus 
               libero.Lorem ipsum dolor sit amet consectetur.
@@ -21,18 +21,18 @@ const AboutTheaterSection = () => {
             
             <Link
               href="/about"
-              className="inline-flex items-center text-white text-xl font-light group transition-colors duration-300 hover:text-[#27AAE1]"
+              className="inline-flex items-center text-white text-base font-light group transition-colors duration-300 hover:text-[#27AAE1]"
             >
               <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                 Виж още
               </span>
-              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-4 h-4 pl-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
             </Link>
           </div>
           
           {/* Right side - Theater Logo/Icon */}
           <div className="flex justify-center lg:justify-end">
-            <div className="relative w-64 h-64 sm:w-80 sm:h-80">
+            <div className="relative w-48 h-48 sm:w-56 sm:h-56">
               {/* Using Next.js Image for the theater icon */}
               <Image
                 src="/logo.svg" // Replace with your actual icon path
@@ -66,16 +66,16 @@ const AboutTheaterSection = () => {
 // Alternative version with inline SVG (if you have the SVG code)
 const AboutTheaterSectionWithSVG = () => {
   return (
-    <section className="bg-gray-900 py-16 px-4 sm:px-6 md:px-8">
+    <section className="bg-gray-900 py-8 px-4 sm:px-6 md:px-8">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}
           <div>
-            <h2 className="text-white text-4xl sm:text-5xl font-light mb-8">
+            <h2 className="text-white text-3xl sm:text-4xl font-light mb-4">
               За Театъра
             </h2>
             
-            <p className="text-gray-300 text-lg leading-relaxed mb-8">
+            <p className="text-gray-300 text-base leading-relaxed mb-6">
               Lorem ipsum dolor sit amet consectetur. Commodo proin commodo 
               cras nisl sem. Dis malesuada in interdum aenean est lacus 
               libero.Lorem ipsum dolor sit amet consectetur.
@@ -83,7 +83,7 @@ const AboutTheaterSectionWithSVG = () => {
             
             <Link
               href="/about"
-              className="inline-flex items-center text-white text-xl font-light group hover:text-[#27AAE1]"
+              className="inline-flex items-center text-white text-base font-light group hover:text-[#27AAE1]"
             >
               <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300">
                 Виж още
@@ -97,7 +97,7 @@ const AboutTheaterSectionWithSVG = () => {
           {/* Right side - Theater Icon as SVG */}
           <div className="flex justify-center lg:justify-end">
             <svg 
-              className="w-64 h-64 sm:w-80 sm:h-80 text-white"
+              className="w-48 h-48 sm:w-56 sm:h-56 text-white"
               viewBox="0 0 200 200" 
               fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"

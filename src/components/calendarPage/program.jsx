@@ -45,7 +45,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
           ...show,
           fullDate,
           time: perf?.time
-            ? new Date(perf.time).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit', timeZone: 'UTC' })
+            ? new Date(perf.time).toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Sofia' })
             : '',
           venue: (perf?.venues?.name || perf?.venue) ?? '',
           performanceId: perf?.id ?? `${show.id}-${perf?.time}`,

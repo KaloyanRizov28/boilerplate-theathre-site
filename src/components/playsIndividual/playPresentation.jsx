@@ -21,12 +21,12 @@ const PlayPresentation = ({
         <p className="text-base md:text-lg leading-relaxed mb-8 max-w-3xl lg:max-w-4xl">
           {synopsis}
         </p>
-        {ticketLink && ( // Only render button if ticketLink is provided
+        {ticketLink && (
           (<a
             href={ticketLink}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center bg-neutral-700 text-white py-3 px-6 sm:py-4 sm:px-8 rounded text-lg sm:text-xl font-bold hover:bg-theater-hover active:bg-[#1F8EC1] transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-theater-hover focus:ring-opacity-75"
+            className="inline-flex items-center bg-neutral-700 text-white py-3 px-6 sm:py-4 sm:px-8 rounded text-lg sm:text-xl font-bold transition-colors transition-transform duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-theater-hover focus-visible:ring-opacity-75 hover:bg-theater-hover hover:shadow-lg hover:scale-[1.03] hover:-translate-y-0.5 active:translate-y-0"
           >
             {ticketButtonText}
           </a>)

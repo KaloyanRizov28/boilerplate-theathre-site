@@ -22,15 +22,15 @@ const ShowsSection = (props) => {
   const displayedShows = filteredShows.slice(0, 6);
 
   return (
-    <section className="bg-theater-dark px-16 "> {/* Added some vertical padding for overall look */}
+    <section className="bg-theater-dark px-6 py-6"> {/* Compact padding */}
       <div className="mx-auto">
         {/* Container for Header and Filters, using flex-col */}
-        <div className="flex flex-col mb-12 ">
+        <div className="flex flex-col mb-6 ">
           {/* Header with Tickets link */}
-          <div className="flex justify-start items-center mb-8">
+          <div className="flex justify-start items-center mb-4">
             <Link
               href="/tickets"
-              className="text-white text-2xl sm:text-3xl font-[700] group transition-colors duration-300 hover:text-[#27AAE1]"
+              className="text-white text-xl sm:text-2xl font-[700] group transition-colors duration-300 hover:text-[#27AAE1]"
             >
               <span className="hover:text-[#27AAE1] group-hover:text-[#27AAE1]">Билети</span>
               <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-1 fill-current group-hover:text-[#27AAE1]"></Arrow>
@@ -38,10 +38,10 @@ const ShowsSection = (props) => {
           </div>
 
           {/* Filter buttons */}
-          <div className="flex gap-8 ">
+          <div className="flex gap-4 ">
             <button
               onClick={() => setActiveFilter('all')}
-              className={`text-xl font-light transition-all duration-300 ${activeFilter === 'all'
+              className={`text-base font-light transition-all duration-300 ${activeFilter === 'all'
                 ? 'text-white'
                 : 'text-gray-500 hover:text-[#27AAE1]'
                 }`}
@@ -50,7 +50,7 @@ const ShowsSection = (props) => {
             </button>
             <button
               onClick={() => setActiveFilter('theater')}
-              className={`text-xl font-light transition-all duration-300 ${activeFilter === 'theater'
+              className={`text-base font-light transition-all duration-300 ${activeFilter === 'theater'
                 ? 'text-white'
                 : 'text-gray-500 hover:text-[#27AAE1]'
                 }`}
@@ -59,7 +59,7 @@ const ShowsSection = (props) => {
             </button>
             <button
               onClick={() => setActiveFilter('music')}
-              className={`text-xl font-light transition-all duration-300 ${activeFilter === 'music'
+              className={`text-base font-light transition-all duration-300 ${activeFilter === 'music'
                 ? 'text-white'
                 : 'text-gray-500 hover:text-[#27AAE1]'
                 }`}
@@ -70,7 +70,7 @@ const ShowsSection = (props) => {
         </div>
 
         {/* Shows grid - 6 cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
       {displayedShows.map((show) => (
         <Link
           // Preserved from the original outer div
@@ -112,10 +112,10 @@ const ShowsSection = (props) => {
                 - "px-4" is added for horizontal padding consistency with the image wrapper (based on your comments for image wrapper).
                 - "pb-4" is added for bottom spacing; adjust if not desired.
                 - "flex flex-col flex-grow" on this div is for layout. */}
-            <div className="pt-3 flex flex-col flex-grow">
+            <div className="pt-2 flex flex-col flex-grow">
               {/* All text item classes are preserved directly from your original code. */}
-              <p className="text-white text-xl font-light mb-1">{show.date}</p>
-              <h3 className="text-white text-lg font-normal mb-0 leading-tight">
+              <p className="text-white text-base font-light mb-1">{show.date}</p>
+              <h3 className="text-white text-base font-normal mb-0 leading-tight">
                 {show.title}
               </h3>
               <p className="text-gray-400 text-sm font-light mb-2">{show.author}</p>
@@ -126,7 +126,7 @@ const ShowsSection = (props) => {
 
               {/* "Информация" and Arrow section - styled to replicate the original Link's appearance */}
               {/* Original Link classes: "inline-flex items-center text-white text-base font-light transition-colors duration-300" */}
-              <div className="inline-flex items-center text-white text-base font-light transition-colors duration-300 mt-2 group-hover:text-[#27AAE1] hover:text-[#27AAE1]"> {/* "mt-2" added for spacing */}
+              <div className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 mt-2 group-hover:text-[#27AAE1] hover:text-[#27AAE1]"> {/* compact */}
                 {/* Original span classes: "border-b border-transparent transition-all duration-300" */}
                 {/* "group-hover:border-theater-hover" is added for visual feedback when the card (group) is hovered.
                     The original span didn't have an explicit hover state for the border. Remove if not desired. */}
@@ -134,7 +134,7 @@ const ShowsSection = (props) => {
                   Информация
                 </span>
                 {/* Arrow classes are preserved. "group-hover:translate-x-2" works due to "group" on the parent Link. */}
-                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 pl-2 fill-current group-hover:text-[#27AAE1]" />
+                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-4 h-4 pl-2 fill-current group-hover:text-[#27AAE1]" />
               </div>
             </div>
           </div>
@@ -144,18 +144,18 @@ const ShowsSection = (props) => {
 
         {/* View all link if more than 6 shows */}
         {filteredShows.length > 6 && (
-          <div className="text-right mt-12 pr-6">
+          <div className="text-right mt-6">
             <Link
               href="/calendar"
               // Added 'group' for hover effects
               className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group hover:text-[#27AAE1]"
             >
               {/* Span for the text with an underline effect on hover */}
-              <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 text-lg hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
+              <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 text-base hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
                 Виж всички представления {/* Kept your original text */}
               </span>
               {/* Arrow icon, matching the target style */}
-              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-6 h-6 ml-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-4 h-4 ml-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
             </Link>
           </div>
         )}

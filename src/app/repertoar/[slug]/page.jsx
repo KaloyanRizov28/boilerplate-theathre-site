@@ -2,6 +2,7 @@ import PlayPresentation from "@/components/playsIndividual/playPresentation";
 import { createClient } from "../../../../lib/supabase/server";
 import ActorFilterWithData from "@/components/playsIndividual/employeesIndividual";
 import FullScreenWidthImage from "@/components/playsIndividual/imageFull";
+import { notFound } from 'next/navigation'
 async function fetchShow(slug) {
   
   const supabase = await createClient();
@@ -22,22 +23,26 @@ export default async function SinglePlayPage({ params }) {
   const { slug } = await params;
   // 
   let show = await fetchShow(slug);
-  
-  let employees = await fetchEmployees(show[0].id)
+  const showRecord = show?.[0]
+
+  if (!showRecord) {
+    notFound()
+  }
+
+  const cleanSlug = showRecord.slug ? showRecord.slug.replace(/^[-]+/, '') : null
+  const ticketLink = cleanSlug ? `https://www.entase.com/kalo/productions/${cleanSlug}?lc=bg` : null
+  let employees = await fetchEmployees(showRecord.id)
   return (
     <main> {/* Or your main layout component */}
       <PlayPresentation
-        playName={show[0].title}
-        backgroundImage={show[0].image_URL}
+        playName={showRecord.title}
+        backgroundImage={showRecord.image_URL}
         
-        synopsis={show[0].information}
-        ticketLink={show[0].slug}
+        synopsis={showRecord.information}
+        ticketLink={ticketLink}
       />
       <ActorFilterWithData
       employees={employees}
-      />
-      <FullScreenWidthImage
-      src={show[0].picture_personalURL}
       />
     </main>
   );
