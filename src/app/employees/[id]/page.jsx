@@ -26,7 +26,7 @@ function initials(name) {
 }
 
 export default async function EmployeePage({ params }) {
-  const { id } = params;
+  const { id } = await params;
   const employee = await fetchEmployee(id);
   const casts = await fetchShows(id);
 
@@ -51,7 +51,7 @@ export default async function EmployeePage({ params }) {
           <div className="flex-1 min-w-0">
             <div>
               <Link href="/cast" className="inline-flex items-center gap-2 text-gray-300 hover:text-[#27AAE1] transition-colors">
-                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z"/></svg>
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M10.828 12l4.95 4.95-1.414 1.414L8 12l6.364-6.364 1.414 1.414z" /></svg>
                 <span className="border-b border-transparent hover:border-[#27AAE1]">Назад към състав</span>
               </Link>
             </div>
@@ -109,7 +109,7 @@ export default async function EmployeePage({ params }) {
                   <h3 className="mt-2 text-white text-sm sm:text-base font-medium leading-tight">{s.title}</h3>
                   <Link href={`/repertoar/${s.slug}`} className="mt-1 inline-flex items-center gap-1 text-[#27AAE1] hover:opacity-90 text-sm">
                     <span>Билети</span>
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z"/></svg>
+                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z" /></svg>
                   </Link>
                 </div>
               ))}

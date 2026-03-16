@@ -30,7 +30,8 @@ body {
 }
 
 /* Prevent horizontal scrollbar from appearing sitewide */
-html, body {
+html,
+body {
   max-width: 100%;
   overflow-x: hidden;
 }
@@ -39,8 +40,10 @@ html, body {
 
 /* Ensure Swiper container has room and doesn't clip shadows */
 .swiper {
-  overflow: visible !important; /* Allow shadows/hovers to peek */
-  padding-left: 1px; /* Prevent clipping */
+  overflow: visible !important;
+  /* Allow shadows/hovers to peek */
+  padding-left: 1px;
+  /* Prevent clipping */
   padding-right: 1px;
 }
 
@@ -54,7 +57,7 @@ html, body {
 /* Style for the custom buttons (you can adjust as needed) */
 .swiper-button-prev-custom,
 .swiper-button-next-custom {
-    /* Tailwind classes handle most styling, but you can add more here */
+  /* Tailwind classes handle most styling, but you can add more here */
 }
 
 /* Hide Swiper's default arrows if they somehow appear */
@@ -65,7 +68,8 @@ html, body {
 
 /* Better scrollbar hiding if needed */
 .swiper-scrollbar {
-  display: none !important; /* Force hide if hide:true isn't enough */
+  display: none !important;
+  /* Force hide if hide:true isn't enough */
 }
 
 /* Ensure no ugly blue outlines on click */

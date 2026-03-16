@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { createClient } from '../../../lib/supabase/client'
 import StatusMessage from '../../components/ui/status-message'
 import AdminsSection from './admins-section'
+import ContentSection from './content-section'
 
 const tabs = [
   { key: 'shows', label: 'Спектакли' },
@@ -11,54 +12,76 @@ const tabs = [
   { key: 'performances', label: 'Представления' },
   { key: 'cast', label: 'Актьорски състав' },
   { key: 'admins', label: 'Администратори' },
+  { key: 'content', label: 'Съдържание' },
 ]
 
+
 const inputClass =
-  'border border-theater-light rounded p-2 bg-theater-light text-white'
-const buttonBaseClass = 'text-theater-dark px-4 py-2 rounded font-semibold shrink-0'
-// Use a lighter background with dark text for selects to avoid invisible text on system dropdowns
+  'w-full border border-white/10 rounded-lg p-2.5 bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-theater-blue/50 focus:border-theater-blue/50 transition-all'
+const buttonBaseClass = 'px-4 py-2 rounded-lg font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none'
 const selectClass =
-  'border border-theater-light rounded p-2 bg-white text-theater-dark cursor-pointer focus:ring-2 focus:ring-theater-accent'
+  'w-full border border-white/10 rounded-lg p-2.5 bg-theater-light text-white cursor-pointer focus:outline-none focus:ring-2 focus:ring-theater-blue/50'
 
 export default function AdminPage() {
   const supabase = createClient()
   const [activeTab, setActiveTab] = useState('shows')
 
   return (
-    <div className="flex h-screen bg-theater-light text-white">
-      <aside className="w-64 bg-theater-dark text-white p-4 flex flex-col">
-        <h1 className="text-2xl font-bold mb-6">Админ</h1>
-        <nav className="flex flex-col gap-2">
+    <div className="flex h-screen bg-theater-dark text-white overflow-hidden selection:bg-theater-blue/30">
+      {/* Sidebar */}
+      <aside className="w-64 bg-theater-light/50 border-r border-white/5 flex flex-col backdrop-blur-md">
+        <div className="p-6 border-b border-white/5">
+          <h1 className="text-xl font-bold tracking-tight text-white">Админ Панел</h1>
+          <p className="text-xs text-gray-400 mt-1">Управление на съдържанието</p>
+        </div>
+
+        <nav className="flex-1 overflow-y-auto py-6 px-3 space-y-1">
           {tabs.map((tab) => (
             <button
               key={tab.key}
               onClick={() => setActiveTab(tab.key)}
-              className={`text-left px-3 py-2 rounded transition-colors ${
-                activeTab === tab.key
-                  ? 'bg-theater-accent text-theater-dark'
-                  : 'hover:bg-theater-hover'
-              }`}
+              className={`w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 group flex items-center justify-between ${activeTab === tab.key
+                ? 'bg-theater-blue text-white shadow-lg shadow-theater-blue/20'
+                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                }`}
             >
               {tab.label}
+              {activeTab === tab.key && <div className="w-1.5 h-1.5 rounded-full bg-white"></div>}
             </button>
           ))}
         </nav>
-        <button
-          onClick={async () => {
-            await supabase.auth.signOut()
-            window.location.href = '/login'
-          }}
-          className="mt-auto bg-theater-accent text-theater-dark px-3 py-2 rounded"
-        >
-          Изход
-        </button>
+
+        <div className="p-4 border-t border-white/5">
+          <button
+            onClick={async () => {
+              await supabase.auth.signOut()
+              window.location.href = '/login'
+            }}
+            className="w-full flex items-center justify-center gap-2 text-red-400 hover:text-red-300 hover:bg-red-500/10 px-4 py-3 rounded-lg transition-colors text-sm font-medium"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
+            Изход
+          </button>
+        </div>
       </aside>
-      <main className="flex-1 overflow-y-auto p-6 space-y-8">
-        {activeTab === 'shows' && <ShowsSection supabase={supabase} />}
-        {activeTab === 'employees' && <EmployeesSection supabase={supabase} />}
-        {activeTab === 'performances' && <PerformancesSection supabase={supabase} />}
-        {activeTab === 'cast' && <CastSection supabase={supabase} />}
-        {activeTab === 'admins' && <AdminsSection />}
+
+      {/* Main Content */}
+      <main className="flex-1 overflow-y-auto bg-black/20">
+        <div className="max-w-7xl mx-auto p-8">
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold text-white mb-2">{tabs.find(t => t.key === activeTab)?.label}</h2>
+            <div className="h-1 w-12 bg-theater-blue rounded-full"></div>
+          </div>
+
+          <div className="bg-theater-light/30 border border-white/5 rounded-xl shadow-2xl backdrop-blur-sm overflow-hidden min-h-[500px]">
+            {activeTab === 'shows' && <ShowsSection supabase={supabase} />}
+            {activeTab === 'employees' && <EmployeesSection supabase={supabase} />}
+            {activeTab === 'performances' && <PerformancesSection supabase={supabase} />}
+            {activeTab === 'cast' && <CastSection supabase={supabase} />}
+            {activeTab === 'admins' && <AdminsSection />}
+            {activeTab === 'content' && <ContentSection supabase={supabase} />}
+          </div>
+        </div>
       </main>
     </div>
   )
@@ -233,7 +256,7 @@ function ShowsSection({ supabase }) {
   }
 
   return (
-    <section className="bg-theater-dark p-6 rounded shadow text-white">
+    <section className="text-white space-y-6">
       <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <input
           placeholder="Търсене на спектакли"
@@ -247,9 +270,8 @@ function ShowsSection({ supabase }) {
         <button
           onClick={handleSync}
           disabled={syncing}
-          className={`${buttonBaseClass} ${
-            syncing ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white hover:bg-blue-600'
-          } disabled:opacity-60`}
+          className={`${buttonBaseClass} ${syncing ? 'bg-blue-600 text-white' : 'bg-blue-500 text-white hover:bg-blue-600'
+            } disabled:opacity-60`}
         >
           {syncing ? 'Синхронизиране…' : 'Синхронизирай от Entase'}
         </button>
@@ -259,7 +281,7 @@ function ShowsSection({ supabase }) {
       {editing && (
         <form
           onSubmit={handleUpdate}
-          className="mb-6 grid gap-4 border border-theater-light rounded p-4 bg-theater-light/30"
+          className="mb-8 grid gap-6 border border-white/10 rounded-xl p-6 bg-white/5 backdrop-blur-sm"
         >
           <h3 className="text-lg font-semibold">Редакция на спектакъл: {editing.title}</h3>
           <div className="grid sm:grid-cols-2 gap-4">
@@ -452,46 +474,48 @@ function ShowsSection({ supabase }) {
           Напред
         </button>
       </div>
-      <table className="w-full text-sm border border-theater-light">
-        <thead className="bg-theater-light">
-          <tr>
-            <th className="p-2 text-left border-b border-theater-light">ID</th>
-            <th className="p-2 text-left border-b border-theater-light">Заглавие</th>
-            <th className="p-2 text-left border-b border-theater-light">Категория</th>
-            <th className="p-2 text-left border-b border-theater-light">Състав</th>
-            <th className="p-2 text-left border-b border-theater-light">Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id} className="odd:bg-theater-light/20">
-              <td className="p-2 border-b border-theater-light">{item.id}</td>
-              <td className="p-2 border-b border-theater-light">{item.title}</td>
-              <td className="p-2 border-b border-theater-light">{item.category}</td>
-              <td className="p-2 border-b border-theater-light">
-                {item.cast_members
-                  ?.map((cm) => cm.employees?.name)
-                  .filter(Boolean)
-                  .join(', ')}
-              </td>
-              <td className="p-2 border-b border-theater-light space-x-3">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                >
-                  Редакция
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
-                >
-                  Изтрий
-                </button>
-              </td>
+      <div className="overflow-hidden rounded-xl border border-white/10">
+        <table className="w-full text-sm text-left">
+          <thead className="text-xs uppercase bg-white/10 text-gray-300 font-semibold tracking-wider">
+            <tr>
+              <th className="p-4">ID</th>
+              <th className="p-4">Заглавие</th>
+              <th className="p-4">Категория</th>
+              <th className="p-4">Състав</th>
+              <th className="p-4 text-right">Действия</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {items.map((item) => (
+              <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                <td className="p-4 font-mono text-gray-400">{item.id}</td>
+                <td className="p-4 font-medium text-white">{item.title}</td>
+                <td className="p-4 text-gray-300">{item.category}</td>
+                <td className="p-4 text-gray-400 max-w-xs truncate">
+                  {item.cast_members
+                    ?.map((cm) => cm.employees?.name)
+                    .filter(Boolean)
+                    .join(', ')}
+                </td>
+                <td className="p-4 text-right space-x-4">
+                  <button
+                    onClick={() => handleEdit(item)}
+                    className="text-theater-blue hover:text-white font-medium transition-colors"
+                  >
+                    Редакция
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="text-red-400 hover:text-red-300 font-medium transition-colors"
+                  >
+                    Изтрий
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }
@@ -648,7 +672,7 @@ function EmployeesSection({ supabase }) {
   }
 
   return (
-    <section className="bg-theater-dark p-6 rounded shadow text-white">
+    <section className="text-white space-y-6">
       <h2 className="text-xl font-semibold mb-4">Служители</h2>
       <div className="mb-4">
         <input
@@ -726,9 +750,8 @@ function EmployeesSection({ supabase }) {
         </div>
         <button
           type="submit"
-          className={`${buttonBaseClass} ${
-            editingId ? 'bg-blue-500' : 'bg-green-500'
-          }`}
+          className={`${buttonBaseClass} ${editingId ? 'bg-blue-500' : 'bg-green-500'
+            }`}
         >
           {editingId ? 'Обнови' : 'Добави'}
         </button>
@@ -752,39 +775,46 @@ function EmployeesSection({ supabase }) {
           Напред
         </button>
       </div>
-      <table className="w-full text-sm border border-theater-light">
-        <thead className="bg-theater-light">
-          <tr>
-            <th className="p-2 text-left border-b border-theater-light">ID</th>
-            <th className="p-2 text-left border-b border-theater-light">Име</th>
-            <th className="p-2 text-left border-b border-theater-light">Роля</th>
-            <th className="p-2 text-left border-b border-theater-light">Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id} className="odd:bg-theater-light/20">
-              <td className="p-2 border-b border-theater-light">{item.id}</td>
-              <td className="p-2 border-b border-theater-light">{item.name}</td>
-              <td className="p-2 border-b border-theater-light">{item.role}</td>
-              <td className="p-2 border-b border-theater-light space-x-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                >
-                  Редакция
-                </button>
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-500 hover:text-[#27AAE1] hover:underline"
-                >
-                  Изтрий
-                </button>
-              </td>
+      <div className="overflow-hidden rounded-xl border border-white/10">
+        <table className="w-full text-sm text-left">
+          <thead className="text-xs uppercase bg-white/10 text-gray-300 font-semibold tracking-wider">
+            <tr>
+              <th className="p-4">ID</th>
+              <th className="p-4">Име</th>
+              <th className="p-4">Роля</th>
+              <th className="p-4 text-right">Действия</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {items.map((item) => (
+              <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                <td className="p-4 font-mono text-gray-400">{item.id}</td>
+                <td className="p-4 font-medium text-white flex items-center gap-3">
+                  {item.profile_picture_URL && (
+                    <img src={item.profile_picture_URL} alt="" className="w-8 h-8 rounded-full object-cover" />
+                  )}
+                  {item.name}
+                </td>
+                <td className="p-4 text-gray-300">{item.role}</td>
+                <td className="p-4 text-right space-x-4">
+                  <button
+                    onClick={() => handleEdit(item)}
+                    className="text-theater-blue hover:text-white font-medium transition-colors"
+                  >
+                    Редакция
+                  </button>
+                  <button
+                    onClick={() => handleDelete(item.id)}
+                    className="text-red-400 hover:text-red-300 font-medium transition-colors"
+                  >
+                    Изтрий
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }
@@ -854,75 +884,87 @@ function PerformancesSection({ supabase }) {
   }
 
   return (
-    <section className="bg-theater-dark p-6 rounded shadow text-white">
-      <h2 className="text-xl font-semibold mb-4">Представления</h2>
-      <h3 className="text-lg font-medium mb-2">
-        {editingId ? 'Редакция на дата на представление' : 'Добавяне на дата на представление'}
-      </h3>
-      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-6">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Спектакъл</label>
-          <select
-            value={form.idShow}
-            onChange={(e) => setForm({ ...form, idShow: e.target.value })}
-            required
-            className={selectClass}
+    <section className="text-white space-y-6">
+      <h2 className="text-xl font-semibold mb-4 text-white">Представления</h2>
+
+      <div className="border border-white/10 rounded-xl p-6 bg-white/5 backdrop-blur-sm mb-8">
+        <h3 className="text-lg font-medium mb-4 text-theater-blue">
+          {editingId ? 'Редакция на дата на представление' : 'Добавяне на дата на представление'}
+        </h3>
+        <form onSubmit={handleSubmit} className="grid gap-6 sm:grid-cols-3 items-end">
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-300 mb-2">Спектакъл</label>
+            <select
+              value={form.idShow}
+              onChange={(e) => setForm({ ...form, idShow: e.target.value })}
+              required
+              className={selectClass}
+            >
+              <option value="">Изберете спектакъл</option>
+              {shows.map((show) => (
+                <option key={show.id} value={show.id} className="text-theater-dark">
+                  {show.title}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex flex-col">
+            <label className="text-sm font-medium text-gray-300 mb-2">Дата и час</label>
+            <div className="relative">
+              <input
+                type="datetime-local"
+                value={form.time}
+                onChange={(e) => setForm({ ...form, time: e.target.value })}
+                required
+                className={inputClass}
+              />
+            </div>
+          </div>
+          <button
+            type="submit"
+            className={`${buttonBaseClass} h-[46px] ${editingId ? 'bg-blue-500 hover:bg-blue-600' : 'bg-green-500 hover:bg-green-600'
+              } text-white shadow-lg shadow-green-900/20`}
           >
-            <option value="">Изберете спектакъл</option>
-            {shows.map((show) => (
-              <option key={show.id} value={show.id}>
-                {show.title}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Дата и час</label>
-          <input
-            type="datetime-local"
-            value={form.time}
-            onChange={(e) => setForm({ ...form, time: e.target.value })}
-            required
-            className={inputClass}
-          />
-        </div>
-        <button
-          type="submit"
-          className={`${buttonBaseClass} ${
-            editingId ? 'bg-blue-500' : 'bg-green-500'
-          }`}
-        >
-          {editingId ? 'Обнови' : 'Добави'}
-        </button>
-      </form>
+            {editingId ? 'Обнови' : 'Добави представление'}
+          </button>
+        </form>
+      </div>
+
       <StatusMessage status={status} onClear={() => setStatus(null)} />
-      <table className="w-full text-sm border border-theater-light">
-        <thead className="bg-theater-light">
-          <tr>
-            <th className="p-2 text-left border-b border-theater-light">ID</th>
-            <th className="p-2 text-left border-b border-theater-light">Спектакъл</th>
-            <th className="p-2 text-left border-b border-theater-light">Време</th>
-            <th className="p-2 text-left border-b border-theater-light">Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items.map((item) => (
-            <tr key={item.id} className="odd:bg-theater-light/20">
-              <td className="p-2 border-b border-theater-light">{item.id}</td>
-              <td className="p-2 border-b border-theater-light">{item.shows?.title}</td>
-              <td className="p-2 border-b border-theater-light">{item.time}</td>
-              <td className="p-2 border-b border-theater-light space-x-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                >
-                  Редакция
-                </button>
-              </td>
+
+      <div className="overflow-hidden rounded-xl border border-white/10 shadow-2xl">
+        <table className="w-full text-sm text-left">
+          <thead className="text-xs uppercase bg-white/10 text-gray-300 font-semibold tracking-wider">
+            <tr>
+              <th className="p-4">ID</th>
+              <th className="p-4">Спектакъл</th>
+              <th className="p-4">Време</th>
+              <th className="p-4 text-right">Действия</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {items.map((item) => (
+              <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                <td className="p-4 font-mono text-gray-400">{item.id}</td>
+                <td className="p-4 font-medium text-white">{item.shows?.title}</td>
+                <td className="p-4 text-gray-300">
+                  {new Date(item.time).toLocaleDateString('bg-BG', {
+                    year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+                  })}
+                </td>
+                <td className="p-4 text-right">
+                  <button
+                    onClick={() => handleEdit(item)}
+                    className="text-theater-blue hover:text-white font-medium transition-colors"
+                  >
+                    Редакция
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }
@@ -1066,153 +1108,161 @@ function CastSection({ supabase }) {
   }
 
   return (
-    <section className="bg-theater-dark p-6 rounded shadow text-white">
-      <h2 className="text-xl font-semibold mb-4">Актьорски състав</h2>
-      <h3 className="text-lg font-medium mb-2">
-        {editingId ? 'Редакция на участник' : 'Управление на състава'}
-      </h3>
-      <form onSubmit={handleSubmit} className="grid gap-4 sm:grid-cols-3 mb-4">
-        <div className="flex flex-col">
-          <label className="text-sm font-medium">Спектакъл</label>
-          <select
-            value={form.idShow}
-            onChange={(e) => { setForm({ ...form, idShow: e.target.value }); setFilterShowId(e.target.value) }}
-            required
-            className={selectClass}
-          >
-            <option value="">Изберете спектакъл</option>
-            {shows.map((show) => (
-              <option key={show.id} value={show.id}>
-                {show.title}
-              </option>
-            ))}
-          </select>
-        </div>
-        {editingId ? (
+    <section className="text-white space-y-6">
+      <h2 className="text-xl font-semibold mb-4 text-white">Актьорски състав</h2>
+
+      <div className="border border-white/10 rounded-xl p-6 bg-white/5 backdrop-blur-sm mb-8">
+        <h3 className="text-lg font-medium mb-4 text-theater-blue">
+          {editingId ? 'Редакция на участник' : 'Управление на състава'}
+        </h3>
+        <form onSubmit={handleSubmit} className="grid gap-6 sm:grid-cols-3 mb-4 items-start">
           <div className="flex flex-col">
-            <label className="text-sm font-medium">Служител</label>
+            <label className="text-sm font-medium text-gray-300 mb-2">Спектакъл</label>
             <select
-              value={form.employeeId}
-              onChange={(e) => setForm({ ...form, employeeId: e.target.value })}
+              value={form.idShow}
+              onChange={(e) => { setForm({ ...form, idShow: e.target.value }); setFilterShowId(e.target.value) }}
               required
               className={selectClass}
             >
-              <option value="">Изберете служител</option>
-              {[...employees]
-                .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'bg', { sensitivity: 'base' }))
-                .map((emp) => (
-                <option key={emp.id} value={emp.id}>
-                  {emp.name}
+              <option value="">Изберете спектакъл</option>
+              {shows.map((show) => (
+                <option key={show.id} value={show.id} className="text-theater-dark">
+                  {show.title}
                 </option>
               ))}
             </select>
           </div>
-        ) : (
-          <div className="flex flex-col">
-            <label className="text-sm font-medium">Служители</label>
-            <input
-              type="text"
-              value={employeeSearch}
-              onChange={(e) => setEmployeeSearch(e.target.value)}
-              placeholder="Търсене по име"
-              className="mb-2 border border-theater-light rounded p-2 bg-white text-theater-dark"
-              disabled={!form.idShow}
-            />
-            <div className="max-h-96 overflow-auto border border-theater-light rounded p-3 bg-white text-theater-dark space-y-2">
-              {[...employees]
-                .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'bg', { sensitivity: 'base' }))
-                .filter((emp) => (employeeSearch ? (emp.name || '').toLowerCase().includes(employeeSearch.toLowerCase()) : true))
-                .map((emp) => {
-                  const checked = (form.employeeIds || []).map(String).includes(String(emp.id))
-                  return (
-                    <label key={emp.id} className="flex items-center gap-3 px-2 py-2 rounded text-base">
-                      <input
-                        type="checkbox"
-                        className="h-5 w-5"
-                        value={emp.id}
-                        disabled={!form.idShow}
-                        checked={checked}
-                        onChange={(e) => {
-                          const id = String(emp.id)
-                          if (e.target.checked) {
-                            setForm((prev) => ({ ...prev, employeeIds: Array.from(new Set([...(prev.employeeIds || []).map(String), id])) }))
-                          } else {
-                            setForm((prev) => ({ ...prev, employeeIds: (prev.employeeIds || []).filter((x) => String(x) !== id) }))
-                          }
-                        }}
-                      />
-                      <span className="flex-1 truncate">{emp.name}</span>
-                    </label>
-                  )
-                })}
+          {editingId ? (
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-300 mb-2">Служител</label>
+              <select
+                value={form.employeeId}
+                onChange={(e) => setForm({ ...form, employeeId: e.target.value })}
+                required
+                className={selectClass}
+              >
+                <option value="">Изберете служител</option>
+                {[...employees]
+                  .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'bg', { sensitivity: 'base' }))
+                  .map((emp) => (
+                    <option key={emp.id} value={emp.id} className="text-theater-dark">
+                      {emp.name}
+                    </option>
+                  ))}
+              </select>
             </div>
-            <div className="mt-2 text-sm text-gray-600">
-              Избрани: {(form.employeeIds || []).length}
+          ) : (
+            <div className="flex flex-col">
+              <label className="text-sm font-medium text-gray-300 mb-2">Служители</label>
+              <input
+                type="text"
+                value={employeeSearch}
+                onChange={(e) => setEmployeeSearch(e.target.value)}
+                placeholder="Търсене по име"
+                className="mb-2 w-full border border-white/10 rounded-lg p-2.5 bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-theater-blue/50"
+                disabled={!form.idShow}
+              />
+              <div className="max-h-60 overflow-auto border border-white/10 rounded-lg p-2 bg-black/20 text-white space-y-1 custom-scrollbar">
+                {[...employees]
+                  .sort((a, b) => (a.name || '').localeCompare(b.name || '', 'bg', { sensitivity: 'base' }))
+                  .filter((emp) => (employeeSearch ? (emp.name || '').toLowerCase().includes(employeeSearch.toLowerCase()) : true))
+                  .map((emp) => {
+                    const checked = (form.employeeIds || []).map(String).includes(String(emp.id))
+                    return (
+                      <label key={emp.id} className={`flex items-center gap-3 px-3 py-2 rounded-md text-sm cursor-pointer transition-colors ${checked ? 'bg-theater-blue/20 text-theater-blue' : 'hover:bg-white/5 text-gray-300'}`}>
+                        <input
+                          type="checkbox"
+                          className="h-4 w-4 rounded border-gray-600 bg-gray-700 text-theater-blue focus:ring-offset-gray-900"
+                          value={emp.id}
+                          disabled={!form.idShow}
+                          checked={checked}
+                          onChange={(e) => {
+                            const id = String(emp.id)
+                            if (e.target.checked) {
+                              setForm((prev) => ({ ...prev, employeeIds: Array.from(new Set([...(prev.employeeIds || []).map(String), id])) }))
+                            } else {
+                              setForm((prev) => ({ ...prev, employeeIds: (prev.employeeIds || []).filter((x) => String(x) !== id) }))
+                            }
+                          }}
+                        />
+                        <span className="flex-1 truncate">{emp.name}</span>
+                      </label>
+                    )
+                  })}
+              </div>
+              <div className="mt-2 text-xs text-gray-500">
+                Избрани: <span className="text-white font-medium">{(form.employeeIds || []).length}</span>
+              </div>
             </div>
+          )}
+          <div className="flex items-end h-full">
+            <button
+              type="submit"
+              className={`${buttonBaseClass} w-full h-[46px] mt-6 sm:mt-0 ${editingId ? 'bg-blue-500 hover:bg-blue-600' : 'bg-green-500 hover:bg-green-600'
+                } text-white shadow-lg shadow-green-900/20`}
+            >
+              {editingId ? 'Обнови' : 'Запази състав'}
+            </button>
           </div>
-        )}
-        <button
-          type="submit"
-          className={`${buttonBaseClass} ${
-            editingId ? 'bg-blue-500' : 'bg-green-500'
-          }`}
-        >
-          {editingId ? 'Обнови' : 'Запази състав'}
-        </button>
-      </form>
+        </form>
+      </div>
 
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-6 flex items-center justify-between bg-white/5 p-4 rounded-lg border border-white/10">
         <div className="text-sm text-gray-300">
           {filterShowId
-            ? `Показва състава за: ${shows.find(s => String(s.id) === String(filterShowId))?.title || 'избрания спектакъл'}`
+            ? <span className="flex items-center gap-2">Показва състава за: <span className="font-bold text-white">{shows.find(s => String(s.id) === String(filterShowId))?.title || 'избрания спектакъл'}</span></span>
             : 'Показва състава за всички спектакли'}
         </div>
         {filterShowId && (
           <button
             type="button"
             onClick={() => setFilterShowId('')}
-            className="px-3 py-1 rounded bg-theater-light text-white hover:bg-theater-hover text-sm"
+            className="px-4 py-2 rounded-lg bg-white/10 text-white hover:bg-white/20 text-sm transition-colors border border-white/5"
           >
             Покажи всички
           </button>
         )}
       </div>
+
       <StatusMessage status={status} onClear={() => setStatus(null)} />
-      <table className="w-full text-sm border border-theater-light">
-        <thead className="bg-theater-light">
-          <tr>
-            <th className="p-2 text-left border-b border-theater-light">ID</th>
-            <th className="p-2 text-left border-b border-theater-light">Спектакъл</th>
-            <th className="p-2 text-left border-b border-theater-light">Служител</th>
-            <th className="p-2 text-left border-b border-theater-light">Действия</th>
-          </tr>
-        </thead>
-        <tbody>
-          {items
-            .filter((item) => !filterShowId || String(item.idShow) === String(filterShowId))
-            .map((item) => (
-            <tr key={item.id} className="odd:bg-theater-light/20">
-              <td className="p-2 border-b border-theater-light">{item.id}</td>
-              <td className="p-2 border-b border-theater-light">{item.shows?.title}</td>
-              <td className="p-2 border-b border-theater-light">{item.employees?.name}</td>
-               <td className="p-2 border-b border-theater-light space-x-2">
-                 <button
-                   onClick={() => handleEdit(item)}
-                   className="text-theater-accent hover:text-[#27AAE1] hover:underline"
-                 >
-                   Редакция
-                 </button>
-                 <button
-                   onClick={() => handleDeleteCast(item)}
-                   className="px-2 py-1 rounded bg-red-600 text-white hover:bg-red-700"
-                 >
-                   Премахни
-                 </button>
-               </td>
+
+      <div className="overflow-hidden rounded-xl border border-white/10 shadow-2xl">
+        <table className="w-full text-sm text-left">
+          <thead className="text-xs uppercase bg-white/10 text-gray-300 font-semibold tracking-wider">
+            <tr>
+              <th className="p-4">ID</th>
+              <th className="p-4">Спектакъл</th>
+              <th className="p-4">Служител</th>
+              <th className="p-4 text-right">Действия</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody className="divide-y divide-white/5">
+            {items
+              .filter((item) => !filterShowId || String(item.idShow) === String(filterShowId))
+              .map((item) => (
+                <tr key={item.id} className="hover:bg-white/5 transition-colors">
+                  <td className="p-4 font-mono text-gray-400">{item.id}</td>
+                  <td className="p-4 font-medium text-white">{item.shows?.title}</td>
+                  <td className="p-4 text-gray-300">{item.employees?.name}</td>
+                  <td className="p-4 text-right space-x-3">
+                    <button
+                      onClick={() => handleEdit(item)}
+                      className="text-theater-blue hover:text-white font-medium transition-colors"
+                    >
+                      Редакция
+                    </button>
+                    <button
+                      onClick={() => handleDeleteCast(item)}
+                      className="text-red-400 hover:text-red-300 font-medium transition-colors"
+                    >
+                      Премахни
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </section>
   )
 }

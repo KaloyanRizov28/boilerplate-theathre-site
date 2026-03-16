@@ -1,6 +1,8 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
+import Arrow from "@/components/ui/icons/Arrow.svg";
 
 // Smoother, simpler crossfade hero without layout thrash
 const HeroSection = ({ items = [], item }) => {
@@ -116,9 +118,8 @@ const HeroSection = ({ items = [], item }) => {
       <section className="relative w-full h-[65vh] md:h-[75vh] lg:h-[80vh] overflow-hidden bg-black">
         {/* Layer A */}
         <div
-          className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${
-            (isFading ? (frontIsA ? 'opacity-0' : 'opacity-100') : (frontIsA ? 'opacity-100' : 'opacity-0'))
-          } ${(!frontIsA && !isFading) ? 'scale-105' : 'scale-100'}`}
+          className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${(isFading ? (frontIsA ? 'opacity-0' : 'opacity-100') : (frontIsA ? 'opacity-100' : 'opacity-0'))
+            } ${(!frontIsA && !isFading) ? 'scale-105' : 'scale-100'}`}
           style={{ willChange: 'opacity, transform' }}
         >
           {slotA && (
@@ -141,9 +142,8 @@ const HeroSection = ({ items = [], item }) => {
 
         {/* Layer B */}
         <div
-          className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${
-            (isFading ? (!frontIsA ? 'opacity-0' : 'opacity-100') : (!frontIsA ? 'opacity-100' : 'opacity-0'))
-          } ${(frontIsA && !isFading) ? 'scale-105' : 'scale-100'}`}
+          className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${(isFading ? (!frontIsA ? 'opacity-0' : 'opacity-100') : (!frontIsA ? 'opacity-100' : 'opacity-0'))
+            } ${(frontIsA && !isFading) ? 'scale-105' : 'scale-100'}`}
           style={{ willChange: 'opacity, transform' }}
         >
           {slotB && (
@@ -170,19 +170,36 @@ const HeroSection = ({ items = [], item }) => {
         {/* Content */}
         <div className="absolute bottom-3 left-6 z-10 w-full">
           <a href={href} className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded">
-            <h1 className="text-4xl sm:text-6xl font-bold text-white ml-[-0.03em]">
+            <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white ml-[-0.03em] leading-none">
               {title}
             </h1>
           </a>
         </div>
       </section>
 
-      {/* Meta row */}
-      <div className="bg-theater-dark text-white py-2">
-        <div className="flex space-x-4 text-base pl-6">
-          <span>{date}</span>
-          <span>{time}</span>
-          <span>{venue}</span>
+      {/* Cyan accent border */}
+      <div className="h-[2px] bg-[#27AAE1] w-full" />
+
+      {/* Meta row + Билети link */}
+      <div className="bg-theater-dark text-white py-3">
+        <div className="flex items-center justify-between pl-6 pr-6">
+          <div className="flex space-x-4 text-sm text-gray-300 font-light">
+            <span>{date}</span>
+            <span>{time}</span>
+            <span className="uppercase">{venue}</span>
+          </div>
+        </div>
+        {/* Билети link */}
+        <div className="pl-6 mt-3">
+          <Link
+            href="/tickets"
+            className="inline-flex items-center text-[#27AAE1] text-base font-light group transition-colors duration-300 hover:text-white"
+          >
+            <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
+              Билети
+            </span>
+            <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-5 h-5 pl-1 fill-current" />
+          </Link>
         </div>
       </div>
     </div>
