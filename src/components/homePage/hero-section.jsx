@@ -113,9 +113,9 @@ const HeroSection = ({ items = [], item }) => {
   const href = displayItem?.href || '#'
 
   return (
-    <div className="flex flex-col">
-      {/* Keep a stable height to prevent layout jank */}
-      <section className="relative w-full h-[65vh] md:h-[75vh] lg:h-[80vh] overflow-hidden bg-black">
+    <div className="flex flex-col mt-[118px]">
+      {/* Fixed dimensions: 1440px wide, 687px tall */}
+      <section className="relative w-full h-[687px] overflow-hidden bg-black">
         {/* Layer A */}
         <div
           className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${(isFading ? (frontIsA ? 'opacity-0' : 'opacity-100') : (frontIsA ? 'opacity-100' : 'opacity-0'))
@@ -182,24 +182,26 @@ const HeroSection = ({ items = [], item }) => {
 
       {/* Meta row + Билети link */}
       <div className="bg-theater-dark text-white py-3">
-        <div className="flex items-center justify-between pl-6 pr-6">
-          <div className="flex space-x-4 text-sm text-gray-300 font-light">
-            <span>{date}</span>
-            <span>{time}</span>
-            <span className="uppercase">{venue}</span>
+        <div className="px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex space-x-4 text-sm text-gray-300 font-light">
+              <span>{date}</span>
+              <span>{time}</span>
+              <span className="uppercase">{venue}</span>
+            </div>
           </div>
-        </div>
-        {/* Билети link */}
-        <div className="pl-6 mt-3">
-          <Link
-            href="/tickets"
-            className="inline-flex items-center text-[#27AAE1] text-base font-light group transition-colors duration-300 hover:text-white"
-          >
-            <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
-              Билети
-            </span>
-            <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-5 h-5 pl-1 fill-current" />
-          </Link>
+          {/* Билети link */}
+          <div className="mt-3">
+            <Link
+              href="/tickets"
+              className="inline-flex items-center text-[#27AAE1] text-base font-light group transition-colors duration-300 hover:text-white"
+            >
+              <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
+                Билети
+              </span>
+              <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-5 h-5 pl-1 fill-current" />
+            </Link>
+          </div>
         </div>
       </div>
     </div>
