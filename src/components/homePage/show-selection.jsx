@@ -18,8 +18,8 @@ const ShowsSection = (props) => {
   const displayedShows = filteredShows.slice(0, 6);
 
   return (
-    <section className="bg-theater-dark px-6 py-6">
-      <div className="mx-auto">
+    <section className="bg-theater-dark px-8 py-8">
+      <div className="mx-auto max-w-[1440px]">
         {/* Filter tabs row */}
         <div className="flex gap-6 mb-6">
           <button
@@ -51,41 +51,42 @@ const ShowsSection = (props) => {
           </button>
         </div>
 
-        {/* Shows grid - 3 columns matching reference */}
-        <div className="grid grid-cols-3 gap-4">
+        {/* Shows grid - 3 columns, 2 rows, fixed card size 267x481 */}
+        <div className="flex flex-wrap gap-8 justify-center">
           {displayedShows.map((show) => (
             <Link
               key={show.id}
               href={`/repertoar/${show.slug}`}
-              className="group block bg-theater-dark overflow-hidden transition-all duration-300"
+              className="group block bg-theater-dark overflow-hidden transition-all duration-300 flex-shrink-0"
+              style={{ width: '267px', height: '481px' }}
             >
               <div className="flex flex-col h-full">
-                {/* Image Section */}
-                <div className="relative w-full" style={{ aspectRatio: '2/3' }}>
+                {/* Image Section - fixed height */}
+                <div className="relative w-full flex-shrink-0" style={{ height: '370px' }}>
                   <Image
                     src={show.poster_URL}
                     alt={show.title}
                     fill
-                    sizes="(max-width: 768px) 33vw, 25vw"
+                    sizes="267px"
                     className="object-cover"
                   />
                 </div>
 
-                {/* Content Section */}
-                <div className="pt-2 flex flex-col flex-grow">
-                  <p className="text-gray-400 text-xs font-light mb-1">{show.date}</p>
-                  <h3 className="text-white text-sm font-semibold mb-0 leading-snug">
+                {/* Content Section - fills remaining 111px */}
+                <div className="pt-2 px-1 flex flex-col flex-grow overflow-hidden">
+                  <p className="text-gray-400 text-[10px] font-light mb-0.5">{show.date}</p>
+                  <h3 className="text-white text-xs font-semibold mb-0 leading-snug">
                     {show.title}
                   </h3>
-                  <p className="text-gray-400 text-xs font-light mb-2">{show.author}</p>
+                  <p className="text-gray-400 text-[10px] font-light mb-1">{show.author}</p>
 
                   <div className="flex-grow"></div>
 
-                  <div className="inline-flex items-center text-[#27AAE1] text-xs font-light transition-colors duration-300 mt-2">
+                  <div className="inline-flex items-center text-[#27AAE1] text-[10px] font-light transition-colors duration-300 mb-2">
                     <span className="border-b border-transparent group-hover:border-[#27AAE1] transition-all duration-300 group-hover:text-[#27AAE1]">
                       Информация
                     </span>
-                    <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-4 h-4 pl-1 fill-current" />
+                    <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-3 h-3 pl-0.5 fill-current" />
                   </div>
                 </div>
               </div>
