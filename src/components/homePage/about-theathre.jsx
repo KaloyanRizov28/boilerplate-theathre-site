@@ -5,7 +5,7 @@ import Arrow from "@/components/ui/icons/Arrow.svg"
 const AboutTheaterSection = () => {
   return (
     <section className="bg-theater-dark py-8 px-8">
-      <div className="mx-auto max-w-[1440px]">
+      <div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left side - Content */}
           <div>
