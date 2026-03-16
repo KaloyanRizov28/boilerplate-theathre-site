@@ -63,9 +63,9 @@ const SwiperCastSection = ({ castMembers = [] }) => {
 
     return (
         // Compact padding
-        <section className="bg-theater-dark py-6 px-6 ">
+        <section className="bg-theater-dark py-8 px-8">
             {/* Kept original container structure */}
-            <div className="relative overflow-hidden">
+            <div className="relative overflow-hidden max-w-[1440px] mx-auto">
                 <h2 className="text-white text-3xl sm:text-4xl font-light mb-6 sm:mb-8 text-center sm:text-left">
                     Състав
                 </h2>
