@@ -41,8 +41,8 @@ export function Header() {
     <>
       {/* Header */}
       <header className="sticky top-0 left-0 w-full bg-theater-dark border-b border-gray-700 z-50">
-        <div className="w-full px-4 sm:px-6 md:px-8">
-          <div className="flex justify-between items-center py-4">
+        <div className="px-8" style={{ height: '118px' }}>
+          <div className="flex justify-between items-center h-full">
             {/* Hamburger Menu */}
             <button
               onClick={() => {
@@ -53,19 +53,16 @@ export function Header() {
             >
 
               <div
-                className={`w-6 h-0.5 transition-all duration-300 ${
-                  isMenuOpen ? 'bg-[#27AAE1]' : 'bg-white'
-                } group-hover:bg-[#27AAE1] ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
+                className={`w-6 h-0.5 transition-all duration-300 ${isMenuOpen ? 'bg-[#27AAE1]' : 'bg-white'
+                  } group-hover:bg-[#27AAE1] ${isMenuOpen ? 'rotate-45 translate-y-2' : ''}`}
               ></div>
               <div
-                className={`w-6 h-0.5 transition-all duration-300 ${
-                  isMenuOpen ? 'bg-[#27AAE1] opacity-0' : 'bg-white'
-                } group-hover:bg-[#27AAE1]`}
+                className={`w-6 h-0.5 transition-all duration-300 ${isMenuOpen ? 'bg-[#27AAE1] opacity-0' : 'bg-white'
+                  } group-hover:bg-[#27AAE1]`}
               ></div>
               <div
-                className={`w-6 h-0.5 transition-all duration-300 ${
-                  isMenuOpen ? 'bg-[#27AAE1] -rotate-45 -translate-y-2' : 'bg-white'
-                } group-hover:bg-[#27AAE1]`}
+                className={`w-6 h-0.5 transition-all duration-300 ${isMenuOpen ? 'bg-[#27AAE1] -rotate-45 -translate-y-2' : 'bg-white'
+                  } group-hover:bg-[#27AAE1]`}
               ></div>
 
             </button>
@@ -104,11 +101,10 @@ export function Header() {
         </div>
       </header>
       {/* Full Page Overlay Menu */}
-      <div className={`fixed top-0 left-0 w-screen h-screen overflow-x-hidden z-40 transform transform-gpu transition-transform duration-500 ease-in-out ${
-        isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`fixed top-0 left-0 w-screen h-screen overflow-x-hidden z-40 transform transform-gpu transition-transform duration-500 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         {/* Background Image */}
-        <div 
+        <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-10"
           style={{
             backgroundImage: "url('/logo.svg')",
@@ -116,7 +112,7 @@ export function Header() {
             backgroundPosition: 'bottom -25vw right -3vw'
           }}
         />
-        
+
         {/* Dark Overlay for text readability */}
         <div className="absolute inset-0 bg-theater-dark bg-opacity-70" />
 
@@ -143,8 +139,8 @@ export function Header() {
                 key={item.name}
                 className="mb-4 sm:mb-5 md:mb-8"
                 style={{
-                  transform: isMenuOpen 
-                    ? `translateX(${finalPosition}px)` 
+                  transform: isMenuOpen
+                    ? `translateX(${finalPosition}px)`
                     : `translateX(${startPosition}px)`,
                   opacity: isMenuOpen ? 1 : 0,
                   // Custom keyframe animation for the overshoot effect
