@@ -19,7 +19,7 @@ const ShowsSection = (props) => {
 
   return (
     <section className="bg-theater-dark px-8 py-8">
-      <div className="mx-auto max-w-[1440px]">
+      <div>
         {/* Filter tabs row */}
         <div className="flex gap-6 mb-6">
           <button
@@ -52,22 +52,21 @@ const ShowsSection = (props) => {
         </div>
 
         {/* Shows grid - 3 columns, 2 rows, fixed card size 267x481 */}
-        <div className="flex flex-wrap gap-8 justify-center">
+        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedShows.map((show) => (
             <Link
               key={show.id}
               href={`/repertoar/${show.slug}`}
-              className="group block bg-theater-dark overflow-hidden transition-all duration-300 flex-shrink-0"
-              style={{ width: '267px', height: '481px' }}
+              className="group block bg-theater-dark overflow-hidden transition-all duration-300 w-full"
             >
               <div className="flex flex-col h-full">
                 {/* Image Section - fixed height */}
-                <div className="relative w-full flex-shrink-0" style={{ height: '370px' }}>
+                <div className="relative w-full aspect-[267/370]">
                   <Image
                     src={show.poster_URL}
                     alt={show.title}
                     fill
-                    sizes="267px"
+                    sizes="(max-width: 1024px) 50vw, 33vw"
                     className="object-cover"
                   />
                 </div>
