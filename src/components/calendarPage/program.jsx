@@ -172,26 +172,37 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
             const dayNumber = parseInt(dateKey.split('-')[2]);
             return (
               <div key={dateKey} className="flex flex-col sm:flex-row items-start gap-x-4 sm:gap-x- gap-y-4">
-                <div className="flex-shrink-0 w-full sm:w-20 md:w-24 text-left sm:text-right mb-4 sm:mb-0 pt-1">
-                  <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-none tabular-nums">{String(dayNumber).padStart(2, '0')}</div>
-                  <div className="text-xs sm:text-sm text-gray-300 uppercase tracking-wide mt-1">{getDayOfWeekBG(dateKey)}</div>
+                <div className="flex-shrink-0 w-full sm:w-24 text-left sm:text-right pt-2 border-b sm:border-b-0 border-white/10 pb-2 sm:pb-0">
+                  <div className="flex sm:flex-col items-baseline gap-2 sm:gap-0">
+                    <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-none tabular-nums">{String(dayNumber).padStart(2, '0')}</div>
+                    <div className="text-sm sm:text-sm text-[#27AAE1] uppercase tracking-wider font-medium">{getDayOfWeekBG(dateKey)}</div>
+                  </div>
                 </div>
-                <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-6 sm:gap-y-8 ">
+                <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
                   {showsForDay.map(show => (
-                    <div key={`${show.id}-${show.performanceId || show.time}`} className="group mx-auto max-w-sm w-full sm:max-w-none sm:mx-0">
-                      <Link href={`/repertoar/${show.slug}`} className="block space-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">
-                          <div className="relative w-full shadow-lg" style={{ aspectRatio: '10/14' }}>
-                            <Image src={show.poster_URL || show.image_URL} alt={show.title} fill sizes="(max-width: 426px) 90vw, (max-width: 639px) 384px, (max-width: 1279px) 45vw, 30vw" style={{ objectFit: 'cover' }} className="rounded" />
+                    <div key={`${show.id}-${show.performanceId || show.time}`} className="group w-full">
+                      <Link href={`/repertoar/${show.slug}`} className="block space-y-3 focus:outline-none group">
+                        <div className="relative w-full shadow-2xl overflow-hidden rounded-sm aspect-[10/14]">
+                          <Image
+                            src={show.poster_URL || show.image_URL}
+                            alt={show.title}
+                            fill
+                            sizes="(max-width: 640px) 100vw, 30vw"
+                            className="object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-[#27AAE1] transition-colors leading-tight">
+                            {show.title}
+                          </h3>
+                          <p className="text-xs text-gray-400 font-light">{show.author}</p>
+                          <div className="flex items-center gap-3 mt-2">
+                             <span className="text-xs sm:text-sm font-medium text-white bg-[#27AAE1]/20 px-2 py-0.5 rounded-sm">
+                               {show.time}
+                             </span>
+                             <span className="text-xs text-gray-400 uppercase tracking-widest">{show.venue}</span>
                           </div>
-                          <div>
-                            <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-[#27AAE1] transition-colors leading-tight">{show.title}</h3>
-                            <p className="text-xs text-gray-400 mt-0.5">{show.author}</p>
-                            <p className="text-xs sm:text-sm text-gray-200 mt-1.5">{show.time} {show.venue}</p>
-                            <div className="inline-flex items-center text-xs sm:text-sm text-yellow-500 transition-colors mt-1 font-medium hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
-                              Билети
-                              <Arrow className="w-4 h-4 sm:w-5 sm:h-5 ml-1 sm:ml-1.5 transition-transform duration-200 group-hover:translate-x-1 fill-current group-hover:text-[#27AAE1]" />
-                            </div>
-                          </div>
+                        </div>
                       </Link>
                     </div>
                   ))}

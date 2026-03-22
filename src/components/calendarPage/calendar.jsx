@@ -133,21 +133,21 @@ const ProgramCalendar = ({
 
   // --- STYLES REVERTED to your originally provided version ---
   const overallPaddingClasses = "p-0 sm:p-4 md:p-6 lg:p-8 xl:p-12";
-  const titleSizeClasses = "text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl";
-  const monthNameSizeClasses = "text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl";
-  const dateTextSizeClasses = "text-[20px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"; // Base is text-[20px]
-  const dayCellWidthClasses = "w-8 sm:w-9 md:w-11 lg:w-14 xl:w-16"; // Base is w-8
-  const dayCellSpacingClasses = "space-x-2.5 sm:space-x-1.5 md:space-x-2 lg:space-x-2.5 xl:space-x-3"; // Base is space-x-2.5
+  const titleSizeClasses = "text-lg sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl";
+  const monthNameSizeClasses = "text-sm sm:text-xl md:text-1xl lg:text-2xl xl:text-3xl";
+  const dateTextSizeClasses = "text-[12px] sm:text-lg md:text-xl lg:text-2xl xl:text-3xl"; 
+  const dayCellWidthClasses = "w-7 sm:w-9 md:w-11 lg:w-14 xl:w-16"; 
+  const dayCellSpacingClasses = "space-x-1 sm:space-x-1.5 md:space-x-2 lg:space-x-2.5 xl:space-x-3"; 
   // --- END OF STYLES REVERSION ---
 
   return (
     <div className={`bg-theater-dark text-white ${overallPaddingClasses} rounded-lg font-sans w-full max-w-screen-xl mx-auto`}>
-      <div className="flex flex-col md:flex-row md:items-start gap-y-6 md:gap-y-0 md:gap-x-6 lg:gap-x-10 xl:gap-x-14">
-        <div className="flex-shrink-0 w-full md:w-auto text-center md:text-left md:sticky md:top-6">
-          <h1 className={`${titleSizeClasses} font-bold text-white mb-4 sm:mb-6 md:mb-8`}>
+      <div className="flex flex-col md:flex-row md:items-start gap-y-2 md:gap-y-0 md:gap-x-6 lg:gap-x-10 xl:gap-x-14">
+        <div className="flex-shrink-0 w-full md:w-auto text-center md:text-left md:sticky md:top-6 mb-1 sm:mb-0">
+          <h1 className={`${titleSizeClasses} font-bold text-white mb-1 sm:mb-6 md:mb-8 tracking-tight`}>
             Програма
           </h1>
-          <div className={`flex items-center justify-center md:justify-start ${dayCellSpacingClasses.replace('space-x-', 'space-x-')} xs:space-x-2 sm:space-x-3 md:space-x-4`}>
+          <div className={`flex items-center justify-center md:justify-start ${dayCellSpacingClasses.replace('space-x-', 'space-x-')} xs:space-x-0.5 sm:space-x-3 md:space-x-4`}>
             <button
               onClick={navigateToFirstMonth}
               disabled={isDisplayingNavFirstMonth}
@@ -168,36 +168,40 @@ const ProgramCalendar = ({
 
         {/* Styles here are from your original version; no overflow wrapper or min-width added by me */}
         <div
-          className={`flex-grow w-full grid grid-cols-14 gap-y-1.5 sm:gap-y-2 md:gap-y-2.5 lg:gap-y-3 gap-x-px sm:gap-x-0.5 md:gap-x-1 font-mono ${dateTextSizeClasses} leading-none transition-opacity duration-300 ease-in-out  [@media(min-width:320px)]:pr-2  [@media(min-width:375px)]:pr-8       [@media(min-width:425px)]:pr-14`  }
+          className={`flex-grow w-full grid grid-cols-7 sm:grid-cols-14 gap-y-2 sm:gap-y-2.5 lg:gap-y-3 gap-x-1 sm:gap-x-0.5 md:gap-x-1 font-mono transition-opacity duration-300 ease-in-out`}
           style={{ opacity: gridOpacity }}
         >
           {weeks.map((week, weekIndex) => {
-            // Using fixed INITIAL_WEEK_START_COLUMN = 8 as per reverted styles
+            // Only apply the staircase offset on screens larger than mobile (sm: 640px)
+            // For mobile, it will be a standard 7-column grid starting at 1
             const startColumn = Math.max(1, INITIAL_WEEK_START_COLUMN - weekIndex);
+
             return (
               <div
                 key={`week-${weekIndex}-${yearToDisplay}-${monthToDisplay}`}
-                className={`col-span-7 flex justify-end ${dayCellSpacingClasses}`}
-                style={{ gridColumnStart: startColumn }}
+                className={`col-span-14 sm:col-span-7 flex justify-between sm:justify-end ${dayCellSpacingClasses}`}
+                style={{
+                  gridColumnStart: typeof window !== 'undefined' && window.innerWidth < 640 ? 1 : startColumn
+                }}
               >
                 {week.map((dayObj, dayIndex) => {
                   if (!dayObj) {
-                    return <span key={`empty-${weekIndex}-${dayIndex}`} className={`${dayCellWidthClasses} block text-center`}></span>;
+                    return <span key={`empty-${weekIndex}-${dayIndex}`} className={`${dayCellWidthClasses} block text-center invisible sm:visible`}></span>;
                   }
                   const isDayWithShow = daysWithShows && daysWithShows.includes(dayObj.dayNumber);
                   const isSelected = selectedDayNumber === dayObj.dayNumber && monthToDisplay === currentMonthProp && yearToDisplay === currentYearProp;
 
-                  let cellClasses = `${dayCellWidthClasses} text-center block transition-all duration-150 ease-in-out rounded-sm`;
+                  let cellClasses = `${dayCellWidthClasses} text-[14px] sm:text-[18px] md:text-xl lg:text-2xl xl:text-3xl text-center block transition-all duration-150 ease-in-out rounded-sm py-1 sm:py-0`;
 
                   if (isSelected && isDayWithShow) {
-                    cellClasses += " bg-gray-300 text-gray-900 font-bold transform scale-110 cursor-pointer";
+                    cellClasses += " bg-[#27AAE1] text-white font-bold transform scale-105 cursor-pointer shadow-[0_0_15px_rgba(39,170,225,0.4)]";
                   } else if (isDayWithShow) {
-                    cellClasses += " text-gray-300 font-semibold cursor-pointer hover:bg-theater-hover hover:text-white hover:scale-105 active:bg-gray-600 active:text-white active:scale-100";
+                    cellClasses += " text-white font-semibold cursor-pointer hover:bg-theater-hover hover:scale-105 active:scale-100 ring-1 ring-[#27AAE1]/30";
                   } else {
                     if (dayObj.isWeekend) {
-                      cellClasses += " text-gray-500 opacity-70 cursor-default pointer-events-none";
+                      cellClasses += " text-gray-600 opacity-40 cursor-default pointer-events-none";
                     } else {
-                      cellClasses += " text-gray-600 opacity-60 cursor-default pointer-events-none";
+                      cellClasses += " text-gray-700 opacity-30 cursor-default pointer-events-none";
                     }
                   }
                   return (
