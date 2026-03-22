@@ -171,8 +171,8 @@ const HeroSection = ({ items = [], item }) => {
         {/* Content */}
         <div className="absolute bottom-3 z-10 w-full flex justify-center px-8">
           <div className="max-w-[1474px] w-full">
-            <a href={href} className="inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded">
-              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold text-white ml-[-0.03em] leading-none">
+            <a href={href} className="group/title inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded">
+              <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold ml-[-0.03em] leading-none transition-all duration-700 bg-gradient-to-r from-[#27AAE1] from-50% to-white to-50% bg-[length:200%_100%] bg-[position:100%_0] group-hover/title:bg-[position:0_0] bg-clip-text text-transparent">
                 {title}
               </h1>
             </a>
@@ -180,29 +180,23 @@ const HeroSection = ({ items = [], item }) => {
         </div>
       </section>
 
-      {/* Cyan accent border */}
-      <div className="h-[2px] bg-[#27AAE1] w-full" />
-
-      {/* Meta row + Билети link */}
-      <div className="bg-theater-dark text-white py-3">
+      {/* Meta row */}
+      <div className="bg-theater-dark text-white py-4 border-b border-white/5">
         <div className="flex justify-center px-8">
           <div className="max-w-[1474px] w-full">
-            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-300 font-light text-center sm:text-left">
-              <span>{date}</span>
-              <span>{time}</span>
-              <span className="uppercase">{venue}</span>
-            </div>
-            {/* Билети link */}
-            <div className="mt-3">
-              <Link
-                href="/tickets"
-                className="inline-flex items-center text-[#27AAE1] text-base font-light group transition-colors duration-300 hover:text-white"
-              >
-                <span className="border-b border-transparent group-hover:border-white transition-all duration-300">
-                  Билети
-                </span>
-                <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-5 h-5 pl-1 fill-current" />
-              </Link>
+            <div className="flex flex-wrap gap-x-6 gap-y-2 text-sm sm:text-base text-gray-300 font-light tracking-wide uppercase">
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#27AAE1]" />
+                {date}
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#27AAE1]" />
+                {time}
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#27AAE1]" />
+                {venue}
+              </span>
             </div>
           </div>
         </div>

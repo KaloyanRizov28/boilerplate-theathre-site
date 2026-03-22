@@ -9,7 +9,7 @@ export function Footer() {
   const arrowStyle = "inline-block transition-transform duration-300 group-hover:translate-x-1 w-4 h-4 ml-1 fill-current";
 
   return (
-    <footer className="bg-theater-dark border-t border-white/5 text-white">
+    <footer className="bg-[#171717] border-t border-white/5 text-white">
       {/* Main footer content */}
       <div className="px-6 py-10">
         <div className="grid grid-cols-2 gap-8">
@@ -51,8 +51,8 @@ export function Footer() {
       </div>
 
       {/* Copyright bar */}
-      <div className="bg-black py-3 text-center text-gray-400 text-sm">
-        МДТ &quot;Константин Кисимов&quot; © 2025
+      <div className="py-4 text-center text-[#27AAE1] text-sm font-light border-t border-white/5">
+        МДТ &quot;Константин Кисимов&quot; © {new Date().getFullYear()}
       </div>
     </footer>
   );

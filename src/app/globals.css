@@ -36,12 +36,7 @@ body {
   color: var(--foreground);
 }
 
-/* Prevent horizontal scrollbar from appearing sitewide */
-html,
-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
+/* Removed overflow-x: hidden hack to restore native position: sticky capabilities for the headers */
 
 /* globals.css */
 
