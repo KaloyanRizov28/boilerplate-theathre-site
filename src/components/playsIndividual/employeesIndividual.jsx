@@ -18,8 +18,8 @@ const EkipSection = (props) => {
     });
 
     return (
-        <section className="bg-theater-dark px-16 py-12">
-            <div className="">
+        <section className="bg-theater-dark px-4 sm:px-8 py-8 sm:py-12">
+            <div className="max-w-[1474px] mx-auto w-full">
                 <div className="flex flex-col mb-10">
                     {/* Filter buttons */}
                     <div className="flex gap-6 md:gap-8">

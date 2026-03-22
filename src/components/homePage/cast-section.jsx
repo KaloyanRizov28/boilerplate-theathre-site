@@ -39,14 +39,14 @@ const CastCard = ({ member }) => (
             </div>
             <div className="p-3 bg-theater-dark flex-grow flex flex-col justify-between">
                 <div>
-                    <h3 className="text-white text-base font-medium leading-tight">
+                    <h3 className="text-white text-lg sm:text-xl font-medium leading-tight">
                         {member.name}
                     </h3>
                     {member.role && (
-                        <p className="text-gray-400 text-xs font-light mt-1 capitalize">{member.role}</p>
+                        <p className="text-gray-400 text-sm sm:text-base font-light mt-1 capitalize">{member.role}</p>
                     )}
                 </div>
-                <span className="inline-flex items-center text-white text-xs font-light transition-colors duration-300 mt-2 group-hover:text-[#27AAE1]">
+                <span className="inline-flex items-center text-white text-sm sm:text-base font-light transition-colors duration-300 mt-2 group-hover:text-[#27AAE1]">
                     <span className="border-b border-transparent transition-all duration-300 group-hover:border-theater-hover group-hover:text-[#27AAE1]">
                         Виж още
                     </span>
@@ -65,7 +65,7 @@ const SwiperCastSection = ({ castMembers = [] }) => {
         // Compact padding
         <section className="bg-theater-dark py-8 px-8">
             {/* Kept original container structure */}
-            <div className="relative overflow-hidden">
+            <div className="max-w-[1474px] mx-auto w-full relative overflow-hidden">
                 <h2 className="text-white text-3xl sm:text-4xl font-light mb-6 sm:mb-8 text-center sm:text-left">
                     Състав
                 </h2>

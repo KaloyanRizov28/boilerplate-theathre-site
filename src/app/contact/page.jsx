@@ -33,12 +33,15 @@ export default function ContactPage() {
   return (
     <main className="bg-theater-dark text-white">
       {/* Page title */}
-      <section className="px-6 md:px-12 lg:px-16 py-14 md:py-18 lg:py-20">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-semibold">Контакти</h1>
+      <section className="px-4 sm:px-8 py-8 sm:py-16">
+        <div className="max-w-[1474px] mx-auto w-full">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-light">Контакти</h1>
+        </div>
       </section>
       {/* Content grid */}
-      <section className="px-6 md:px-12 lg:px-16 pb-20">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
+      <section className="px-4 sm:px-8 pb-16">
+        <div className="max-w-[1474px] mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-14">
           {/* Left column: sections */}
           <div className="space-y-12">
             {sections.map((sec) => (
@@ -91,6 +94,7 @@ export default function ContactPage() {
               <p className="text-gray-300">5000 гр. Велико Търново Ул. „Васил Левски“ 4</p>
             </div>
           </div>
+        </div>
         </div>
       </section>
     </main>

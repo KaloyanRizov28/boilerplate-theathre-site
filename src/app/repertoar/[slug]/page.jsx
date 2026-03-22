@@ -37,8 +37,8 @@ export default async function SinglePlayPage({ params }) {
       <PlayPresentation
         playName={showRecord.title}
         backgroundImage={showRecord.image_URL}
-        
         synopsis={showRecord.information}
+        productionId={cleanSlug}
         ticketLink={ticketLink}
       />
       <ActorFilterWithData

@@ -41,36 +41,41 @@ export function TransparentHeader() {
 
   return (
     <>
-      {/* Header - Now Transparent and FIXED */}
-      <header className="fixed top-0 left-0 w-full bg-transparent z-50"> {/* MODIFIED: sticky to fixed */}
-        <div className="w-full px-4 sm:px-6 md:px-8">
-          <div className="flex justify-between items-center py-4">
+      {/* Header - Now Transparent and FIXED with subtle gradient for readability */}
+      <header className="fixed top-0 left-0 w-full bg-gradient-to-b from-black/80 via-black/30 to-transparent z-50">
+        <div className="w-full px-4 sm:px-8 lg:px-12" style={{ height: '118px' }}>
+          <div className="flex justify-between items-center h-full relative">
             {/* Hamburger Menu */}
             <button
               onClick={() => {
                 if (isMenuOpen) setActiveMenu('root')
                 setIsMenuOpen(!isMenuOpen)
               }}
-              className="group flex flex-col space-y-1 p-2 z-50 relative -ml-1" // z-50 ensures button is above other header elements if needed
+              className="group flex flex-col space-y-1.5 p-2 z-50 relative -ml-1"
             >
               <div
-                className={`${iconBaseClass} ${
-                  isMenuOpen ? 'bg-[#27AAE1] rotate-45 translate-y-2' : 'bg-white'
-                } group-hover:bg-[#27AAE1]`}
+                className={`w-8 h-[2px] transition-all duration-300 ${isMenuOpen ? 'bg-[#27AAE1] rotate-45 translate-y-[8px]' : 'bg-white'
+                  } group-hover:bg-[#27AAE1]`}
               ></div>
               <div
-                className={`${iconBaseClass} ${
-                  isMenuOpen ? 'bg-[#27AAE1] opacity-0' : 'bg-white'
-                } group-hover:bg-[#27AAE1]`}
+                className={`w-8 h-[2px] transition-all duration-300 ${isMenuOpen ? 'bg-[#27AAE1] opacity-0' : 'bg-white'
+                  } group-hover:bg-[#27AAE1]`}
               ></div>
               <div
-                className={`${iconBaseClass} ${
-                  isMenuOpen ? 'bg-[#27AAE1] -rotate-45 -translate-y-2' : 'bg-white'
-                } group-hover:bg-[#27AAE1]`}
+                className={`w-8 h-[2px] transition-all duration-300 ${isMenuOpen ? 'bg-[#27AAE1] -rotate-45 -translate-y-[8px]' : 'bg-white'
+                  } group-hover:bg-[#27AAE1]`}
               ></div>
             </button>
 
-            <div className="flex items-center gap-4">
+            {/* Theater Title Centered */}
+            <Link href="/" className="hidden lg:block text-center group absolute left-1/2 -translate-x-1/2 z-50" aria-label="Начало">
+              <div className="text-sm font-light tracking-[0.1em] text-white/95 group-hover:text-[#27AAE1] transition-colors duration-300 drop-shadow-md">
+                <div>МУЗИКАЛНО-ДРАМАТИЧЕН ТЕАТЪР</div>
+                <div className="mt-0.5">"КОНСТАНТИН КИСИМОВ"</div>
+              </div>
+            </Link>
+
+            <div className="flex items-center gap-4 z-50 relative">
               {user && (
                 <span className="text-sm text-white">
                   {user.email}
@@ -78,17 +83,17 @@ export function TransparentHeader() {
                 </span>
               )}
               {user && (
-                <button onClick={handleLogout} className="text-theater-accent">
+                <button onClick={handleLogout} className="text-[#27AAE1] hover:text-white transition-colors duration-200">
                   Log out
                 </button>
               )}
-              <div className="w-12 h-12 flex items-center justify-center -mr-1">
+              <div className="w-14 h-14 flex items-center justify-center -mr-1 hover:scale-105 transition-transform duration-300 drop-shadow-xl">
                 <Link href="/" aria-label="Начало">
                   <Image
                     src="/logo.svg"
                     alt="Лого на театъра"
-                    width={48}
-                    height={48}
+                    width={56}
+                    height={56}
                     priority
                   />
                 </Link>
@@ -98,9 +103,8 @@ export function TransparentHeader() {
         </div>
       </header>
       {/* Full Page Overlay Menu */}
-      <div className={`fixed top-0 left-0 w-full h-full z-40 transform transition-transform duration-500 ease-in-out ${
-        isMenuOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}>
+      <div className={`fixed top-0 left-0 w-full h-full z-40 transform transition-transform duration-500 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}>
         {/* Background Image for menu */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-10"

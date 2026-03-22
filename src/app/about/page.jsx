@@ -5,13 +5,18 @@ import Arrow from '@/components/ui/icons/Arrow.svg';
 export default function AboutPage() {
   return (
     <>
-      <section className="bg-theater-dark px-16 py-16">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div>
+      <section className="bg-theater-dark px-4 sm:px-8 py-8 sm:py-16">
+        <div className="max-w-[1474px] mx-auto w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
             <h1 className="text-white text-4xl sm:text-5xl font-light mb-8">За театъра</h1>
             <p className="text-gray-300 text-lg leading-relaxed mb-8">
-              Lorem ipsum dolor sit amet consectetur. Commodo proin commodo cras nisl sem. Dis malesuada
-              in interdum aenean est lacus libero.Lorem ipsum dolor sit amet consectetur.
+              Музикално-драматичен театър „Константин Кисимов“ е сред най-емблематичните културни институции 
+              в България, разположен в историческата и духовна столица Велико Търново. Носещ името на 
+              забележителния актьор Константин Кисимов, театърът е дом на богато разнообразие от изкуства – 
+              от класическа и съвременна драма до великолепни оперети, мюзикъли и детски постановки. 
+              Със своите талантливи артисти, впечатляваща сценография и непрестанен стремеж към творческо 
+              развитие, МДТ „Константин Кисимов“ продължава да вдъхновява и радва публиката от всички възрасти.
             </p>
             <div className="flex gap-4 justify-start">
 
@@ -45,11 +50,14 @@ export default function AboutPage() {
             </div>
           </div>
         </div>
+        </div>
       </section>
-      <section className="bg-gray-200 text-theater-dark flex items-center justify-center h-96 px-16 text-center">
-        <p className="text-2xl">
-          snimka na teatura (mojebi ot vutre che da ne e grozna XD XD)
-        </p>
+      <section className="bg-gray-200 text-theater-dark px-4 sm:px-8 h-96 flex items-center justify-center text-center">
+        <div className="max-w-[1474px] mx-auto w-full">
+          <p className="text-2xl">
+            snimka na teatura (mojebi ot vutre che da ne e grozna XD XD)
+          </p>
+        </div>
       </section>
     </>
   );

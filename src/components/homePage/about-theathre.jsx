@@ -5,20 +5,21 @@ import Arrow from "@/components/ui/icons/Arrow.svg"
 const AboutTheaterSection = () => {
   return (
     <section className="bg-theater-dark py-8 px-8">
-      <div>
+      <div className="max-w-[1474px] mx-auto w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
           {/* Left side - Content */}
           <div>
             <h2 className="text-white text-3xl sm:text-4xl font-light mb-4">
               За Театъра
             </h2>
-            
+
             <p className="text-gray-300 text-base leading-relaxed mb-6">
-              Lorem ipsum dolor sit amet consectetur. Commodo proin commodo 
-              cras nisl sem. Dis malesuada in interdum aenean est lacus 
-              libero.Lorem ipsum dolor sit amet consectetur.
+              Музикално-драматичен театър „Константин Кисимов“ е културното сърце на Велико Търново. 
+              Носещ името на легендарния български актьор, театърът предлага богата програма от 
+              драматични постановки, оперети, мюзикъли и вълнуващи детски спектакли, съчетавайки 
+              традиции и новаторство на сцената.
             </p>
-            
+
             <Link
               href="/about"
               className="inline-flex items-center text-white text-base font-light group transition-colors duration-300 hover:text-[#27AAE1]"
@@ -29,7 +30,7 @@ const AboutTheaterSection = () => {
               <Arrow className="inline-block transition-transform duration-300 group-hover:translate-x-2 w-4 h-4 pl-2 fill-current group-hover:text-[#27AAE1]"></Arrow>
             </Link>
           </div>
-          
+
           {/* Right side - Theater Logo/Icon */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative w-48 h-48 sm:w-56 sm:h-56">
@@ -40,7 +41,7 @@ const AboutTheaterSection = () => {
                 fill
                 className="object-contain"
               />
-              
+
               {/* Alternative: If you want to use the icon as a background pattern */}
               {/* <div 
                 className="w-full h-full bg-white"
@@ -74,13 +75,13 @@ const AboutTheaterSectionWithSVG = () => {
             <h2 className="text-white text-3xl sm:text-4xl font-light mb-4">
               За Театъра
             </h2>
-            
+
             <p className="text-gray-300 text-base leading-relaxed mb-6">
-              Lorem ipsum dolor sit amet consectetur. Commodo proin commodo 
-              cras nisl sem. Dis malesuada in interdum aenean est lacus 
+              Lorem ipsum dolor sit amet consectetur. Commodo proin commodo
+              cras nisl sem. Dis malesuada in interdum aenean est lacus
               libero.Lorem ipsum dolor sit amet consectetur.
             </p>
-            
+
             <Link
               href="/about"
               className="inline-flex items-center text-white text-base font-light group hover:text-[#27AAE1]"
@@ -93,12 +94,12 @@ const AboutTheaterSectionWithSVG = () => {
               </span>
             </Link>
           </div>
-          
+
           {/* Right side - Theater Icon as SVG */}
           <div className="flex justify-center lg:justify-end">
-            <svg 
+            <svg
               className="w-48 h-48 sm:w-56 sm:h-56 text-white"
-              viewBox="0 0 200 200" 
+              viewBox="0 0 200 200"
               fill="currentColor"
               xmlns="http://www.w3.org/2000/svg"
             >

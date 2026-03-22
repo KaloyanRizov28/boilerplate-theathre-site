@@ -65,10 +65,11 @@ export default async function CastPage() {
 
   return (
     <main className="bg-theater-dark text-white">
-      <section className="px-2 py-14 sm:py-2 md:py-2">
+      <section className="px-4 sm:px-8 py-8 sm:py-16">
+        <div className="max-w-[1474px] mx-auto w-full">
+          <TeamAccordionClient creative={creative} technical={technical} administrative={administrative} />
+        </div>
       </section>
-
-      <TeamAccordionClient creative={creative} technical={technical} administrative={administrative} />
     </main>
   );
 }

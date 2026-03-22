@@ -18,8 +18,8 @@ const ShowsSection = (props) => {
   const displayedShows = filteredShows.slice(0, 6);
 
   return (
-    <section className="bg-theater-dark px-8 py-8">
-      <div>
+    <section className="bg-theater-dark px-4 sm:px-8 py-8">
+      <div className="max-w-[1474px] mx-auto w-full">
         {/* Filter tabs row */}
         <div className="flex gap-6 mb-6">
           <button
@@ -52,12 +52,12 @@ const ShowsSection = (props) => {
         </div>
 
         {/* Shows grid - 3 columns, 2 rows, fixed card size 267x481 */}
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="flex flex-wrap gap-6 sm:gap-[137px]">
           {displayedShows.map((show) => (
             <Link
               key={show.id}
               href={`/repertoar/${show.slug}`}
-              className="group block bg-theater-dark overflow-hidden transition-all duration-300 w-full"
+              className="group block bg-theater-dark overflow-hidden transition-all duration-300 w-full sm:w-[400px]"
             >
               <div className="flex flex-col h-full">
                 {/* Image Section - fixed height */}
@@ -66,22 +66,22 @@ const ShowsSection = (props) => {
                     src={show.poster_URL}
                     alt={show.title}
                     fill
-                    sizes="(max-width: 1024px) 50vw, 33vw"
+                    sizes="(max-width: 640px) 100vw, 400px"
                     className="object-cover"
                   />
                 </div>
 
                 {/* Content Section - fills remaining 111px */}
                 <div className="pt-2 px-1 flex flex-col flex-grow overflow-hidden">
-                  <p className="text-gray-400 text-[10px] font-light mb-0.5">{show.date}</p>
-                  <h3 className="text-white text-xs font-semibold mb-0 leading-snug">
+                  <p className="text-gray-400 text-xs sm:text-sm font-light mb-0.5">{show.date}</p>
+                  <h3 className="text-white text-base sm:text-lg font-semibold mb-0 leading-snug">
                     {show.title}
                   </h3>
-                  <p className="text-gray-400 text-[10px] font-light mb-1">{show.author}</p>
+                  <p className="text-gray-400 text-xs sm:text-sm font-light mb-1">{show.author}</p>
 
                   <div className="flex-grow"></div>
 
-                  <div className="inline-flex items-center text-[#27AAE1] text-[10px] font-light transition-colors duration-300 mb-2">
+                  <div className="inline-flex items-center text-[#27AAE1] text-xs sm:text-sm font-light transition-colors duration-300 mb-2">
                     <span className="border-b border-transparent group-hover:border-[#27AAE1] transition-all duration-300 group-hover:text-[#27AAE1]">
                       Информация
                     </span>

@@ -137,8 +137,8 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
   return (
     <section className="bg-theater-dark text-white px-4 sm:px-6 lg:px-8 min-h-screen">
       {/* ... The rest of your JSX remains exactly the same ... */}
-      <div className="max-w-[145rem] mx-auto">
-        <div className='flex justify-center my-8'>
+      <div className="max-w-[1474px] mx-auto w-full">
+        <div className='flex justify-center my-6'>
           <ProgramCalendar
             currentMonth={activeDisplayMonth}
             currentYear={activeDisplayYear}
@@ -150,7 +150,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
             selectedDayNumber={selectedDate && selectedDate.getUTCMonth() === activeDisplayMonth && selectedDate.getUTCFullYear() === activeDisplayYear ? selectedDate.getUTCDate() : undefined}
           />
         </div>
-        <div className="flex flex-wrap justify-right gap-x-6 gap-y-3 sm:gap-x-8 my-8">
+        <div className="flex flex-wrap justify-left gap-x-6 gap-y-3 sm:gap-x-8 my-6">
           <button onClick={() => { setActiveFilter('all'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'all' ? 'text-white' : 'text-gray-500 hover:text-[#27AAE1]'}`}>ВСИЧКИ</button>
           <button onClick={() => { setActiveFilter('theater'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'theater' ? 'text-white' : 'text-gray-500 hover:text-[#27AAE1]'}`}>ТЕАТЪР</button>
           <button onClick={() => { setActiveFilter('music'); setSelectedDate(null); }} className={`text-lg sm:text-xl font-light transition-all duration-300 ${activeFilter === 'music' ? 'text-white' : 'text-gray-500 hover:text-[#27AAE1]'}`}>МУЗИКА</button>
@@ -162,7 +162,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
             </button>
           </div>
         )}
-        <div className="space-y-12 min-h-[50rem]">
+        <div className="space-y-8 min-h-[50rem]">
           {Object.keys(programToDisplay).length === 0 && (
             <p className="text-xl sm:text-2xl text-gray-400 text-center py-16">
               {selectedDate ? "Няма представления за избраната дата и филтър." : "Няма налични представления за този месец и филтър."}
@@ -176,7 +176,7 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
                   <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white leading-none tabular-nums">{String(dayNumber).padStart(2, '0')}</div>
                   <div className="text-xs sm:text-sm text-gray-300 uppercase tracking-wide mt-1">{getDayOfWeekBG(dateKey)}</div>
                 </div>
-                <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-8 sm:gap-y-10 ">
+                <div className="flex-grow w-full grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-x-4 sm:gap-x-6 gap-y-6 sm:gap-y-8 ">
                   {showsForDay.map(show => (
                     <div key={`${show.id}-${show.performanceId || show.time}`} className="group mx-auto max-w-sm w-full sm:max-w-none sm:mx-0">
                       <Link href={`/repertoar/${show.slug}`} className="block space-y-2 focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-md">

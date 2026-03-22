@@ -46,8 +46,8 @@ const venues = [
 export default function ScenesPage() {
   return (
     <main className="bg-theater-dark text-white">
-      <section className="px-6 py-16 sm:py-20 md:py-24">
-        <div className="mx-auto max-w-6xl space-y-16">
+      <section className="px-4 sm:px-8 py-8 sm:py-16 md:py-24">
+        <div className="max-w-[1474px] mx-auto w-full space-y-16">
           {venues.map((venue, index) => (
             <article
               key={venue.id}
