@@ -59,15 +59,6 @@ export default function ScenesPage() {
                   <h2 className="text-3xl sm:text-4xl font-light">{venue.name}</h2>
                 </header>
                 <p className="text-base sm:text-lg text-gray-300 leading-relaxed">{venue.description}</p>
-                <Link
-                  href={venue.schemeHref}
-                  className="inline-flex items-center text-lg font-light group"
-                >
-                  <span className="border-b border-transparent pb-1 transition-all duration-300 group-hover:border-white hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
-                    Схеми на залата
-                  </span>
-                  <Arrow className="ml-3 h-6 w-6 transition-transform duration-300 group-hover:translate-x-1.5 fill-current group-hover:text-[#27AAE1]" />
-                </Link>
               </div>
 
               <div className={`relative overflow-hidden rounded-none border border-gray-700/70 bg-gradient-to-br from-gray-700/40 via-gray-600/30 to-gray-500/20 backdrop-blur ${index % 2 === 1 ? 'lg:order-1' : ''}`}>

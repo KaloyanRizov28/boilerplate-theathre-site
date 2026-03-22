@@ -25,7 +25,6 @@ export function TransparentHeader() {
     root: [
       { name: 'Програма', href: '/program' },
       { name: 'За нас', submenu: 'about' },
-      { name: 'Билети', href: '/tickets' },
       { name: 'Контакти', href: '/contact' },
     ],
     about: [
