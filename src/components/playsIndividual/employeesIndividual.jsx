@@ -52,7 +52,7 @@ const EkipSection = (props) => {
                                     alt={member.name}
                                     width={192}
                                     height={192}
-                                    className="w-48 h-48 object-cover rounded-md mb-2"
+                                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 object-cover rounded-md mb-2 transition-all duration-300"
                                 />
                             )}
                             <p className="text-white text-sm text-center">{member.name}</p>

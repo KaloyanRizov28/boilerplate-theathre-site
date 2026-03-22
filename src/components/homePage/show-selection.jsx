@@ -51,16 +51,16 @@ const ShowsSection = (props) => {
           </button>
         </div>
 
-        {/* Shows grid - 3 columns, 2 rows, fixed card size 267x481 */}
-        <div className="flex flex-wrap gap-6 sm:gap-[137px]">
+        {/* Shows grid - mathematically scales cards proportionally without breaking layout */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-12 xl:gap-[137px]">
           {displayedShows.map((show) => (
             <Link
               key={show.id}
               href={`/repertoar/${show.slug}`}
-              className="group block bg-theater-dark overflow-hidden transition-all duration-300 w-full sm:w-[400px]"
+              className="group block bg-theater-dark overflow-hidden transition-all duration-300 w-full"
             >
               <div className="flex flex-col h-full">
-                {/* Image Section - fixed height */}
+                {/* Image Section - proportional aspect ratio scaling */}
                 <div className="relative w-full aspect-[267/370]">
                   <Image
                     src={show.poster_URL}

@@ -15,8 +15,8 @@ module.exports = {
         'theater-hover': '#27AAE1',
       },
       fontFamily: {
-        // If you want custom fonts later
-        'theater': ['Inter', 'sans-serif'],
+        sans: ['var(--font-sofia-sans)', 'sans-serif'],
+        'theater': ['var(--font-sofia-sans)', 'sans-serif'],
       },
     },
   },

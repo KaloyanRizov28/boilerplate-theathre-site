@@ -187,7 +187,7 @@ const HeroSection = ({ items = [], item }) => {
       <div className="bg-theater-dark text-white py-3">
         <div className="flex justify-center px-8">
           <div className="max-w-[1474px] w-full">
-            <div className="flex space-x-4 text-sm text-gray-300 font-light">
+            <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm text-gray-300 font-light text-center sm:text-left">
               <span>{date}</span>
               <span>{time}</span>
               <span className="uppercase">{venue}</span>
