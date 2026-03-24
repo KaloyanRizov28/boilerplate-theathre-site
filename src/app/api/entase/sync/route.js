@@ -1,20 +1,12 @@
 import { NextResponse } from 'next/server'
-import { DateTime } from 'luxon'
 
+import { slugify } from '@/services/entase/client'
 import { createAdminClient } from '@/services/supabase/admin'
 import { createClient as createServerClient } from '@/services/supabase/server'
 
 const ENTASE_BASE_URL = 'https://api.entase.com/v2'
 const DEFAULT_POSTER = 'https://via.placeholder.com/600x900/0B1D2A/FFFFFF?text=Poster'
 const DEFAULT_IMAGE = 'https://via.placeholder.com/1280x720/0B1D2A/FFFFFF?text=Show'
-
-function slugify(text) {
-  return text
-    .toLowerCase()
-    .trim()
-    .replace(/[^\w\s-]/g, '')
-    .replace(/\s+/g, '-');
-}
 
 async function fetchCollection(initialPath, apiKey) {
   const items = []
@@ -89,45 +81,29 @@ function buildShowRecord(production) {
 }
 
 function normalizeDate(timestampInSeconds) {
-   
-    const timestampInMilliseconds = timestampInSeconds * 1000;
-    
-    
-    const date = new Date(timestampInMilliseconds);
+  const timestampInMilliseconds = timestampInSeconds * 1000
+  const date = new Date(timestampInMilliseconds)
+  const formatter = new Intl.DateTimeFormat('bg-BG', {
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: false,
+    timeZone: 'Europe/Sofia',
+  })
 
-    
-    const options = {
-        year: 'numeric',
-        month: 'numeric',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false, // Use 24-hour format
-        timeZone: 'Europe/Sofia' // Specify the target timezone
-    };
-
-    
-    const formatter = new Intl.DateTimeFormat('bg-BG', options);
-
-    return convertSofiaStringToISO(formatter.format(date));
+  return convertSofiaStringToISO(formatter.format(date))
 }
+
 function convertSofiaStringToISO(sofiaTimeString) {
-    // 1. Manually parse the components (assuming DD.MM.YYYY and HH:MM:SS)
-    // For "3.10.2025 г., 19:00:00"
-    const datePart = sofiaTimeString.split(' ')[0]; // "3.10.2025"
-    const timePart = sofiaTimeString.split(', ')[1]; // "19:00:00"
+  const datePart = sofiaTimeString.split(' ')[0]
+  const timePart = sofiaTimeString.split(', ')[1]
+  const [day, month, year] = datePart.split('.').map(Number)
+  const isoDatePart = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`
 
-    // Assuming it's already Oct 3, 2025
-    const [day, month, year] = datePart.split('.').map(Number);
-    
-    // 2. Reconstruct the ISO 8601 string (YYYY-MM-DD HH:MM:SS)
-    const isoDatePart = `${year}-${String(month).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-    
-    // 3. Determine the Time Zone Offset for Europe/Sofia on that date (EEST is +03)
-    const timezoneOffset = "+03"; // For Sofia during Daylight Saving Time (Oct 3)
-
-    return `${isoDatePart} ${timePart} ${timezoneOffset}`;
+  return `${isoDatePart} ${timePart} +03`
 }
 
 export async function POST() {
@@ -164,7 +140,6 @@ export async function POST() {
         apiKey
       ),
     ])
-    console.log(events)
     if (!productions.length) {
       return NextResponse.json(
         { error: 'No productions were returned by the Entase API.' },
@@ -206,15 +181,13 @@ export async function POST() {
 
     const slugToId = new Map(shows.map((show) => [show.slug, show.id]))
 
-    
     const performancesPayload = events
       .map((event) => {
         const production = productionsById.get(event.productionID)
         if (!production) return null
         const slug = buildSlug(production.title, production.id)
         const idShow = slugToId.get(slug)
-        if (!idShow) return nullc
-        console.log(normalizeDate(event.dateStart));
+        if (!idShow) return null
         const time = normalizeDate(event.dateStart)
         if (!time) return null
         const payload = {
@@ -224,7 +197,6 @@ export async function POST() {
         if (event.location?.placeName) {
           payload.venue = event.location.placeName
         }
-        console.log(payload);
         return payload
       })
       .filter(Boolean)

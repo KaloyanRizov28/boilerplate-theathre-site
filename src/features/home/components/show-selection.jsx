@@ -1,5 +1,6 @@
-'use client';
-import React, { useState } from 'react';
+"use client";
+
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import Arrow from "@/components/ui/icons/Arrow.svg"
@@ -46,23 +47,19 @@ const ShowCard = ({ show }) => (
   </Link>
 );
 
-const ShowsSection = (props) => {
+const ShowsSection = ({ shows = [] }) => {
   const [activeFilter, setActiveFilter] = useState('all');
-  let mockShows = props.shows;
 
-  // Filter shows based on active category
-  const filteredShows = mockShows.filter(show => {
+  const filteredShows = shows.filter(show => {
     if (activeFilter === 'all') return true;
     return show.category === activeFilter;
   });
 
-  // Get first 6 shows for display
   const displayedShows = filteredShows.slice(0, 6);
 
   return (
     <section className="bg-theater-dark px-4 sm:px-8 py-8">
       <div className="max-w-[1474px] mx-auto w-full">
-        {/* Filter tabs row */}
         <div className="flex gap-6 mb-6">
           <button
             onClick={() => setActiveFilter('all')}
@@ -93,7 +90,6 @@ const ShowsSection = (props) => {
           </button>
         </div>
 
-        {/* Shows Layout - Carousel on Mobile, Grid on Desktop */}
         <p className="block sm:hidden text-xs text-center text-gray-500 mb-2 uppercase tracking-widest">Плъзнете за още</p>
         <div className="block sm:hidden overflow-hidden">
           <Swiper
@@ -117,7 +113,6 @@ const ShowsSection = (props) => {
               </SwiperSlide>
             ))}
           </Swiper>
-          {/* Unique scoped pagination container */}
           <div className="plays-pagination flex justify-center gap-2 mt-6 [&_.swiper-pagination-bullet]:bg-gray-500 [&_.swiper-pagination-bullet-active]:bg-[#27AAE1] [&_.swiper-pagination-bullet-active]:w-6 [&_.swiper-pagination-bullet-active]:rounded-full [&_.swiper-pagination-bullet]:w-2 [&_.swiper-pagination-bullet]:h-2 [&_.swiper-pagination-bullet]:transition-all [&_.swiper-pagination-bullet]:duration-300 [&_.swiper-pagination-bullet]:cursor-pointer"></div>
         </div>
 
@@ -127,11 +122,10 @@ const ShowsSection = (props) => {
           ))}
         </div>
 
-        {/* View all link if more than 6 shows */}
         {filteredShows.length > 6 && (
           <div className="text-right mt-6">
             <Link
-              href="/calendar"
+              href="/program"
               className="inline-flex items-center text-white text-sm font-light transition-colors duration-300 group hover:text-[#27AAE1]"
             >
               <span className="border-b border-transparent group-hover:border-theater-hover transition-all duration-300 text-base hover:text-[#27AAE1] group-hover:text-[#27AAE1]">
@@ -144,6 +138,6 @@ const ShowsSection = (props) => {
       </div>
     </section>
   );
-};
+}
 
 export default ShowsSection;

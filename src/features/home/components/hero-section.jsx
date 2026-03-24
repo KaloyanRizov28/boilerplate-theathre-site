@@ -1,14 +1,12 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import Arrow from "@/components/ui/icons/Arrow.svg";
+'use client'
 
-// Smoother, simpler crossfade hero without layout thrash
-const HeroSection = ({ items = [], item }) => {
-  const dataItems = Array.isArray(items) && items.length > 0 ? items : (item ? [item] : [])
+import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
 
-  // Two persistent slots to avoid swapping src on the visible layer
+export default function HeroSection({ items = [] }) {
+  const dataItems = Array.isArray(items) ? items : []
+
   const [slotA, setSlotA] = useState(null)
   const [slotB, setSlotB] = useState(null)
   const [frontIsA, setFrontIsA] = useState(true)
@@ -21,15 +19,13 @@ const HeroSection = ({ items = [], item }) => {
   const fadingRef = useRef(false)
   const incomingRef = useRef(null)
 
-  // Helper to identify the play key (slug/href preferred, fallback to title)
-  const playKey = (it) => {
-    if (!it) return ''
-    const href = it.href || ''
+  function getItemKey(item) {
+    if (!item) return ''
+    const href = item.href || ''
     if (href.startsWith('/repertoar/')) return href
-    return it.title || href || it.image || ''
+    return item.title || href || item.image || ''
   }
 
-  // Initialize to a random slide and set up the timer
   useEffect(() => {
     if (timerRef.current) clearInterval(timerRef.current)
 
@@ -46,7 +42,6 @@ const HeroSection = ({ items = [], item }) => {
     setIsFading(false)
     setIncomingIndex(null)
     setSlotA(dataItems[start])
-    console.log('[Hero] initial image URL:', dataItems[start]?.image)
     setSlotB(null)
 
     if (!hasMultiple) return
@@ -56,20 +51,18 @@ const HeroSection = ({ items = [], item }) => {
       if (incomingRef.current !== null) return
 
       const cur = activeIdxRef.current
-      const curKey = playKey(dataItems[cur])
+      const curKey = getItemKey(dataItems[cur])
 
-      // Find next with different play key
       let next = (cur + 1) % dataItems.length
       let safety = 0
       while (safety < dataItems.length - 1) {
-        const nextKey = playKey(dataItems[next])
+        const nextKey = getItemKey(dataItems[next])
         if (nextKey && nextKey !== curKey) break
         next = (next + 1) % dataItems.length
         safety++
       }
       if (next === cur) return // nothing different to show
 
-      // Prepare hidden slot with incoming item
       incomingRef.current = next
       setIncomingIndex(next)
       const incomingItem = dataItems[next]
@@ -81,19 +74,16 @@ const HeroSection = ({ items = [], item }) => {
       if (timerRef.current) clearInterval(timerRef.current)
       timerRef.current = null
     }
-  }, [dataItems.length, hasMultiple])
+  }, [dataItems, hasMultiple])
 
-  // Keep refs in sync
   useEffect(() => { fadingRef.current = isFading }, [isFading])
   useEffect(() => { incomingRef.current = incomingIndex }, [incomingIndex])
 
-  // Start fade when the hidden image is loaded
   const handleHiddenLoaded = () => {
     if (incomingRef.current === null || fadingRef.current) return
     requestAnimationFrame(() => {
       requestAnimationFrame(() => setIsFading(true))
     })
-    // Finalize after CSS duration (keep in sync with duration-700)
     setTimeout(() => {
       setFrontIsA((prev) => !prev)
       activeIdxRef.current = incomingRef.current ?? activeIdxRef.current
@@ -103,7 +93,6 @@ const HeroSection = ({ items = [], item }) => {
     }, 700)
   }
 
-  // Derive data for layers and text (show incoming text during fade)
   const frontItem = frontIsA ? slotA : slotB
   const backItem = frontIsA ? slotB : slotA
   const displayItem = (isFading && backItem) ? backItem : (frontItem || backItem)
@@ -115,9 +104,7 @@ const HeroSection = ({ items = [], item }) => {
 
   return (
     <div className="flex flex-col">
-      {/* Fixed dimensions: 1440px wide, 687px tall */}
       <section className="relative w-full h-[420px] sm:h-[687px] overflow-hidden bg-black">
-        {/* Layer A */}
         <div
           className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${(isFading ? (frontIsA ? 'opacity-0' : 'opacity-100') : (frontIsA ? 'opacity-100' : 'opacity-0'))
             } ${(!frontIsA && !isFading) ? 'scale-105' : 'scale-100'}`}
@@ -134,14 +121,12 @@ const HeroSection = ({ items = [], item }) => {
               sizes="100vw"
               quality={90}
               onLoad={() => {
-                // Trigger only if A is hidden and being prepared
                 if (!frontIsA && incomingIndex !== null) handleHiddenLoaded()
               }}
             />
           )}
         </div>
 
-        {/* Layer B */}
         <div
           className={`absolute inset-0 transition-[opacity,transform] duration-700 ease-out ${(isFading ? (!frontIsA ? 'opacity-0' : 'opacity-100') : (!frontIsA ? 'opacity-100' : 'opacity-0'))
             } ${(frontIsA && !isFading) ? 'scale-105' : 'scale-100'}`}
@@ -158,29 +143,28 @@ const HeroSection = ({ items = [], item }) => {
               sizes="100vw"
               quality={90}
               onLoad={() => {
-                // Trigger only if B is hidden and being prepared
                 if (frontIsA && incomingIndex !== null) handleHiddenLoaded()
               }}
             />
           )}
         </div>
 
-        {/* Dark overlay for readability */}
-        <div className="absolute inset-0 bg-black/30 z-[1]"></div>
+        <div className="absolute inset-0 bg-black/30 z-[1]" />
 
-        {/* Content */}
         <div className="absolute bottom-3 z-10 w-full flex justify-center px-8">
           <div className="max-w-[1474px] w-full">
-            <a href={href} className="group/title inline-block focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded">
+            <Link
+              href={href}
+              className="group/title inline-block rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400"
+            >
               <h1 className="text-4xl sm:text-6xl md:text-7xl font-bold ml-[-0.03em] leading-none transition-all duration-700 bg-gradient-to-r from-[#27AAE1] from-50% to-white to-50% bg-[length:200%_100%] bg-[position:100%_0] group-hover/title:bg-[position:0_0] bg-clip-text text-transparent">
                 {title}
               </h1>
-            </a>
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* Meta row */}
       <div className="bg-theater-dark text-white py-4 border-b border-white/5">
         <div className="flex justify-center px-8">
           <div className="max-w-[1474px] w-full">
@@ -204,5 +188,3 @@ const HeroSection = ({ items = [], item }) => {
     </div>
   )
 }
-
-export default HeroSection;

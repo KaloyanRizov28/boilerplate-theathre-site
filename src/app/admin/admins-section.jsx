@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import StatusMessage from '../../components/ui/status-message'
+import StatusMessage from '@/components/ui/status-message'
 
 const inputClass =
   'w-full border border-white/10 rounded-lg p-2.5 bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-theater-blue/50 focus:border-theater-blue/50 transition-all'

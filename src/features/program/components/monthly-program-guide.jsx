@@ -1,46 +1,39 @@
-'use client';
+'use client'
 
-import React, { useState, useMemo, useEffect } from 'react';
-import Image from 'next/image';
-import Link from 'next/link';
-import Arrow from "@/components/ui/icons/Arrow.svg";
-import ProgramCalendar from './calendar'; // Assuming this is your calendar component
+import { useEffect, useMemo, useState } from 'react'
+import Image from 'next/image'
+import Link from 'next/link'
+import ProgramCalendar from './program-calendar';
 
 const parseShowDateToUTC = (dateStr) => {
-  if (!dateStr) {
-    console.warn("Invalid date string provided: ", dateStr);
-    return null;
-  }
-  const date = new Date(dateStr);
+  if (!dateStr) return null
+  const date = new Date(dateStr)
   if (isNaN(date.getTime())) {
-    console.warn("Invalid date string for parseShowDateToUTC:", dateStr);
-    return null;
+    return null
   }
-  return date;
-};
+  return date
+}
 
 const MonthlyProgramGuide = ({ shows = [] }) => {
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null)
 
-  const [activeDisplayMonth, setActiveDisplayMonth] = useState(new Date().getUTCMonth());
-  const [activeDisplayYear, setActiveDisplayYear] = useState(new Date().getUTCFullYear());
+  const [activeDisplayMonth, setActiveDisplayMonth] = useState(new Date().getUTCMonth())
+  const [activeDisplayYear, setActiveDisplayYear] = useState(new Date().getUTCFullYear())
 
-  const [calendarWindowBaseMonth, setCalendarWindowBaseMonth] = useState(new Date().getUTCMonth());
-  const [calendarWindowBaseYear, setCalendarWindowBaseYear] = useState(new Date().getUTCFullYear());
+  const [calendarWindowBaseMonth, setCalendarWindowBaseMonth] = useState(new Date().getUTCMonth())
+  const [calendarWindowBaseYear, setCalendarWindowBaseYear] = useState(new Date().getUTCFullYear())
 
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState('all')
   
   const processedShows = useMemo(() => {
-    // Flatten: one entry per performance to handle multiple dates per show
-    const entries = [];
+    const entries = []
     shows.forEach(show => {
-      const perfs = Array.isArray(show.performances) ? [...show.performances] : [];
-      // Sort by time ascending to keep UI stable
-      perfs.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime());
-      if (perfs.length === 0) return;
+      const perfs = Array.isArray(show.performances) ? [...show.performances] : []
+      perfs.sort((a, b) => new Date(a.time).getTime() - new Date(b.time).getTime())
+      if (perfs.length === 0) return
       perfs.forEach(perf => {
-        const fullDate = parseShowDateToUTC(perf?.time ?? null);
-        if (!fullDate || isNaN(fullDate.getTime())) return;
+        const fullDate = parseShowDateToUTC(perf?.time ?? null)
+        if (!fullDate || isNaN(fullDate.getTime())) return
         entries.push({
           ...show,
           fullDate,
@@ -49,42 +42,40 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
             : '',
           venue: (perf?.venues?.name || perf?.venue) ?? '',
           performanceId: perf?.id ?? `${show.id}-${perf?.time}`,
-        });
-      });
-    });
-    return entries;
-  }, [shows]);
+        })
+      })
+    })
+    return entries
+  }, [shows])
 
   useEffect(() => {
-    if (processedShows.length === 0) return;
+    if (processedShows.length === 0) return
 
-    // Build a unique set of months (UTC) that have shows
-    const monthMap = new Map(); // key = year*12 + month, value = { y, m }
+    const monthMap = new Map()
     processedShows.forEach(s => {
-      if (!s.fullDate) return;
-      const y = s.fullDate.getUTCFullYear();
-      const m = s.fullDate.getUTCMonth();
-      const key = y * 12 + m;
-      if (!monthMap.has(key)) monthMap.set(key, { y, m });
-    });
+      if (!s.fullDate) return
+      const y = s.fullDate.getUTCFullYear()
+      const m = s.fullDate.getUTCMonth()
+      const key = y * 12 + m
+      if (!monthMap.has(key)) monthMap.set(key, { y, m })
+    })
 
-    if (monthMap.size === 0) return;
+    if (monthMap.size === 0) return
 
-    const months = Array.from(monthMap.values()).sort((a, b) => (a.y * 12 + a.m) - (b.y * 12 + b.m));
-    const now = new Date();
-    const nowKey = now.getUTCFullYear() * 12 + now.getUTCMonth();
+    const months = Array.from(monthMap.values()).sort((a, b) => (a.y * 12 + a.m) - (b.y * 12 + b.m))
+    const now = new Date()
+    const nowKey = now.getUTCFullYear() * 12 + now.getUTCMonth()
 
-    // Prefer current month if present; else the nearest future month; else the latest past month
-    let target = months.find(({ y, m }) => (y * 12 + m) >= nowKey);
-    if (!target) target = months[months.length - 1];
+    let target = months.find(({ y, m }) => (y * 12 + m) >= nowKey)
+    if (!target) target = months[months.length - 1]
 
-    setCalendarWindowBaseMonth(target.m);
-    setCalendarWindowBaseYear(target.y);
-    setActiveDisplayMonth(target.m);
-    setActiveDisplayYear(target.y);
-    setSelectedDate(null);
+    setCalendarWindowBaseMonth(target.m)
+    setCalendarWindowBaseYear(target.y)
+    setActiveDisplayMonth(target.m)
+    setActiveDisplayYear(target.y)
+    setSelectedDate(null)
 
-  }, [processedShows]);
+  }, [processedShows])
 
   const showsByDateForActiveMonth = useMemo(() => {
     const grouped = {};
@@ -136,7 +127,6 @@ const MonthlyProgramGuide = ({ shows = [] }) => {
 
   return (
     <section className="bg-theater-dark text-white px-4 sm:px-6 lg:px-8 min-h-screen">
-      {/* ... The rest of your JSX remains exactly the same ... */}
       <div className="max-w-[1474px] mx-auto w-full">
         <div className='flex justify-center my-6'>
           <ProgramCalendar

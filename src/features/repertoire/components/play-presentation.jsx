@@ -1,16 +1,14 @@
-// components/PlayPresentation.js
-import React from 'react';
-import PlayHero from './hero'; // Ensure this path is correct
-import EntaseWidget from './entaseWidget';
+import EntaseWidget from './entase-widget';
+import PlayHero from './play-hero';
 
 const PlayPresentation = ({
   playName,
   backgroundImage,
-  heroHeight = "h-[80vh]", // You can set a default hero height for the presentation
+  heroHeight = "h-[80vh]",
   synopsis,
   ticketLink,
   productionId,
-  ticketButtonText = "Билети →" // Default button text
+  ticketButtonText = "Билети →"
 }) => {
   return (
     <div>
@@ -20,7 +18,6 @@ const PlayPresentation = ({
         heroHeight={heroHeight}
       />
       <div className="bg-theater-dark text-[#e0e0e0] px-4 sm:px-8 py-12 sm:py-24 relative overflow-hidden">
-        {/* Subtle background atmospheric flare */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-[#27AAE1] rounded-full blur-[150px] opacity-10 pointer-events-none translate-x-1/4 -translate-y-1/4" />
         
         <div className="max-w-[1474px] mx-auto w-full relative z-10">

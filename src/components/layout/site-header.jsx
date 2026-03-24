@@ -1,4 +1,3 @@
-// src/components/layout/header.js
 'use client'
 
 import Image from 'next/image'
@@ -6,7 +5,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { createClient } from '@/services/supabase/client'
 
-export function Header() {
+export function SiteHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [activeMenu, setActiveMenu] = useState('root')
   const [user, setUser] = useState(null)

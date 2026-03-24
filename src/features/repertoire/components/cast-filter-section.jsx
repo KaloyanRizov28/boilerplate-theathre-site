@@ -1,18 +1,20 @@
 "use client";
-import React, { useState } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
 
-const EkipSection = (props) => {
+import { useState } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+export default function CastFilterSection({ employees = [] }) {
     const [activeFilter, setActiveFilter] = useState('актьори');
 
-    const ekipData = props.employees.map(item => item.employees);
+    const castMembers = employees.map((item) => item.employees).filter(Boolean);
 
-    const filteredEkip = ekipData.filter((member) => {
+    const filteredMembers = castMembers.filter((member) => {
+        const role = String(member.role || '').toLowerCase();
         if (activeFilter === 'актьори') {
-            return member.role.toLowerCase() === 'актьор';
+            return role === 'актьор';
         } else if (activeFilter === 'ekip') {
-            return member.role.toLowerCase() !== 'актьор';
+            return role !== 'актьор';
         }
         return true;
     });
@@ -21,7 +23,6 @@ const EkipSection = (props) => {
         <section className="bg-theater-dark px-4 sm:px-8 py-8 sm:py-12">
             <div className="max-w-[1474px] mx-auto w-full">
                 <div className="flex flex-col mb-10">
-                    {/* Filter buttons */}
                     <div className="flex gap-6 md:gap-8">
                         <button
                             onClick={() => setActiveFilter('актьори')}
@@ -38,9 +39,8 @@ const EkipSection = (props) => {
                     </div>
                 </div>
 
-                {/* Ekip Grid */}
                 <div className="flex flex-wrap gap-6 items-center justify-center sm:justify-start">
-                    {filteredEkip.map((member) => (
+                    {filteredMembers.map((member) => (
                         <Link
                             key={member.id}
                             href={`/employees/${member.id}`}
@@ -65,6 +65,4 @@ const EkipSection = (props) => {
             </div>
         </section>
     );
-};
-
-export default EkipSection;
+}

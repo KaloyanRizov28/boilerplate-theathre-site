@@ -1,10 +1,8 @@
-// src/components/layout/footer.js
-
 import Arrow from "@/components/ui/icons/Arrow.svg"
 import Link from "next/link"
 import Image from "next/image"
 
-export function Footer() {
+export function SiteFooter() {
   const linkStyle = "text-white hover:text-[#27AAE1] transition-colors flex items-center group text-sm py-1";
   const arrowStyle = "inline-block transition-transform duration-300 group-hover:translate-x-1 w-4 h-4 ml-1 fill-current";
 

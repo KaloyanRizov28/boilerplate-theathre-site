@@ -1,4 +1,3 @@
-// src/components/layout/TransparentHeader.js
 'use client'
 
 import Image from 'next/image'
@@ -34,17 +33,11 @@ export function TransparentHeader() {
     ],
   }
 
-
-  const iconBaseClass = 'w-6 h-0.5 transition-all duration-300';
-
-
   return (
     <>
-      {/* Header - Now Transparent and FIXED with subtle gradient for readability */}
       <header className="fixed top-0 left-0 w-full bg-gradient-to-b from-black/80 via-black/30 to-transparent z-50">
         <div className="w-full px-4 sm:px-8 lg:px-12" style={{ height: '118px' }}>
           <div className="flex justify-between items-center h-full relative">
-            {/* Hamburger Menu */}
             <button
               onClick={() => {
                 if (isMenuOpen) setActiveMenu('root')
@@ -66,7 +59,6 @@ export function TransparentHeader() {
               ></div>
             </button>
 
-            {/* Theater Title Centered */}
             <Link href="/" className="hidden lg:block text-center group absolute left-1/2 -translate-x-1/2 z-50" aria-label="Начало">
               <div className="text-sm font-light tracking-[0.1em] text-white/95 group-hover:text-[#27AAE1] transition-colors duration-300 drop-shadow-md">
                 <div>МУЗИКАЛНО-ДРАМАТИЧЕН ТЕАТЪР</div>
@@ -101,24 +93,20 @@ export function TransparentHeader() {
           </div>
         </div>
       </header>
-      {/* Full Page Overlay Menu */}
       <div className={`fixed top-0 left-0 w-full h-full z-40 transform transition-transform duration-500 ease-in-out ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'
         }`}>
-        {/* Background Image for menu */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat z-10"
           style={{
-            backgroundImage: "url('/logo.svg')", // Path from /public folder
-            backgroundSize: '60vw auto', // Adjusted for potentially non-square logo
-            backgroundPosition: 'bottom -15vw right -10vw' // Adjusted for potentially better visual
+            backgroundImage: "url('/logo.svg')",
+            backgroundSize: '60vw auto',
+            backgroundPosition: 'bottom -15vw right -10vw'
           }}
           aria-hidden="true"
         />
 
-        {/* Dark Overlay for text readability in menu */}
-        <div className="absolute inset-0 bg-theater-dark bg-opacity-80 z-20" /> {/* Slightly increased opacity */}
+        <div className="absolute inset-0 bg-theater-dark bg-opacity-80 z-20" />
 
-        {/* Menu Content */}
         <nav className="relative z-30 flex flex-col justify-center h-full pl-12 sm:pl-16 md:pl-24" aria-label="Основна навигация">
           {activeMenu !== 'root' && (
             <button
@@ -131,11 +119,10 @@ export function TransparentHeader() {
             </button>
           )}
           {menus[activeMenu].map((item, index) => {
-            const startPosition = -250 + (index * 40); // Initial off-screen position
-            const finalPosition = 0; // Final on-screen position
-            // Animation delays can be fine-tuned
-            const initialDelay = 100 + index * 50; // Staggered delay for items appearing
-            const closeDelay = index * 30; // Staggered delay for items disappearing
+            const startPosition = -250 + (index * 40);
+            const finalPosition = 0;
+            const initialDelay = 100 + index * 50;
+            const closeDelay = index * 30;
 
             return (
               <div
@@ -149,8 +136,6 @@ export function TransparentHeader() {
                   transition: isMenuOpen
                     ? `transform 0.5s cubic-bezier(0.23, 1, 0.32, 1) ${initialDelay}ms, opacity 0.4s ease-out ${initialDelay}ms`
                     : `transform 0.3s ease-in ${closeDelay}ms, opacity 0.2s ease-in ${closeDelay}ms`,
-                  // Using CSS animation for overshoot for more control if needed, or stick to transition
-                  // animation: isMenuOpen ? `staircaseEntry-${index} 0.7s cubic-bezier(0.23, 1, 0.32, 1) ${initialDelay}ms forwards` : 'none',
                 }}
               >
                 {item.submenu ? (
@@ -173,14 +158,7 @@ export function TransparentHeader() {
             );
           })}
         </nav>
-
-        {/* Removed inline <style jsx> for staircase keyframes. 
-            It's generally better to keep animations in global CSS or a CSS module
-            if they are complex or reused. If you prefer inline, you can add them back.
-            For simplicity with Tailwind, you might rely on transition delays and curves.
-            If you reinstate keyframes, ensure they match the number of navigation items.
-        */}
       </div>
     </>
-  );
+  )
 }

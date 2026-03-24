@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/services/supabase/client';
-import StatusMessage from '../../components/StatusMessage';
+import StatusMessage from '@/components/ui/status-message';
 
 export default function LoginPage() {
   const router = useRouter();

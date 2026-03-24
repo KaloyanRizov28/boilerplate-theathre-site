@@ -39,7 +39,6 @@ const nextConfig = {
     return config;
   },
 
-  // Added: Configuration for next/image to optimize images from Firebase Storage
   images: {
     remotePatterns: [
       {

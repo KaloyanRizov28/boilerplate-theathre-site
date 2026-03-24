@@ -1,6 +1,6 @@
 import './globals.css'
-import { Footer } from '../components/layout/footer'
-import { ConditionalDefaultHeader } from '../components/layout/contidionalHeader'
+import { ConditionalHeader } from '@/components/layout/conditional-header'
+import { SiteFooter } from '@/components/layout/site-footer'
 import { Sofia_Sans } from 'next/font/google'
 
 const sofiaSans = Sofia_Sans({
@@ -30,11 +30,11 @@ export default function RootLayout({ children }) {
     <html lang="bg" className="scroll-smooth">
       <body className={`bg-theater-dark text-white antialiased font-sans ${sofiaSans.variable}`}>
         <div className="min-h-screen flex flex-col">
-          <ConditionalDefaultHeader/>
+          <ConditionalHeader />
           <main className="flex-1">
             {children}
           </main>
-          <Footer />
+          <SiteFooter />
         </div>
       </body>
     </html>

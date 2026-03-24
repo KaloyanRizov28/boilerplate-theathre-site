@@ -63,41 +63,23 @@ export default function SeatMap({ venueData }) {
     return groups;
   };
   
-  // Handle seat selection - FIXED
   const handleSeatSelection = (seat) => {
     if (seat.status !== "available") return;
     
-    // Check if seat is already selected - use ID for comparison
     const isSelected = selectedSeats.some(s => s.id === seat.id);
-    
-    // Debug log
-    console.log("Handling seat selection:", seat.id, "Currently selected:", isSelected);
-    
+
     if (isSelected) {
-      // Remove seat from selection
       setSelectedSeats(prevSelected => 
         prevSelected.filter(s => s.id !== seat.id)
       );
-      console.log("Deselecting seat:", seat.id);
     } else {
-      // Add seat to selection
       setSelectedSeats(prevSelected => [...prevSelected, {...seat}]);
-      console.log("Selecting seat:", seat.id);
     }
-    
-    // Important: Don't trigger zoom changes when seat selection happens
   };
   
-  // Handle removing a seat from selection
   const removeSeat = (seatId) => {
-    console.log("Removing seat by ID:", seatId);
     setSelectedSeats(prevSelected => prevSelected.filter(seat => seat.id !== seatId));
   };
-  
-  // Add debug logging for selection changes
-  useEffect(() => {
-    console.log("Selected seats updated:", selectedSeats.map(s => s.id));
-  }, [selectedSeats]);
   
   // Handle resize - improved to be more responsive
   useEffect(() => {
@@ -446,24 +428,15 @@ export default function SeatMap({ venueData }) {
       
       if (!seatData) return;
       
-      // FIXED: Check if this seat is selected properly using ID
       const isSelected = selectedSeats.some(s => s.id === seatId);
-      
-      // Debug
+
       if (isSelected) {
-        console.log("Styling seat as selected:", seatId);
-      }
-      
-      // Only update the styling attributes that change with selection
-      if (isSelected) {
-        // Selected styling
         seat
-          .attr("fill", "#10b981") // Green color for selected
-          .attr("stroke", "#047857") // Darker green border
+          .attr("fill", "#10b981")
+          .attr("stroke", "#047857")
           .attr("stroke-width", 2)
           .attr("fill-opacity", 1);
       } else if (seatData.status === "available") {
-        // Standard styling for available seats
         const priceTier = venueData.priceTiers.find(pt => pt.id === seatData.priceTier);
         seat
           .attr("fill", priceTier ? priceTier.color : "#d1d5db")
@@ -482,19 +455,15 @@ export default function SeatMap({ venueData }) {
       
       if (!seatData) return;
       
-      // FIXED: Check if this seat is selected properly using ID
       const isSelected = selectedSeats.some(s => s.id === seatId);
-      
-      // Update text color based on selection
+
       if (isSelected) {
-        label.attr("fill", "#ffffff"); // White text for selected seats
+        label.attr("fill", "#ffffff");
       } else {
         label.attr("fill", seatData.status === "sold" ? "#ffffff" : "#000000");
       }
     });
-    
-    console.log("Selection styling updated. Current selection:", selectedSeats.map(s => s.id));
-    
+
   }, [selectedSeats, venueData.seats, venueData.priceTiers]); // Only re-run when selection changes
   
   return (
