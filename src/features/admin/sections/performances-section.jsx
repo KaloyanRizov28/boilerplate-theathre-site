@@ -2,11 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import StatusMessage from '@/components/ui/status-message'
-import { buttonBaseClass, inputClass, selectClass } from './constants'
+import { buttonBaseClass, inputClass, selectClass } from '@/features/admin/constants'
+import { useAdminSupabaseClient } from '@/features/admin/components/admin-supabase-provider'
 
 const EMPTY_PERFORMANCE_FORM = { idShow: '', time: '' }
 
-export default function PerformancesSection({ supabase }) {
+export default function PerformancesSection() {
+  const supabase = useAdminSupabaseClient()
   const [items, setItems] = useState([])
   const [shows, setShows] = useState([])
   const [form, setForm] = useState(EMPTY_PERFORMANCE_FORM)

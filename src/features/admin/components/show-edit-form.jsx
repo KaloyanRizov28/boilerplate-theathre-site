@@ -1,8 +1,8 @@
 "use client";
 
-import { buttonBaseClass, inputClass } from './constants'
-import ShowImageField from './show-image-field'
-import { SHOW_IMAGE_FIELDS } from './show-form-config'
+import { buttonBaseClass, inputClass } from '@/features/admin/constants'
+import ShowImageField from '@/features/admin/components/show-image-field'
+import { SHOW_IMAGE_FIELDS } from '@/features/admin/lib/show-form-config'
 
 function buildFieldChangeHandler(field, onFieldChange) {
   return function handleFieldChange(event) {

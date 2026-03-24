@@ -2,21 +2,23 @@
 
 import { useEffect, useState } from 'react'
 import StatusMessage from '@/components/ui/status-message'
-import { buttonBaseClass } from './constants'
-import ContentHeroSection from './content-hero-section'
-import ContentShowsSection from './content-shows-section'
+import { buttonBaseClass } from '@/features/admin/constants'
+import { useAdminSupabaseClient } from '@/features/admin/components/admin-supabase-provider'
+import ContentHeroSection from '@/features/admin/components/content-hero-section'
+import ContentShowsSection from '@/features/admin/components/content-shows-section'
 import {
   appendHeroItem,
   getConfigValueByKey,
   removeHeroItemByIndex,
   toggleShowSelectionItem,
   updateHeroItemValue,
-} from './content-section-utils'
+} from '@/features/admin/lib/content-section-utils'
 
 const HERO_CONFIG_KEY = 'home_hero'
 const SHOWS_CONFIG_KEY = 'home_shows'
 
-export default function ContentSection({ supabase }) {
+export default function ContentSection() {
+  const supabase = useAdminSupabaseClient()
   const [status, setStatus] = useState(null)
   const [loading, setLoading] = useState(true)
   const [heroMode, setHeroMode] = useState('auto')

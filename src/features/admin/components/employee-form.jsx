@@ -1,6 +1,6 @@
 "use client";
 
-import { buttonBaseClass, inputClass } from './constants'
+import { buttonBaseClass, inputClass } from '@/features/admin/constants'
 
 function buildFieldChangeHandler(field, onFieldChange) {
   return function handleFieldChange(event) {

@@ -2,10 +2,7 @@
 
 import { useState } from 'react'
 import StatusMessage from '@/components/ui/status-message'
-
-const inputClass =
-  'w-full border border-white/10 rounded-lg p-2.5 bg-white/5 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-theater-blue/50 focus:border-theater-blue/50 transition-all'
-const buttonBaseClass = 'px-4 py-2.5 rounded-lg font-medium transition-all duration-200 active:scale-95 disabled:opacity-50 disabled:pointer-events-none'
+import { buttonBaseClass, inputClass } from '@/features/admin/constants'
 
 export default function AdminsSection() {
   const [email, setEmail] = useState('')

@@ -1,6 +1,6 @@
 "use client";
 
-import { inputClass } from './constants'
+import { inputClass } from '@/features/admin/constants'
 
 export default function ShowImageField({
   label,

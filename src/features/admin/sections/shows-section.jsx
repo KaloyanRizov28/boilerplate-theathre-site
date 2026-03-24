@@ -2,23 +2,25 @@
 
 import { useEffect, useState } from 'react'
 import StatusMessage from '@/components/ui/status-message'
-import AdminPagination from './admin-pagination'
-import { getFriendlyStorageErrorMessage } from './admin-errors'
-import { buttonBaseClass, inputClass } from './constants'
-import { revokePreview } from './image-preview-utils'
-import ShowEditForm from './show-edit-form'
+import { buttonBaseClass, inputClass } from '@/features/admin/constants'
+import AdminPagination from '@/features/admin/components/admin-pagination'
+import { useAdminSupabaseClient } from '@/features/admin/components/admin-supabase-provider'
+import ShowEditForm from '@/features/admin/components/show-edit-form'
+import ShowsTable from '@/features/admin/components/shows-table'
+import { getFriendlyStorageErrorMessage } from '@/features/admin/lib/admin-errors'
+import { revokePreview } from '@/features/admin/lib/image-preview-utils'
 import {
   buildShowForm,
   createEmptyShowUploads,
   EMPTY_SHOW_FORM,
   SHOW_IMAGE_FIELD_MAP,
   SHOW_IMAGE_KEYS,
-} from './show-form-config'
-import ShowsTable from './shows-table'
+} from '@/features/admin/lib/show-form-config'
 
 const pageSize = 10
 
-export default function ShowsSection({ supabase }) {
+export default function ShowsSection() {
+  const supabase = useAdminSupabaseClient()
   const [items, setItems] = useState([])
   const [search, setSearch] = useState('')
   const [page, setPage] = useState(0)

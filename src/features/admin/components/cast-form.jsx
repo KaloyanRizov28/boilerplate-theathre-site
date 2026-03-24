@@ -1,6 +1,6 @@
 "use client";
 
-import { buttonBaseClass, selectClass } from './constants'
+import { buttonBaseClass, selectClass } from '@/features/admin/constants'
 
 export default function CastForm({
   editingId,

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from 'next/image'
-import { inputClass } from './constants'
+import { inputClass } from '@/features/admin/constants'
 
 export default function ContentHeroSection({
   heroMode,

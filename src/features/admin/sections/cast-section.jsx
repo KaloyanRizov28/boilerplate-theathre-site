@@ -2,18 +2,20 @@
 
 import { useEffect, useState } from 'react'
 import StatusMessage from '@/components/ui/status-message'
-import CastForm from './cast-form'
-import CastTable from './cast-table'
+import { useAdminSupabaseClient } from '@/features/admin/components/admin-supabase-provider'
+import CastForm from '@/features/admin/components/cast-form'
+import CastTable from '@/features/admin/components/cast-table'
 import {
   buildCastPayload,
   computeCastChanges,
   findShowTitleById,
   getAssignedEmployeeIds,
-} from './cast-section-utils'
+} from '@/features/admin/lib/cast-section-utils'
 
 const EMPTY_CAST_FORM = { idShow: '', employeeId: '', employeeIds: [] }
 
-export default function CastSection({ supabase }) {
+export default function CastSection() {
+  const supabase = useAdminSupabaseClient()
   const [items, setItems] = useState([])
   const [shows, setShows] = useState([])
   const [employees, setEmployees] = useState([])

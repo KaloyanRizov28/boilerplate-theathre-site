@@ -2,12 +2,13 @@
 
 import { useEffect, useState } from 'react'
 import StatusMessage from '@/components/ui/status-message'
-import AdminPagination from './admin-pagination'
-import { getFriendlyStorageErrorMessage } from './admin-errors'
-import EmployeeForm from './employee-form'
-import EmployeesTable from './employees-table'
-import { inputClass } from './constants'
-import { revokePreview } from './image-preview-utils'
+import { inputClass } from '@/features/admin/constants'
+import AdminPagination from '@/features/admin/components/admin-pagination'
+import { useAdminSupabaseClient } from '@/features/admin/components/admin-supabase-provider'
+import EmployeeForm from '@/features/admin/components/employee-form'
+import EmployeesTable from '@/features/admin/components/employees-table'
+import { getFriendlyStorageErrorMessage } from '@/features/admin/lib/admin-errors'
+import { revokePreview } from '@/features/admin/lib/image-preview-utils'
 
 const EMPTY_EMPLOYEE_FORM = {
   name: '',
@@ -19,7 +20,8 @@ const EMPTY_EMPLOYEE_FORM = {
 
 const pageSize = 10
 
-export default function EmployeesSection({ supabase }) {
+export default function EmployeesSection() {
+  const supabase = useAdminSupabaseClient()
   const [items, setItems] = useState([])
   const [form, setForm] = useState(EMPTY_EMPLOYEE_FORM)
   const [editingId, setEditingId] = useState(null)
