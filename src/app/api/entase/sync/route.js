@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server'
 import { DateTime } from 'luxon'
 
-import { createAdminClient } from '../../../../../lib/supabase/admin'
-import { createClient as createServerClient } from '../../../../../lib/supabase/server'
+import { createAdminClient } from '@/services/supabase/admin'
+import { createClient as createServerClient } from '@/services/supabase/server'
 
 const ENTASE_BASE_URL = 'https://api.entase.com/v2'
 const DEFAULT_POSTER = 'https://via.placeholder.com/600x900/0B1D2A/FFFFFF?text=Poster'

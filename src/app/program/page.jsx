@@ -1,5 +1,5 @@
 import MonthlyProgramGuide from "@/components/calendarPage/program"
-import { createClient } from "../../../lib/supabase/server";
+import { createClient } from '@/services/supabase/server';
 
 
 async function getShowsWithPerformances() {

@@ -1,5 +1,5 @@
 import PlayPresentation from "@/components/playsIndividual/playPresentation";
-import { createClient } from "../../../../lib/supabase/server";
+import { createClient } from '@/services/supabase/server';
 import ActorFilterWithData from "@/components/playsIndividual/employeesIndividual";
 import FullScreenWidthImage from "@/components/playsIndividual/imageFull";
 import { notFound } from 'next/navigation'

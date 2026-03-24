@@ -4,7 +4,7 @@
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { createClient } from '../../../lib/supabase/client'
+import { createClient } from '@/services/supabase/client'
 
 export function TransparentHeader() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

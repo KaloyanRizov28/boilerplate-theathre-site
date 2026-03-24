@@ -3,7 +3,7 @@ import HeroSection from "../components/homePage/hero-section";
 import ShowsSection from "../components/homePage/show-selection";
 import AboutTheaterSection from "@/components/homePage/about-theathre";
 import CastSection from "../components/homePage/cast-section";
-import { createClient } from "../../lib/supabase/server";
+import { createClient } from '@/services/supabase/server';
 
 export const dynamic = 'force-dynamic'
 

@@ -1,5 +1,5 @@
-import { createAdminClient } from '../../../../../lib/supabase/admin'
-import { slugify as entaseSlugify } from '../../../../../lib/entase/client'
+import { createAdminClient } from '@/services/supabase/admin'
+import { slugify as entaseSlugify } from '@/services/entase/client'
 
 export const dynamic = 'force-dynamic'
 
